@@ -1,23 +1,25 @@
 #include "s21_graph.h"
 
 #include <fstream>
+using namespace s21;
 
-void Graph::SetSize(unsigned int size) {
-  adjacient_matrix_.resize(size);
-  for (auto& row : adjacient_matrix_) row.resize(size);
-};
+void Graph::SetSize(size_t size) {
+  size_ = size;
+  adjacency_matrix_.resize(size);
+  for (auto& row : adjacency_matrix_) row.resize(size);
+}
 
-void Graph::ReadLine(size_t& line_number, const std::string& line) {
+void Graph::ReadLine(uint& line_number, const std::string& line) {
   size_t num_size = 0;
   size_t line_index = 0;
-  for (size_t col_index = 0; col_index < cols_; ++col_index) {
-    bool number = std::stoi(&line.at(line_index), &num_size);
-    adjacient_matrix_.at(line_number).at(col_index) = number;
+  for (uint col_index = 0; col_index < size_; ++col_index) {
+    uint number = std::stoi(&line.at(line_index), &num_size);
+    adjacency_matrix_.at(line_number).at(col_index) = number;
     line_index += num_size;
   }
 }
 
-unsigned int Graph::ReadSize(const std::string& line) {
+size_t Graph::ReadSize(const std::string& line) {
   size_t pos = 0;
   size_t number = std::stoi(&line.at(pos), &pos);
   if (number < kMinSize || number > kMaxSize) {
@@ -38,7 +40,7 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
   std::string line;
   std::getline(file, line);
   SetSize(ReadSize(line));
-  for (size_t i = 0; i < lines_to_read_; ++i) {
+  for (uint i = 0; i < size_; ++i) {
     std::getline(file, line);
     if (!line.empty()) {
       ReadLine(i, line);
