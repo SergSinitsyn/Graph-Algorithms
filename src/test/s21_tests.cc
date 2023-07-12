@@ -41,7 +41,7 @@ TEST(Graph, LoadGraphFromFile) {
   size_t result_cols = 11;
   EXPECT_EQ(graph.size(), 11);
 
-  Graph::AdjacenceMatrix result_matrix = {
+  Graph::AdjacencyMatrix result_matrix = {
       {0, 29, 20, 21, 16, 31, 100, 12, 4, 31, 18},
       {29, 0, 15, 29, 28, 40, 72, 21, 29, 41, 12},
       {20, 15, 0, 15, 14, 25, 81, 9, 23, 27, 13},
@@ -66,10 +66,15 @@ TEST(Graph, LoadGraphFromFile) {
           0,
       }};
 
-  const Graph::AdjacenceMatrix &file_matrix = graph.GetMatrix();
+  const Graph::AdjacencyMatrix &file_matrix = graph.GetMatrix();
   for (size_t i = 0; i < result_rows; ++i) {
     for (size_t j = 0; j < result_cols; ++j) {
       EXPECT_EQ(file_matrix[i][j], result_matrix[i][j]);
     }
   }
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

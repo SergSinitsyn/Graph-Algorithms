@@ -7,7 +7,6 @@ ifeq ($(uname_S), Linux)
 	LEAKS=valgrind --undef-value-errors=yes --leak-check=full -s $(BUILD_DIR)/$(TEST_PROG)
 	SHOW_LEAKS=grep "ERROR SUMMARY" leaks.log
 else
-	#CHECK_LIBS=$(shell pkg-config --libs gtest) -lm
 	CHECK_LIBS=-lgtest -lm
 	CC=g++
 	LEAKS=CK_FORK=no leaks --atExit -- $(BUILD_DIR)/$(TEST_PROG)
@@ -19,16 +18,32 @@ HEADERS=*.h
 OBJECTS=*.o
 
 MAIN_TEST_DIR=./test
-TEST_SOURCES = $(MAIN_TEST_DIR)/*_test/s21_*.cc $(MAIN_TEST_DIR)/$(SOURCES) 
+TEST_SOURCES = $(MAIN_TEST_DIR)/s21_*.cc 
 TEST_PROG=test.out
 
 DEBUG_DIR=./debug
 DEBUG_PROG=debug.out
 BUILD_DIR=./
 
+LIB1=s21_graph
+LIB1_NAME=s21_graph.a
+LIB1_SOURCES=s21_graph.cc
+LIB1_HEADERS=(s21_graph.h)
+LIB1_OBJS=$(LIB1_SOURCES:.cc=.o)
+
+.SUFFIXES:
+.SUFFIXES: .cc .o
+
 all: clean test 
 
 rebuild: clean all
+
+.cc.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIB1_NAME): $(LIB1_OBJS)
+	ar rcs lib$@ $(LIB1_OBJS)
+	cp lib$@ $@
 
 clean:
 	$(CLEAN) $(OBJECTS) *.a *.gcno *.gcda *.gcov *.info
@@ -38,12 +53,13 @@ clean:
 	$(CLEAN) ./leaks.log
 	$(CLEAN) .clang-format
 	$(CLEAN) test.out test.out*
+	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
 
 test: $(TEST_PROG)
 	-$(BUILD_DIR)/$(TEST_PROG)
 
-$(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS)
-	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG)
+$(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME)
+	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1)
 
 report/index.html:
 	make clean
