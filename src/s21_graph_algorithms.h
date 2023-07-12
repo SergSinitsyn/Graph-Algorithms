@@ -13,7 +13,9 @@ class GraphAlgorithms {
     double distance;
   };
 
-  // part 1
+  // TODO: Тип возвращаемого результата для частей 1-4 определить в процессе
+  // TODO: исполнения
+  //  part 1
   void DepthFirstSearch(Graph &graph, int start_vertex);
   void BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
