@@ -2,37 +2,36 @@
 
 #include "../s21_graph.h"
 using namespace s21;
-/*
-TEST(Graph, ReadFile_File_empty) {
+
+TEST(Graph, LoadGraphFromFile_File_empty) {
   try {
-    Graph graph(5, 5);
+    Graph graph;
     std::string file_name = "samples/graph_empty.adj";
-    Graph.ReadFile(file_name);
-  } catch (const std::invalid_argument& e) {
+    graph.LoadGraphFromFile(file_name);
+  } catch (const std::invalid_argument &e) {
     std::string expected_error = "File read error. The file is empty.";
     ASSERT_STREQ(expected_error.c_str(), e.what());
   }
 }
 
-TEST(Graph, ReadFile_bad) {
-  Graph graph(5, 5);
+TEST(Graph, LoadGraphFromFile_bad) {
+  Graph graph;
   std::string file_name = "samples/graph_0.adj";
-  ASSERT_ANY_THROW(Graph.ReadFile(file_name));
+  ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
 }
 
-TEST(Graph, ReadFile_wrong_size) {
-  Graph graph(5, 5);
+TEST(Graph, LoadGraphFromFile_wrong_size) {
+  Graph graph;
   std::string file_name = "samples/wrong_size_graph.adj";
-  ASSERT_ANY_THROW(Graph.ReadFile(file_name));
+  ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
 }
 
-TEST(Graph, Model_ReadSize) {
-  Model model(5, 5);
-  std::string line = "1 0 1 0 1";
-  size_t row = 0;
-  ASSERT_ANY_THROW(model.ReadLine(row, line));
+TEST(Graph, LoadGraphFromFile_to_big_size) {
+  Graph graph;
+  std::string file_name = "samples/to_big_size_graph.adj";
+  ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
 }
-*/
+
 TEST(Graph, LoadGraphFromFile) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
