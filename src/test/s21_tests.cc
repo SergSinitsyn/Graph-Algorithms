@@ -73,6 +73,8 @@ TEST(Graph, LoadGraphFromFile) {
   }
 }
 
+// TODO:тест на чтение файла размером 1 строка
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
