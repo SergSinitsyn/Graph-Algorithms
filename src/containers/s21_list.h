@@ -26,7 +26,6 @@ class list {
   Node *head_ = nullptr;
   Node *tail_ = nullptr;
 
-  void SwapT(reference x, reference y);
   void DelNode(Node *element);
 
  public:
