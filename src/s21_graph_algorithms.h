@@ -8,6 +8,7 @@
 namespace s21 {
 class GraphAlgorithms {
  public:
+  using ResultArray = std::vector<uint>;
   struct TsmResult {
     std::vector<int> vertices;
     double distance;
@@ -17,7 +18,7 @@ class GraphAlgorithms {
   // TODO: исполнения
   //  part 1
   void DepthFirstSearch(Graph &graph, int start_vertex);
-  void BreadthFirstSearch(Graph &graph, int start_vertex);
+  ResultArray &BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
   void GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
   void GetShortestPathsBetweenAllVertices(Graph &graph);
