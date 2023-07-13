@@ -28,8 +28,14 @@ BUILD_DIR=./
 LIB1=s21_graph
 LIB1_NAME=s21_graph.a
 LIB1_SOURCES=s21_graph.cc
-LIB1_HEADERS=(s21_graph.h)
+LIB1_HEADERS=s21_graph.h
 LIB1_OBJS=$(LIB1_SOURCES:.cc=.o)
+
+LIB2=s21_graph_algorithms
+LIB2_NAME=s21_graph_algorithms.a
+LIB2_SOURCES=s21_graph_algorithms.cc
+LIB2_HEADERS=s21_graph_algorithms.h
+LIB2_OBJS=$(LIB2_SOURCES:.cc=.o)
 
 .SUFFIXES:
 .SUFFIXES: .cc .o
@@ -42,7 +48,11 @@ rebuild: clean all
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB1_NAME): $(LIB1_OBJS)
-	ar rcs lib$@ $(LIB1_OBJS)
+	ar rcs lib$@ $^
+	cp lib$@ $@
+
+$(LIB2_NAME): $(LIB2_OBJS)
+	ar rcs lib$@ $^
 	cp lib$@ $@
 
 clean:
@@ -58,8 +68,8 @@ clean:
 test: $(TEST_PROG)
 	-$(BUILD_DIR)/$(TEST_PROG)
 
-$(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME)
-	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1)
+$(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
+	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
 
 report/index.html:
 	make clean
