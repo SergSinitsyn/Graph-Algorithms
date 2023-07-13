@@ -20,6 +20,7 @@ class Graph {
   void SetSize(size_t size);
   size_t ReadSize(const std::string& line);
   void ReadLine(uint& line_number, const std::string& line);
+  bool GraphOrientationCheck();
   AdjacencyMatrix adjacency_matrix_;
   size_t size_ = 0;
 };
