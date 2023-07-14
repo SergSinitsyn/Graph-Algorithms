@@ -8,5 +8,5 @@ void Controller::BreadthFirstSearch(const GraphAppData *data) {
 };
 const GraphAlgorithms::ResultArray &Controller::GetResult() { return result_; };
 bool Controller::IsModelLoaded() {
-  return model_ != nullptr && model_->size();
+  return (model_ != nullptr) && (model_->GetVertexCount() > 0);
 };
