@@ -94,12 +94,12 @@ check: cpplint cppcheck
 
 cpplint:
 	cp ../materials/linters/.clang-format ./
-	-clang-format -n *.h */*.cc */*/*.h
+	-clang-format -n *.cc *.h */*.cc */*.h
 	-clang-format -n $(TEST_SOURCES)
 	rm .clang-format
 
 cppcheck:
-	cppcheck --std=c++17 --enable=all --suppress=syntaxError --suppress=missingInclude --suppress=noExplicitConstructor  --suppress=unreadVariable ./
+	cppcheck --std=c++17 --enable=all  --suppress=missingInclude $(INCLUDES:%=-I %) ./
 
 leaks:  $(TEST_PROG) 
 	# $(CC) $(CFLAGS) -D_NO_EXCEPTIONS -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) 

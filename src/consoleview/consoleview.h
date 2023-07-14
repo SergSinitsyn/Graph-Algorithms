@@ -29,8 +29,8 @@ class ConsoleView {
 
   bool event_loop_end_ = false;
   Controller *controller_ = nullptr;
-  std::map<int, MenuItem> menu_;
-  GraphAppData data_;
+  std::map<int, MenuItem> menu_{};
+  GraphAppData data_{};
 };
 }  // namespace s21
 #endif  // NAVIGATOR_CONSOLEVIEW_CONSOLEVIEW_H

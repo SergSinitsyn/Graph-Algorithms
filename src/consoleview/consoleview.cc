@@ -43,13 +43,13 @@ int ConsoleView::PerformChoice() {
 int ConsoleView::PerformNumericInput(const std::string& prompt) {
   int number;
   size_t number_length = 0;
-  std::string str;
+  std::string input;
   do {
     std::cout << prompt;
-    getline(cin, str);
+    getline(cin, input);
     try {
-      number = stoi(str, &number_length);
-    } catch (const std::invalid_argument& e) {
+      number = stoi(input, &number_length);
+    } catch (const std::invalid_argument&) {
       std::cout << termcolor::red << "Wrong input!" << termcolor::reset
                 << std::endl;
       number_length = 0;
@@ -75,9 +75,9 @@ void ConsoleView::LoadGraph() {
 void ConsoleView::BreadthFirstSearch() {
   if (controller_->IsModelLoaded()) {
     data_.point_a = PerformNumericInput(
-        std::string("Input a Vertex number to start search (" +
-                    std::to_string(GraphAlgorithms::kVertexStartNumber) + "-" +
-                    std::to_string(Graph::kMaxSize) + "): "));
+        "Input a Vertex number to start search (" +
+        std::to_string(GraphAlgorithms::kVertexStartNumber) + "-" +
+        std::to_string(Graph::kMaxSize) + "): ");
     controller_->BreadthFirstSearch(&data_);
     // TODO: operator << for GraphAlgorithms::ResultArray
     //  std::cout << "result : " << controller_->GetResult() << std::endl;
@@ -105,15 +105,12 @@ void ConsoleView::StartEventLoop() {
     DisplayMenu();
     int choice = PerformChoice();
     if (menu_.find(choice) != menu_.end()) {
-      ConsoleViewFnPtr user_action_method = menu_[choice].user_action_method;
-      //   if (user_action_method != nullptr) {
       try {
-        std::invoke(user_action_method, this);
+        std::invoke(menu_[choice].user_action_method, this);
       } catch (const std::exception& e) {
         std::cerr << termcolor::red << "Error: " << e.what() << termcolor::reset
                   << '\n';
       }
-      //   }
     }
   }
 }
