@@ -6,7 +6,7 @@
 namespace s21 {
 class GraphAlgorithms {
  public:
-  static const int kVertexNumbersStart = 1;
+  static const int kVertexStartNumber = 1;
   using ResultArray = std::vector<uint>;
   struct TsmResult {
     std::vector<int> vertices;
@@ -17,7 +17,7 @@ class GraphAlgorithms {
   // TODO: исполнения
   //  part 1
   ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
-  ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
+  static ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
   void GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
   void GetShortestPathsBetweenAllVertices(Graph &graph);

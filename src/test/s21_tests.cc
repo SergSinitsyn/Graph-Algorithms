@@ -74,11 +74,11 @@ TEST(Graph, ExportGraphToDot) {
 // TODO:тест на чтение файла размером 1 строка
 
 TEST(GraphAlgorithms, BFS) {
-  GraphAlgorithms ga;
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result = ga.BreadthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::BreadthFirstSearch(graph, 1);
   GraphAlgorithms::ResultArray expected_result{1, 2, 3, 4,  5, 6,
                                                7, 8, 9, 10, 11};
   EXPECT_EQ(result.size(), 11);

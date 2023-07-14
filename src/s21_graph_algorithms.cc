@@ -17,11 +17,11 @@ using namespace s21;
  */
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     Graph &graph, int start_vertex) {
-  std::vector<bool> visited(graph.size() + kVertexNumbersStart, false);
+  std::vector<bool> visited(graph.size() + kVertexStartNumber, false);
   std::queue<uint> q;  // TODO: replace with s21_queue
   ResultArray path{};
-  if (start_vertex < 0 + kVertexNumbersStart ||
-      start_vertex >= kVertexNumbersStart + (int)graph.size()) {
+  if (start_vertex < 0 + kVertexStartNumber ||
+      start_vertex >= kVertexStartNumber + (int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
   }
   q.push(start_vertex);
@@ -32,7 +32,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     uint current = q.front();
     q.pop();
 
-    for (size_t i = kVertexNumbersStart; i < graph.size() + kVertexNumbersStart;
+    for (size_t i = kVertexStartNumber; i < graph.size() + kVertexStartNumber;
          i++) {
       if (graph.GetEdge(current, i) != 0 && !visited[i]) {
         q.push(i);
