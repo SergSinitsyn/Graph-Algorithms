@@ -73,11 +73,11 @@ void ConsoleView::LoadGraph() {
 };
 
 void ConsoleView::BreadthFirstSearch() {
+  std::string prompt = "Input a Vertex number to start search (" +
+                       std::to_string(GraphAlgorithms::kVertexStartNumber) +
+                       "-" + std::to_string(Graph::kMaxSize) + "): ";
   if (controller_->IsModelLoaded()) {
-    data_.point_a = PerformNumericInput(
-        "Input a Vertex number to start search (" +
-        std::to_string(GraphAlgorithms::kVertexStartNumber) + "-" +
-        std::to_string(Graph::kMaxSize) + "): ");
+    data_.point_a = PerformNumericInput(prompt);
     controller_->BreadthFirstSearch(&data_);
     // TODO: operator << for GraphAlgorithms::ResultArray
     //  std::cout << "result : " << controller_->GetResult() << std::endl;
