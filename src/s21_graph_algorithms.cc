@@ -18,7 +18,7 @@ using namespace s21;
  */
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     Graph &graph, int start_vertex) {
-  start_vertex = start_vertex - kVertexStartNumber;
+  start_vertex -= kVertexStartNumber;
   std::vector<bool> visited(graph.size(), false);
   std::queue<uint> q;  // TODO: replace with s21_queue
   ResultArray path{};
