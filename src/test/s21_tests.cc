@@ -85,6 +85,28 @@ TEST(GraphAlgorithms, BFS) {
   EXPECT_EQ(result, expected_result);
 }
 
+// TEST(GraphAlgorithms, CalculateCost) {
+//   Graph graph;
+//   std::string file_name = "samples/graph_11.adj";
+//   ASSERT_NO_THROW(graph.LoadGraphFromFile(file_name));
+//   GraphAlgorithms::ResultArray ar{};
+//   EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar), 0);
+//   ar.push_back(0);
+//   EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar), 0);
+// }
+
+TEST(GraphAlgorithms, TSM1) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::TsmResult result =
+      GraphAlgorithms::SolveTravelingSalesmanProblem1(graph);
+  GraphAlgorithms::TsmResult expected_result{
+      {1, 8, 5, 4, 10, 6, 3, 7, 2, 11, 9, 1}, 253};
+  EXPECT_EQ(result.distance, expected_result.distance);
+  EXPECT_EQ(result.vertices, expected_result.vertices);
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

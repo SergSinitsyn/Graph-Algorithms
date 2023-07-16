@@ -4,14 +4,25 @@
 #include "s21_graph.h"
 
 namespace s21 {
+/** Graph
+ *! @brief Внутренняя нумерация вершин с 0!
+ *! неоходимо преобразовывать на входе в метод и при выдаче результата
+ */
 class GraphAlgorithms {
  public:
-  static const int kVertexStartNumber = 1;
   using ResultArray = std::vector<uint>;
+  // using namespace Graph;
   struct TsmResult {
-    std::vector<int> vertices;
+    std::vector<uint> vertices;
     double distance;
   };
+  struct Node {
+    uint level;
+    ResultArray path;
+    Graph::AdjacencyMatrix reduced_matrix;
+    uint cost;
+  };
+  static const int kVertexStartNumber = 1;
 
   // TODO: Тип возвращаемого результата для частей 1-4 определить в процессе
   // TODO: исполнения
@@ -26,8 +37,12 @@ class GraphAlgorithms {
   // part 4
   TsmResult SolveTravelingSalesmanProblem(Graph &graph);
   // part 6
-  TsmResult SolveTravelingSalesmanProblem1(Graph &graph);
+  static TsmResult SolveTravelingSalesmanProblem1(const Graph &graph);
   TsmResult SolveTravelingSalesmanProblem2(Graph &graph);
+
+ protected:
+  static uint CalculateCost(const Graph &graph, const ResultArray &path);
+  static Graph::AdjacencyMatrix ReduceMatrix(const Graph &graph);
 };
 };      // namespace s21
 #endif  // NAVIGATOR_S21_GRAPH_ALGORITHMS_H_

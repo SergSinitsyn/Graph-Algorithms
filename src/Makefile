@@ -69,6 +69,8 @@ clean:
 	$(CLEAN) consoleapp
 	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
 
+tests: test
+
 test: $(TEST_PROG)
 	-$(BUILD_DIR)/$(TEST_PROG)
 

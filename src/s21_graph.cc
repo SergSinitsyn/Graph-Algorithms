@@ -1,18 +1,41 @@
 #include "s21_graph.h"
 
 #include <fstream>
+#include <limits>
 using namespace s21;
 
 size_t Graph::size() const { return size_; };
 
-size_t Graph::GetVertexCount() const { return size_; };
+size_t Graph::VertexCount() const { return size_; };
 
-uint Graph::GetEdge(uint from, uint to) const {
-  return adjacency_matrix_.at(from - 1).at(to - 1);
+uint Graph::EdgeWeight(uint from, uint to) const {
+  return adjacency_matrix_.at(from).at(to);
+};
+
+uint Graph::NoEdgeValue() const {
+  return is_infinity_ ? std::numeric_limits<uint>::max() : 0;
+}
+bool Graph::HasEdge(uint from, uint to) const {
+  return adjacency_matrix_.at(from).at(to) != NoEdgeValue();
 };
 
 const Graph::AdjacencyMatrix& Graph::GetMatrix() const {
   return adjacency_matrix_;
+}
+
+Graph Graph::GetInfinityGraph() const {
+  Graph infinity_graph = *this;
+  if (!is_infinity_) {
+    infinity_graph.is_infinity_ = true;
+    for (uint i = 0; i < size_; ++i) {
+      for (uint j = 0; j < size_; ++j) {
+        if (infinity_graph.adjacency_matrix_.at(i).at(j) == 0)
+          infinity_graph.adjacency_matrix_.at(i).at(j) =
+              std::numeric_limits<uint>::max();
+      }
+    }
+  }
+  return infinity_graph;
 }
 
 void Graph::SetSize(size_t size) {
