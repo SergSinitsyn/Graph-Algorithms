@@ -65,7 +65,7 @@ uint GraphAlgorithms::CalculateCost(const Graph& graph,
 
 Graph::AdjacencyMatrix GraphAlgorithms::ReduceMatrix(const Graph& graph) {
   uint n = graph.VertexCount();  //! EdgeCount();//! ???
-  Graph::AdjacencyMatrix reduced_matrix(n, ResultArray(n, 0));
+  Graph::AdjacencyMatrix reduced_matrix(n, ResultArray(n, graph.NoEdgeValue()));
 
   for (uint i = 0; i < n; i++) {
     uint min_val = std::numeric_limits<uint>::max();

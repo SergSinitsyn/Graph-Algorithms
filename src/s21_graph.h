@@ -21,9 +21,9 @@ class Graph {
   void LoadGraphFromFile(const std::string& filename);
   void ExportGraphToDot(const std::string& filename);
   Graph GetInfinityGraph() const;
+  uint NoEdgeValue() const;
 
  protected:
-  uint NoEdgeValue() const;
   void SetSize(size_t size);
   size_t ReadSize(const std::string& line);
   void ReadLine(uint& line_number, const std::string& line);

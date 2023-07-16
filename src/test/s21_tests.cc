@@ -85,15 +85,22 @@ TEST(GraphAlgorithms, BFS) {
   EXPECT_EQ(result, expected_result);
 }
 
-// TEST(GraphAlgorithms, CalculateCost) {
-//   Graph graph;
-//   std::string file_name = "samples/graph_11.adj";
-//   ASSERT_NO_THROW(graph.LoadGraphFromFile(file_name));
-//   GraphAlgorithms::ResultArray ar{};
-//   EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar), 0);
-//   ar.push_back(0);
-//   EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar), 0);
-// }
+TEST(GraphAlgorithms, CalculateCost) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  ASSERT_NO_THROW(graph.LoadGraphFromFile(file_name));
+  GraphAlgorithms::ResultArray ar{};
+  EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar), 0);
+  ar.push_back(0);
+  EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar), 0);
+
+  for (uint i = 1; i < graph.size(); i++) {
+    ar.push_back(i);
+    EXPECT_EQ(GraphAlgorithms::CalculateCost(graph, ar),
+              graph.EdgeWeight(0, i) * 2);
+    ar.pop_back();
+  }
+}
 
 TEST(GraphAlgorithms, TSM1) {
   Graph graph;

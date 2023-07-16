@@ -40,7 +40,7 @@ class GraphAlgorithms {
   static TsmResult SolveTravelingSalesmanProblem1(const Graph &graph);
   TsmResult SolveTravelingSalesmanProblem2(Graph &graph);
 
- protected:
+  //  protected:
   static uint CalculateCost(const Graph &graph, const ResultArray &path);
   static Graph::AdjacencyMatrix ReduceMatrix(const Graph &graph);
 };
