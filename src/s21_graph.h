@@ -4,6 +4,10 @@
 #include <vector>
 namespace s21 {
 
+/** Graph
+ *! @brief Внутренняя нумерация вершин с 0!
+ *! неоходимо преобразовывать на входе в метод и при выдаче результата
+ */
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<uint>>;

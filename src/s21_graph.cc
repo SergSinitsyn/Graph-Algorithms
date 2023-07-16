@@ -8,7 +8,7 @@ size_t Graph::size() const { return size_; };
 size_t Graph::GetVertexCount() const { return size_; };
 
 uint Graph::GetEdge(uint from, uint to) const {
-  return adjacency_matrix_.at(from - 1).at(to - 1);
+  return adjacency_matrix_.at(from).at(to);
 };
 
 const Graph::AdjacencyMatrix& Graph::GetMatrix() const {

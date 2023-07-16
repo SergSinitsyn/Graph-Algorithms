@@ -3,6 +3,10 @@
 
 #include "s21_graph.h"
 
+/** Graph
+ *! @brief Внутренняя нумерация вершин с 0!
+ *! неоходимо преобразовывать на входе в метод и при выдаче результата
+ */
 namespace s21 {
 class GraphAlgorithms {
  public:
