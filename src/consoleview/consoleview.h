@@ -20,6 +20,7 @@ class ConsoleView {
  protected:
   void LoadGraph();
   void BreadthFirstSearch();
+  void ExportGraph();
   void NoAction();
   void ExitAction();
   void DisplayMenu();

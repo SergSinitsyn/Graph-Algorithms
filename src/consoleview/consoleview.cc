@@ -19,6 +19,7 @@ ConsoleView::ConsoleView(Controller* c)
             {5, {"All shoortest paths search", &ConsoleView::NoAction}},
             {6, {"Get least spanning tree", &ConsoleView::NoAction}},
             {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
+            {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
             {9, {"Exit", &ConsoleView::ExitAction}}} {};
 
 void ConsoleView::DisplayMenu() {
@@ -70,6 +71,15 @@ void ConsoleView::LoadGraph() {
   controller_->LoadGraphFromFile(&data_);
   std::cout << termcolor::green << "File " << data_.filename
             << " loaded successfully" << termcolor::reset << std::endl;
+};
+
+void ConsoleView::ExportGraph() {
+  data_.filename = PerformStringInput();
+  controller_->ExportGraphToDot(&data_);
+  std::cout << termcolor::green << "Graph successfully uploaded to file "
+            << data_.filename
+            // << " loaded successfully"
+            << termcolor::reset << std::endl;
 };
 
 void ConsoleView::BreadthFirstSearch() {

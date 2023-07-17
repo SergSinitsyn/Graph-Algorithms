@@ -15,6 +15,7 @@ class Controller {
  public:
   explicit Controller(Graph *m) : model_(m){};
   void LoadGraphFromFile(const GraphAppData *data);
+  void ExportGraphToDot(const GraphAppData *data);
   void BreadthFirstSearch(const GraphAppData *data);
   const GraphAlgorithms::ResultArray &GetResult();
   bool IsModelLoaded();

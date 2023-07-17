@@ -1,8 +1,24 @@
 #include <gtest/gtest.h>
 
+#include <fstream>
+
 #include "../s21_graph.h"
 #include "../s21_graph_algorithms.h"
 using namespace s21;
+
+bool CompareFiles(const std::string &file1, const std::string &file2) {
+  std::ifstream f1(file1);
+  std::ifstream f2(file2);
+
+  char ch1, ch2;
+  while (f1.get(ch1) && f2.get(ch2)) {
+    if (ch1 != ch2) {
+      return false;
+    }
+  }
+
+  return !f1.eof() || !f2.eof();
+}
 
 TEST(Graph, LoadGraphFromFile_File_empty) {
   try {
@@ -33,7 +49,25 @@ TEST(Graph, LoadGraphFromFile_to_big_size) {
   ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
 }
 
-TEST(Graph, LoadGraphFromFile) {
+TEST(Graph, LoadGraphFromFile_0) {
+  Graph graph;
+  std::string file_name = "samples/graph_1.adj";
+  graph.LoadGraphFromFile(file_name);
+  size_t result_rows = 1;
+  size_t result_cols = 1;
+  EXPECT_EQ(graph.size(), 1);
+
+  Graph::AdjacencyMatrix result_matrix = {{3}};
+
+  const Graph::AdjacencyMatrix &file_matrix = graph.GetMatrix();
+  for (size_t i = 0; i < result_rows; ++i) {
+    for (size_t j = 0; j < result_cols; ++j) {
+      EXPECT_EQ(file_matrix[i][j], result_matrix[i][j]);
+    }
+  }
+}
+
+TEST(Graph, LoadGraphFromFile_1) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
@@ -66,14 +100,24 @@ TEST(Graph, ExportGraphToDot_0) {
   Graph graph;
   std::string file_name = "samples/graph_4.adj";
   graph.LoadGraphFromFile(file_name);
-  graph.ExportGraphToDot("samples/graph_4.dot");
+  graph.ExportGraphToDot("samples/temp.dot");
+  EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_4.dot"));
 }
 
 TEST(Graph, ExportGraphToDot_1) {
   Graph graph;
   std::string file_name = "samples/graph_4_orient.adj";
   graph.LoadGraphFromFile(file_name);
-  graph.ExportGraphToDot("samples/graph_4_orient.dot");
+  graph.ExportGraphToDot("samples/temp.dot");
+  EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_4_orient.dot"));
+}
+
+TEST(Graph, ExportGraphToDot_2) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  graph.ExportGraphToDot("samples/temp.dot");
+  EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_11.dot"));
 }
 
 // TODO:тест на чтение файла размером 1 строка
