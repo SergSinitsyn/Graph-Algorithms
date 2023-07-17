@@ -2,12 +2,16 @@
 #define NAVIGATOR_S21_GRAPH_ALGORITHMS_H_
 
 #include "s21_graph.h"
-#include "s21_queue.h"
-#include "s21_stack.h"
 
+/** Graph
+ *! @brief Внутренняя нумерация вершин с 0!
+ *! неоходимо преобразовывать на входе в метод и при выдаче результата
+ */
 namespace s21 {
 class GraphAlgorithms {
  public:
+  static const int kVertexStartNumber = 1;
+  using ResultArray = std::vector<uint>;
   struct TsmResult {
     std::vector<int> vertices;
     double distance;
@@ -16,8 +20,8 @@ class GraphAlgorithms {
   // TODO: Тип возвращаемого результата для частей 1-4 определить в процессе
   // TODO: исполнения
   //  part 1
-  void DepthFirstSearch(Graph &graph, int start_vertex);
-  void BreadthFirstSearch(Graph &graph, int start_vertex);
+  ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
+  static ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
   void GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
   void GetShortestPathsBetweenAllVertices(Graph &graph);
