@@ -1,6 +1,8 @@
 #ifndef NAVIGATOR_S21_GRAPH_ALGORITHMS_H_
 #define NAVIGATOR_S21_GRAPH_ALGORITHMS_H_
 
+#include <vector>
+
 #include "s21_graph.h"
 
 /** Graph
@@ -32,6 +34,9 @@ class GraphAlgorithms {
   // part 6
   TsmResult SolveTravelingSalesmanProblem1(Graph &graph);
   TsmResult SolveTravelingSalesmanProblem2(Graph &graph);
+
+ private:
+  static bool FullTrack(std::vector<bool> visited);
 };
 };      // namespace s21
 #endif  // NAVIGATOR_S21_GRAPH_ALGORITHMS_H_

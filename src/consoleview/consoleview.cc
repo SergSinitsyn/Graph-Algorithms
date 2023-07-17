@@ -93,7 +93,7 @@ void ConsoleView::BreadthFirstSearch() {
     //  std::cout << "result : " << controller_->GetResult() << std::endl;
     for (auto item : controller_->GetResult()) {
       std::cout << item;
-      if (item != controller_->GetResult().back()) std::cout << " -> ";
+      if (item != controller_->GetResult().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "BreadthFirstSearch finished"
@@ -115,7 +115,7 @@ void ConsoleView::DepthFirstSearch() {
     //  std::cout << "result : " << controller_->GetResult() << std::endl;
     for (auto item : controller_->GetResult()) {
       std::cout << item;
-      if (item != controller_->GetResult().back()) std::cout << " -> ";
+      if (item != controller_->GetResult().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "DepthFirstSearch finished"
