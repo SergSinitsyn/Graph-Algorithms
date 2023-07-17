@@ -68,6 +68,7 @@ clean:
 	$(CLEAN) $(TEST_PROG)
 	$(CLEAN) consoleapp
 	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
+	$(CLEAN) samples/temp.dot
 
 tests: test
 
