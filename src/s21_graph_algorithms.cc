@@ -2,7 +2,10 @@
 
 #include <algorithm>
 #include <queue>
+#include <stack>
 #include <stdexcept>
+
+#include "containers/s21_stack.h"
 using namespace s21;
 
 /**
@@ -47,3 +50,46 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
 
   return path;
 }
+
+GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
+    Graph &graph, int start_vertex) {
+  start_vertex -= kVertexStartNumber;
+  std::vector<bool> visited(graph.size(), false);
+  s21::stack<uint> stack;
+  ResultArray path{};
+  if (start_vertex < 0 || start_vertex > +(int)graph.size()) {
+    throw std::invalid_argument("Vertex is out of range");
+  }
+  stack.push(start_vertex);
+  visited[start_vertex] = true;
+  path.push_back(start_vertex);
+
+  while (!stack.empty()
+         // && !FullTrack(visited)
+  ) {
+    uint current = stack.top();
+    for (size_t i = 0; i < graph.size(); i++) {
+      if (graph.GetEdge(current, i) != 0 && !visited[i]) {
+        stack.push(i);
+        visited[i] = true;
+        path.push_back(i);
+        break;
+      }
+    }
+    if (current == stack.top()) {
+      stack.pop();
+      // path.push_back(stack.top());
+    }
+  }
+  std::transform(path.begin(), path.end(), path.begin(),
+                 [](uint v) { return v + kVertexStartNumber; });
+
+  return path;
+}
+
+// bool GraphAlgorithms::FullTrack(std::vector<bool> visited) {
+//   for (size_t i = 0; i < visited.size(); i++) {
+//     if (visited[i] == false) return false;
+//   }
+//   return true;
+// }

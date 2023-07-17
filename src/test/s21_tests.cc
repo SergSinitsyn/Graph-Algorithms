@@ -134,6 +134,40 @@ TEST(GraphAlgorithms, BFS) {
   EXPECT_EQ(result, expected_result);
 }
 
+TEST(GraphAlgorithms, DFS_0) {
+  Graph graph;
+  std::string file_name = "samples/matrices/matrices/test_wiki.txt";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::DepthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray expected_result{1, 2, 3, 5, 4, 6, 7};
+  EXPECT_EQ(result.size(), 7);
+  EXPECT_EQ(result, expected_result);
+}
+
+TEST(GraphAlgorithms, DFS_1) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::DepthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray expected_result{1, 2, 3, 4,  5, 6,
+                                               7, 8, 9, 10, 11};
+  EXPECT_EQ(result.size(), 11);
+  EXPECT_EQ(result, expected_result);
+}
+
+TEST(GraphAlgorithms, DFS_2) {
+  Graph graph;
+  std::string file_name = "samples/matrices/matrices/test_1.txt";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::DepthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray expected_result{1, 5, 4, 2, 3};
+  EXPECT_EQ(result.size(), 5);
+  EXPECT_EQ(result, expected_result);
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

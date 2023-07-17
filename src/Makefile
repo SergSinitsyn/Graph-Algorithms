@@ -81,7 +81,7 @@ $(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
 report/index.html: $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
 	# make clean
 	$(CC) $(CFLAGS) -g -fprofile-arcs -ftest-coverage -fPIC $(TEST_SOURCES) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
-	$(CLEAN) $(OBJ)
+	$(CLEAN) $(OBJECTS)
 	-$(BUILD_DIR)/$(TEST_PROG)
 	gcov -o src/ *.gcda
 	lcov -t "gcov_report" -o gcov_report.info -c -d .
@@ -93,7 +93,7 @@ gcov_report: report/index.html
 	open report/index.html
 
 # проверки
-check: cpplint cppcheck
+check: cpplint cppcheck leaks
 
 cpplint:
 	@-clang-format -n -style=google -verbose *.cc *.h */*.cc */*.h
@@ -104,8 +104,8 @@ cppcheck:
 
 leaks:  $(TEST_PROG) 
 	@$(LEAKS)
-	@$(LEAKS) > leaks.log 2>&1
-	@$(SHOW_LEAKS)
+	# @$(LEAKS) > leaks.log 2>&1
+	# @$(SHOW_LEAKS)
 
 valgrind: leaks
 

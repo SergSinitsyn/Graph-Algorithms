@@ -14,7 +14,7 @@ ConsoleView::ConsoleView(Controller* c)
     : controller_(c),
       menu_{{1, {"Load graph file", &ConsoleView::LoadGraph}},
             {2, {"BreadthFirstSearch", &ConsoleView::BreadthFirstSearch}},
-            {3, {"DepthFirstSearch", &ConsoleView::NoAction}},
+            {3, {"DepthFirstSearch", &ConsoleView::DepthFirstSearch}},
             {4, {"Shortest path search", &ConsoleView::NoAction}},
             {5, {"All shoortest paths search", &ConsoleView::NoAction}},
             {6, {"Get least spanning tree", &ConsoleView::NoAction}},
@@ -93,10 +93,32 @@ void ConsoleView::BreadthFirstSearch() {
     //  std::cout << "result : " << controller_->GetResult() << std::endl;
     for (auto item : controller_->GetResult()) {
       std::cout << item;
-      if (item != controller_->GetResult().back()) std::cout << " -> ";
+      if (item != controller_->GetResult().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "BreadthFirstSearch finished"
+              << termcolor::reset << std::endl;
+  } else {
+    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
+              << std::endl;
+  }
+};
+
+void ConsoleView::DepthFirstSearch() {
+  std::string prompt = "Input a Vertex number to start search (" +
+                       std::to_string(GraphAlgorithms::kVertexStartNumber) +
+                       "-" + std::to_string(Graph::kMaxSize) + "): ";
+  if (controller_->IsModelLoaded()) {
+    data_.point_a = PerformNumericInput(prompt);
+    controller_->DepthFirstSearch(&data_);
+    // TODO: operator << for GraphAlgorithms::ResultArray
+    //  std::cout << "result : " << controller_->GetResult() << std::endl;
+    for (auto item : controller_->GetResult()) {
+      std::cout << item;
+      if (item != controller_->GetResult().back()) std::cout << ", ";
+    }
+    std::cout << std::endl
+              << termcolor::green << "DepthFirstSearch finished"
               << termcolor::reset << std::endl;
   } else {
     std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
