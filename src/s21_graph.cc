@@ -79,29 +79,6 @@ void s21::Graph::ExportGraphToDot(const std::string& filename) {
   if (!file) {
     throw std::invalid_argument("File write error. The file is missing.");
   }
-  // if (!GraphOrientationCheck()) {
-  //   file << "digraph Graph {" << std::endl;
-  //   for (uint i = 0; i < size_; ++i) {
-  //     for (uint j = 0; j < size_; ++j) {
-  //       if (adjacency_matrix_.at(i).at(j)) {
-  //         file << "    " << i + 1 << "->" << j + 1
-  //              << "[label=" << adjacency_matrix_.at(i).at(j) << "];"
-  //              << std::endl;
-  //       }
-  //     }
-  //   }
-  // } else {
-  //   file << "graph Graph {" << std::endl;
-  //   for (uint i = 0; i < size_; ++i) {
-  //     for (uint j = i; j < size_; ++j) {
-  //       if (adjacency_matrix_.at(i).at(j)) {
-  //         file << "    " << i + 1 << "--" << j + 1
-  //              << "[label=" << adjacency_matrix_.at(i).at(j) << "];"
-  //              << std::endl;
-  //       }
-  //     }
-  //   }
-  // }
   bool orient = !GraphOrientationCheck();
   const std::string graph_type = (orient ? "digraph" : "graph");
   file << graph_type << " Graph {" << std::endl;

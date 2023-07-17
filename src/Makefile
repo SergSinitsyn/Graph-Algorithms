@@ -60,8 +60,8 @@ $(LIB2_NAME): $(LIB2_OBJS) $(INCLUDES:%=%*.h)
 
 clean:
 	$(CLEAN) $(OBJECTS) *.a *.gcno *.gcda *.gcov *.info
-	$(CLEAN) $(BUILD_DIR)/$(OBJECTS) $(BUILD_DIR)/*.a $(BUILD_DIR)/$(TEST_PROG)
-	$(CLEAN) $(BUILD_DIR)/report/
+	$(CLEAN) $(BUILD_DIR)$(OBJECTS) $(BUILD_DIR)*.a $(BUILD_DIR)$(TEST_PROG)
+	$(CLEAN) $(BUILD_DIR)report
 	$(CLEAN) $(DEBUG_PROG)
 	$(CLEAN) ./leaks.log
 	$(CLEAN) .clang-format
