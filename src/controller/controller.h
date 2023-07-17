@@ -17,6 +17,7 @@ class Controller {
   void LoadGraphFromFile(const GraphAppData *data);
   void ExportGraphToDot(const GraphAppData *data);
   void BreadthFirstSearch(const GraphAppData *data);
+  void DepthFirstSearch(const GraphAppData *data);
   const GraphAlgorithms::ResultArray &GetResult();
   bool IsModelLoaded();
 

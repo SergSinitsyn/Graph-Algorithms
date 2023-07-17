@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <queue>
+#include <stack>
 #include <stdexcept>
 using namespace s21;
 
@@ -42,6 +43,37 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     }
   }
 
+  std::transform(path.begin(), path.end(), path.begin(),
+                 [](uint v) { return v + kVertexStartNumber; });
+
+  return path;
+}
+
+GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
+    Graph &graph, int start_vertex) {
+  start_vertex -= kVertexStartNumber;
+  std::vector<bool> visited(graph.size(), false);
+  std::stack<uint> stack;  // TODO: replace with s21_s
+  ResultArray path{};
+  if (start_vertex < 0 || start_vertex > +(int)graph.size()) {
+    throw std::invalid_argument("Vertex is out of range");
+  }
+  stack.push(start_vertex);
+  visited[start_vertex] = true;
+  path.push_back(start_vertex);
+
+  while (!stack.empty()) {
+    uint current = stack.top();
+    for (size_t i = 0; i < graph.size(); i++) {
+      if (graph.GetEdge(current, i) != 0 && !visited[i]) {
+        stack.push(i);
+        visited[i] = true;
+        path.push_back(i);
+        break;
+      }
+    }
+    if (current == stack.top()) stack.pop();
+  }
   std::transform(path.begin(), path.end(), path.begin(),
                  [](uint v) { return v + kVertexStartNumber; });
 

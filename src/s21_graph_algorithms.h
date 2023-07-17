@@ -20,7 +20,7 @@ class GraphAlgorithms {
   // TODO: Тип возвращаемого результата для частей 1-4 определить в процессе
   // TODO: исполнения
   //  part 1
-  ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
+  static ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
   static ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
   void GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
