@@ -4,16 +4,20 @@
 #include <vector>
 namespace s21 {
 
+/** Graph
+ *! @brief Внутренняя нумерация вершин с 0!
+ *! неоходимо преобразовывать на входе в метод и при выдаче результата
+ */
 class Graph {
  public:
   using AdjacencyMatrix = std::vector<std::vector<uint>>;
   static const uint kMinSize = 1;
   static const uint kMaxSize = 100;  //! To be defined!
-  size_t size() const { return size_; };
-  const AdjacencyMatrix& GetMatrix() const { return adjacency_matrix_; };
-  // loading a graph from a file in the adjacency matrix format
+  size_t size() const;
+  size_t GetVertexCount() const;
+  uint GetEdge(uint from, uint to) const;
+  const AdjacencyMatrix& GetMatrix() const;
   void LoadGraphFromFile(const std::string& filename);
-  // exporting a graph to a dot file (see materials)
   void ExportGraphToDot(const std::string& filename);
 
  protected:

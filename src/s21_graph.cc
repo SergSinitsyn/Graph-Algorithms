@@ -3,6 +3,18 @@
 #include <fstream>
 using namespace s21;
 
+size_t Graph::size() const { return size_; };
+
+size_t Graph::GetVertexCount() const { return size_; };
+
+uint Graph::GetEdge(uint from, uint to) const {
+  return adjacency_matrix_.at(from).at(to);
+};
+
+const Graph::AdjacencyMatrix& Graph::GetMatrix() const {
+  return adjacency_matrix_;
+}
+
 void Graph::SetSize(size_t size) {
   size_ = size;
   adjacency_matrix_.resize(size);

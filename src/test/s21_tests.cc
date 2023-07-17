@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../s21_graph.h"
+#include "../s21_graph_algorithms.h"
 using namespace s21;
 
 TEST(Graph, LoadGraphFromFile_File_empty) {
@@ -76,6 +77,18 @@ TEST(Graph, ExportGraphToDot_1) {
 }
 
 // TODO:тест на чтение файла размером 1 строка
+
+TEST(GraphAlgorithms, BFS) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::BreadthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray expected_result{1, 2, 3, 4,  5, 6,
+                                               7, 8, 9, 10, 11};
+  EXPECT_EQ(result.size(), 11);
+  EXPECT_EQ(result, expected_result);
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
