@@ -73,14 +73,14 @@ clean:
 tests: test
 
 test: $(TEST_PROG)
-	-$(BUILD_DIR)/$(TEST_PROG)
+	-$(BUILD_DIR)$(TEST_PROG)
 
 $(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
-	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
+	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
 
-report/index.html:
-	make clean
-	$(CC) $(CFLAGS) -g -fprofile-arcs -ftest-coverage -fPIC $(TEST_SOURCES) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG)
+report/index.html: $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
+	# make clean
+	$(CC) $(CFLAGS) -g -fprofile-arcs -ftest-coverage -fPIC $(TEST_SOURCES) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
 	$(CLEAN) $(OBJ)
 	-$(BUILD_DIR)/$(TEST_PROG)
 	gcov -o src/ *.gcda
@@ -96,19 +96,16 @@ gcov_report: report/index.html
 check: cpplint cppcheck
 
 cpplint:
-	cp ../materials/linters/.clang-format ./
-	-clang-format -n *.cc *.h */*.cc */*.h
-	-clang-format -n $(TEST_SOURCES)
-	rm .clang-format
+	@-clang-format -n -style=google -verbose *.cc *.h */*.cc */*.h
+	@-clang-format -n -style=google -verbose $(TEST_SOURCES)
 
 cppcheck:
-	cppcheck --std=c++17 --enable=all  --suppress=missingInclude $(INCLUDES:%=-I %) ./
+	@cppcheck --std=c++17 --enable=all  --suppress=missingInclude $(INCLUDES:%=-I %) ./
 
 leaks:  $(TEST_PROG) 
-	# $(CC) $(CFLAGS) -D_NO_EXCEPTIONS -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) 
-	$(LEAKS)
-	# $(LEAKS) > leaks.log 2>&1
-	# $(SHOW_LEAKS)
+	@$(LEAKS)
+	@$(LEAKS) > leaks.log 2>&1
+	@$(SHOW_LEAKS)
 
 valgrind: leaks
 
