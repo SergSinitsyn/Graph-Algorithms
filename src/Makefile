@@ -47,8 +47,8 @@ $(LIB1_NAME): $(LIB1_OBJS)
 
 clean:
 	$(CLEAN) $(OBJECTS) *.a *.gcno *.gcda *.gcov *.info
-	$(CLEAN) $(BUILD_DIR)/$(OBJECTS) $(BUILD_DIR)/*.a $(BUILD_DIR)/$(TEST_PROG)
-	$(CLEAN) $(BUILD_DIR)/report/
+	$(CLEAN) $(BUILD_DIR)$(OBJECTS) $(BUILD_DIR)*.a $(BUILD_DIR)$(TEST_PROG)
+	$(CLEAN) $(BUILD_DIR)report
 	$(CLEAN) $(DEBUG_PROG)
 	$(CLEAN) ./leaks.log
 	$(CLEAN) .clang-format
@@ -59,7 +59,7 @@ test: $(TEST_PROG)
 	-$(BUILD_DIR)/$(TEST_PROG)
 
 $(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME)
-	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1)
+	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)$(TEST_PROG) -L. -l$(LIB1)
 
 report/index.html:
 	make clean
