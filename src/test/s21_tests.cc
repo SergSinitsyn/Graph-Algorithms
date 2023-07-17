@@ -62,13 +62,18 @@ TEST(Graph, LoadGraphFromFile) {
   }
 }
 
-TEST(Graph, ExportGraphToDot) {
+TEST(Graph, ExportGraphToDot_0) {
   Graph graph;
-  // std::string file_name = "samples/matrices/matrices/3.txt";
   std::string file_name = "samples/graph_4.adj";
-  // std::string file_name = "samples/graph_4_orient.adj";
   graph.LoadGraphFromFile(file_name);
-  graph.ExportGraphToDot("samples/3.dot");
+  graph.ExportGraphToDot("samples/graph_4.dot");
+}
+
+TEST(Graph, ExportGraphToDot_1) {
+  Graph graph;
+  std::string file_name = "samples/graph_4_orient.adj";
+  graph.LoadGraphFromFile(file_name);
+  graph.ExportGraphToDot("samples/graph_4_orient.dot");
 }
 
 // TODO:тест на чтение файла размером 1 строка
