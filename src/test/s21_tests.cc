@@ -166,6 +166,38 @@ TEST(GraphAlgorithms, BFS_2) {
   EXPECT_EQ(result, expected_result);
 }
 
+TEST(GraphAlgorithms, BFS_3) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::BreadthFirstSearch(graph, 11));
+}
+
+TEST(GraphAlgorithms, BFS_4) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::BreadthFirstSearch(graph, 1));
+}
+
+TEST(GraphAlgorithms, BFS_5) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::BreadthFirstSearch(graph, 12));
+}
+
+TEST(GraphAlgorithms, BFS_6) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::BreadthFirstSearch(graph, 0));
+}
+
 TEST(GraphAlgorithms, DFS_0) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_wiki.txt";
@@ -198,6 +230,38 @@ TEST(GraphAlgorithms, DFS_2) {
   GraphAlgorithms::ResultArray expected_result{1, 5, 4, 2, 3, 8, 6, 10, 9, 7};
   EXPECT_EQ(result.size(), 10);
   EXPECT_EQ(result, expected_result);
+}
+
+TEST(GraphAlgorithms, DFS_3) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::DepthFirstSearch(graph, 11));
+}
+
+TEST(GraphAlgorithms, DFS_4) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::DepthFirstSearch(graph, 1));
+}
+
+TEST(GraphAlgorithms, DFS_5) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::DepthFirstSearch(graph, 12));
+}
+
+TEST(GraphAlgorithms, DFS_6) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::DepthFirstSearch(graph, 0));
 }
 
 int main(int argc, char **argv) {

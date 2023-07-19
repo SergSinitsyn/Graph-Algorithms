@@ -44,7 +44,16 @@ size_t s21::Graph::CountVerticesGraph(const std::string& line) {
   return count;
 }
 
-bool s21::Graph::GraphOrientationCheck() {
+std::string Graph::GetNonEmptyLine(std::ifstream& file) {
+  std::string line;
+  std::getline(file, line);
+  while (line.empty()) {
+    std::getline(file, line);
+  }
+  return line;
+}
+
+bool Graph::GraphOrientationCheck() {
   for (uint i = 0; i < size_; ++i) {
     for (uint j = i; j < size_; ++j) {
       if (adjacency_matrix_.at(i).at(j) != adjacency_matrix_.at(j).at(i)) {
@@ -73,15 +82,12 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
   if (file.peek() == std::ifstream::traits_type::eof()) {
     throw std::invalid_argument("File read error. The file is empty.");
   }
-  std::string line;
-  std::getline(file, line);
-  while (line.empty()) {
-    std::getline(file, line);
-  }
+
+  std::string line = GetNonEmptyLine(file);
   SetSize(ReadSize(line));
 
   for (uint i = 0; i < size_; ++i) {
-    std::getline(file, line);
+    line = GetNonEmptyLine(file);
     if (CountVerticesGraph(line) < size_) {
       throw std::invalid_argument(
           "File read error. Number of vertices does not match graph size");
@@ -93,6 +99,7 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
       --i;
     }
   }
+
   file.close();
 }
 

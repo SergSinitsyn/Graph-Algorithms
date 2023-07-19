@@ -25,7 +25,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
   std::vector<bool> visited(graph.size(), false);
   std::queue<uint> q;  // TODO: replace with s21_queue
   ResultArray path{};
-  if (start_vertex < 0 || start_vertex > +(int)graph.size()) {
+  if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
   }
   q.push(start_vertex);
