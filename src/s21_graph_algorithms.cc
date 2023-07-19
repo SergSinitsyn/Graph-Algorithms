@@ -25,7 +25,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
   std::vector<bool> visited(graph.size(), false);
   std::queue<uint> q;  // TODO: replace with s21_queue
   ResultArray path{};
-  if (start_vertex < 0 || start_vertex > +(int)graph.size()) {
+  if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
   }
   q.push(start_vertex);
@@ -57,16 +57,14 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
   std::vector<bool> visited(graph.size(), false);
   s21::stack<uint> stack;
   ResultArray path{};
-  if (start_vertex < 0 || start_vertex > +(int)graph.size()) {
+  if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
   }
   stack.push(start_vertex);
   visited[start_vertex] = true;
   path.push_back(start_vertex);
 
-  while (!stack.empty()
-         // && !FullTrack(visited)
-  ) {
+  while (!stack.empty()) {
     uint current = stack.top();
     for (size_t i = 0; i < graph.size(); i++) {
       if (graph.GetEdge(current, i) != 0 && !visited[i]) {
@@ -78,7 +76,6 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
     }
     if (current == stack.top()) {
       stack.pop();
-      // path.push_back(stack.top());
     }
   }
   std::transform(path.begin(), path.end(), path.begin(),
@@ -86,10 +83,3 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
 
   return path;
 }
-
-// bool GraphAlgorithms::FullTrack(std::vector<bool> visited) {
-//   for (size_t i = 0; i < visited.size(); i++) {
-//     if (visited[i] == false) return false;
-//   }
-//   return true;
-// }

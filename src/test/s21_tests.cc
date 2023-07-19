@@ -49,6 +49,18 @@ TEST(Graph, LoadGraphFromFile_to_big_size) {
   ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
 }
 
+TEST(Graph, LoadGraphFromFile_to_incorrect_size_0) {
+  Graph graph;
+  std::string file_name = "samples/to_incorrect_size_graph.adj";
+  ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
+}
+
+TEST(Graph, LoadGraphFromFile_to_incorrect_size_1) {
+  Graph graph;
+  std::string file_name = "samples/to_incorrect_size_graph_2.adj";
+  ASSERT_ANY_THROW(graph.LoadGraphFromFile(file_name));
+}
+
 TEST(Graph, LoadGraphFromFile_0) {
   Graph graph;
   std::string file_name = "samples/graph_1.adj";
@@ -120,9 +132,18 @@ TEST(Graph, ExportGraphToDot_2) {
   EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_11.dot"));
 }
 
-// TODO:тест на чтение файла размером 1 строка
+TEST(GraphAlgorithms, BFS_0) {
+  Graph graph;
+  std::string file_name = "samples/matrices/matrices/test_wiki.txt";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::BreadthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray expected_result{1, 2, 4, 3, 5, 6, 7};
+  EXPECT_EQ(result.size(), 7);
+  EXPECT_EQ(result, expected_result);
+}
 
-TEST(GraphAlgorithms, BFS) {
+TEST(GraphAlgorithms, BFS_1) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
@@ -132,6 +153,49 @@ TEST(GraphAlgorithms, BFS) {
                                                7, 8, 9, 10, 11};
   EXPECT_EQ(result.size(), 11);
   EXPECT_EQ(result, expected_result);
+}
+
+TEST(GraphAlgorithms, BFS_2) {
+  Graph graph;
+  std::string file_name = "samples/matrices/matrices/test_1.txt";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms::ResultArray result =
+      GraphAlgorithms::BreadthFirstSearch(graph, 1);
+  GraphAlgorithms::ResultArray expected_result{1, 5, 6, 7, 4, 3, 8, 2, 9, 10};
+  EXPECT_EQ(result.size(), 10);
+  EXPECT_EQ(result, expected_result);
+}
+
+TEST(GraphAlgorithms, BFS_3) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::BreadthFirstSearch(graph, 11));
+}
+
+TEST(GraphAlgorithms, BFS_4) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::BreadthFirstSearch(graph, 1));
+}
+
+TEST(GraphAlgorithms, BFS_5) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::BreadthFirstSearch(graph, 12));
+}
+
+TEST(GraphAlgorithms, BFS_6) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::BreadthFirstSearch(graph, 0));
 }
 
 TEST(GraphAlgorithms, DFS_0) {
@@ -163,9 +227,41 @@ TEST(GraphAlgorithms, DFS_2) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::DepthFirstSearch(graph, 1);
-  GraphAlgorithms::ResultArray expected_result{1, 5, 4, 2, 3};
-  EXPECT_EQ(result.size(), 5);
+  GraphAlgorithms::ResultArray expected_result{1, 5, 4, 2, 3, 8, 6, 10, 9, 7};
+  EXPECT_EQ(result.size(), 10);
   EXPECT_EQ(result, expected_result);
+}
+
+TEST(GraphAlgorithms, DFS_3) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::DepthFirstSearch(graph, 11));
+}
+
+TEST(GraphAlgorithms, DFS_4) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_NO_THROW(GraphAlgorithms::ResultArray result =
+                      GraphAlgorithms::DepthFirstSearch(graph, 1));
+}
+
+TEST(GraphAlgorithms, DFS_5) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::DepthFirstSearch(graph, 12));
+}
+
+TEST(GraphAlgorithms, DFS_6) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::ResultArray result =
+                       GraphAlgorithms::DepthFirstSearch(graph, 0));
 }
 
 int main(int argc, char **argv) {

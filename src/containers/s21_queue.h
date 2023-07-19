@@ -19,7 +19,7 @@ class queue {
 
  public:
   queue();
-  queue(std::initializer_list<value_type> const &items);
+  explicit queue(std::initializer_list<value_type> const &items);
   queue(const queue &q);
   queue(queue &&q);
   ~queue();

@@ -19,7 +19,7 @@ class stack {
 
  public:
   stack();
-  stack(std::initializer_list<value_type> const &items);
+  explicit stack(std::initializer_list<value_type> const &items);
   stack(const stack &s);
   stack(stack &&s);
   ~stack();
