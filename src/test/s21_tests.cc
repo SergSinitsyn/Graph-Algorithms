@@ -163,8 +163,8 @@ TEST(GraphAlgorithms, DFS_2) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::DepthFirstSearch(graph, 1);
-  GraphAlgorithms::ResultArray expected_result{1, 5, 4, 2, 3};
-  EXPECT_EQ(result.size(), 5);
+  GraphAlgorithms::ResultArray expected_result{1, 5, 4, 2, 3, 8, 6, 10, 9, 7};
+  EXPECT_EQ(result.size(), 10);
   EXPECT_EQ(result, expected_result);
 }
 
