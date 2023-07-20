@@ -17,10 +17,13 @@ class Graph {
   size_t size() const;
   size_t GetVertexCount() const;
   uint GetEdge(uint from, uint to) const;
+  AdjacencyMatrix GetMatrix() { return adjacency_matrix_; };
 
   const AdjacencyMatrix& GetMatrix() const;
   void ExportGraphToDot(const std::string& filename);
   void LoadGraphFromFile(const std::string& filename);
+
+  // void Set_Matrix(AdjacencyMatrix& matrix);
 
  protected:
   size_t CountVerticesGraph(const std::string& sentence);

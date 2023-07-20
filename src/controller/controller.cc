@@ -18,7 +18,11 @@ void Controller::GetShortestPathBetweenVertices(const GraphAppData *data) {
       *model_, data->point_a, data->point_b);
 }
 
-const GraphAlgorithms::ResultArray &Controller::GetResult() { return result_; };
+void s21::Controller::GetShortestPathsBetweenAllVertices() {
+  result_adjacency_matrix_ =
+      GraphAlgorithms::GetShortestPathsBetweenAllVertices(*model_);
+}
+
 bool Controller::IsModelLoaded() {
   return (model_ != nullptr) && (model_->GetVertexCount() > 0);
 };

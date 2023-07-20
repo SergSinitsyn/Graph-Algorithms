@@ -27,7 +27,8 @@ class GraphAlgorithms {
   // part 2
   static ResultArray GetShortestPathBetweenVertices(Graph &graph, int vertex1,
                                                     int vertex2);
-  void GetShortestPathsBetweenAllVertices(Graph &graph);
+  static Graph::AdjacencyMatrix GetShortestPathsBetweenAllVertices(
+      Graph &graph);
   // part 3
   void GetLeastSpanningTree(Graph &graph);
   // part 4

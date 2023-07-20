@@ -362,6 +362,26 @@ TEST(GraphAlgorithms, SPBV_9) {
           GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 11));
 }
 
+TEST(GraphAlgorithms, SPBAV_0) {
+  Graph graph;
+  std::string file_name = "samples/matrices/matrices/test_11.txt";
+  graph.LoadGraphFromFile(file_name);
+  Graph::AdjacencyMatrix matrix =
+      s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
+  Graph::AdjacencyMatrix result_matrix = {{0, 6, 11, 5, 1},
+                                          {1, 0, 5, 1, 2},
+                                          {2, 1, 0, 2, 3},
+                                          {2, 1, 6, 0, 3},
+                                          {6, 5, 10, 4, 0}};
+
+  uint result_size = graph.size();
+  for (size_t i = 0; i < result_size; ++i) {
+    for (size_t j = 0; j < result_size; ++j) {
+      EXPECT_EQ(matrix[i][j], result_matrix[i][j]);
+    }
+  }
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

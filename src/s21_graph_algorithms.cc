@@ -88,6 +88,34 @@ GraphAlgorithms::ResultArray GraphAlgorithms::GetShortestPathBetweenVertices(
   return path;
 }
 
+Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(
+    Graph &graph) {
+  Graph::AdjacencyMatrix result_matrix(graph.GetMatrix());
+  uint size = graph.size();
+  for (uint i = 0; i < size; i++) {
+    for (uint j = 0; j < size; j++) {
+      if (graph.GetEdge(i, j) == 0 && i != j) {
+        result_matrix.at(i).at(j) = UINT_MAX;
+      }
+    }
+  }
+
+  for (uint k = 0; k < size; k++) {
+    for (uint i = 0; i < size; i++) {
+      for (uint j = 0; j < size; j++) {
+        if (result_matrix.at(i).at(k) != UINT_MAX &&
+            result_matrix.at(k).at(j) != UINT_MAX &&
+            (result_matrix.at(i).at(j) >
+             result_matrix.at(i).at(k) + result_matrix.at(k).at(j))) {
+          result_matrix.at(i).at(j) =
+              result_matrix.at(i).at(k) + result_matrix.at(k).at(j);
+        }
+      }
+    }
+  }
+  return result_matrix;
+}
+
 GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
     Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
