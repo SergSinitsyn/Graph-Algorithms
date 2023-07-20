@@ -18,6 +18,7 @@ class Controller {
   void ExportGraphToDot(const GraphAppData *data);
   void BreadthFirstSearch(const GraphAppData *data);
   void DepthFirstSearch(const GraphAppData *data);
+  void GetShortestPathBetweenVertices(const GraphAppData *data);
   const GraphAlgorithms::ResultArray &GetResult();
   bool IsModelLoaded();
 

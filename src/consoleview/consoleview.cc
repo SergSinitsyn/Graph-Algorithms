@@ -12,15 +12,17 @@ using namespace s21;
 
 ConsoleView::ConsoleView(Controller* c)
     : controller_(c),
-      menu_{{1, {"Load graph file", &ConsoleView::LoadGraph}},
-            {2, {"BreadthFirstSearch", &ConsoleView::BreadthFirstSearch}},
-            {3, {"DepthFirstSearch", &ConsoleView::DepthFirstSearch}},
-            {4, {"Shortest path search", &ConsoleView::NoAction}},
-            {5, {"All shoortest paths search", &ConsoleView::NoAction}},
-            {6, {"Get least spanning tree", &ConsoleView::NoAction}},
-            {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
-            {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
-            {9, {"Exit", &ConsoleView::ExitAction}}} {};
+      menu_{
+          {1, {"Load graph file", &ConsoleView::LoadGraph}},
+          {2, {"BreadthFirstSearch", &ConsoleView::BreadthFirstSearch}},
+          {3, {"DepthFirstSearch", &ConsoleView::DepthFirstSearch}},
+          {4,
+           {"Shortest path search", &ConsoleView::ShortestPathBetweenVertices}},
+          {5, {"All shoortest paths search", &ConsoleView::NoAction}},
+          {6, {"Get least spanning tree", &ConsoleView::NoAction}},
+          {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
+          {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
+          {9, {"Exit", &ConsoleView::ExitAction}}} {};
 
 void ConsoleView::DisplayMenu() {
   std::cout << "=========" << std::endl;
@@ -119,6 +121,33 @@ void ConsoleView::DepthFirstSearch() {
     }
     std::cout << std::endl
               << termcolor::green << "DepthFirstSearch finished"
+              << termcolor::reset << std::endl;
+  } else {
+    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
+              << std::endl;
+  }
+};
+
+void ConsoleView::ShortestPathBetweenVertices() {
+  std::string prompt_start =
+      "Input a START Vertex number(" +
+      std::to_string(GraphAlgorithms::kVertexStartNumber) + "-" +
+      std::to_string(Graph::kMaxSize) + "): ";
+  std::string prompt_end = "Input a END Vertex number (" +
+                           std::to_string(GraphAlgorithms::kVertexStartNumber) +
+                           "-" + std::to_string(Graph::kMaxSize) + "): ";
+  if (controller_->IsModelLoaded()) {
+    data_.point_a = PerformNumericInput(prompt_start);
+    data_.point_b = PerformNumericInput(prompt_end);
+    controller_->GetShortestPathBetweenVertices(&data_);
+    // TODO: operator << for GraphAlgorithms::ResultArray
+    //  std::cout << "result : " << controller_->GetResult() << std::endl;
+    for (auto item : controller_->GetResult()) {
+      std::cout << item;
+      if (item != controller_->GetResult().back()) std::cout << ", ";
+    }
+    std::cout << std::endl
+              << termcolor::green << "ShortestPathBetweenVertices finished"
               << termcolor::reset << std::endl;
   } else {
     std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
