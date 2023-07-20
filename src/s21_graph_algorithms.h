@@ -25,7 +25,8 @@ class GraphAlgorithms {
   static ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
   static ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
-  void GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
+  static ResultArray GetShortestPathBetweenVertices(Graph &graph, int vertex1,
+                                                    int vertex2);
   void GetShortestPathsBetweenAllVertices(Graph &graph);
   // part 3
   void GetLeastSpanningTree(Graph &graph);

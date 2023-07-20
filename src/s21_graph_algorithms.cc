@@ -1,6 +1,7 @@
 #include "s21_graph_algorithms.h"
 
 #include <algorithm>
+#include <limits>
 #include <queue>
 #include <stack>
 #include <stdexcept>
@@ -48,6 +49,43 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
   std::transform(path.begin(), path.end(), path.begin(),
                  [](uint v) { return v + kVertexStartNumber; });
 
+  return path;
+}
+
+GraphAlgorithms::ResultArray GraphAlgorithms::GetShortestPathBetweenVertices(
+    Graph &graph, int vertex1, int vertex2) {
+  vertex1 -= kVertexStartNumber;
+  vertex2 -= kVertexStartNumber;
+  uint size = graph.size();
+  std::vector<bool> visited(size, false);
+  std::vector<uint> distance(size, UINT_MAX);
+  distance.at(vertex1) = 0;
+  uint minindex = 10000;
+  uint min = UINT_MAX;
+  do {
+    minindex = UINT_MAX;
+    min = UINT_MAX;
+
+    for (uint i = 0; i < size; i++) {  // поиск минимального веса
+      if ((visited.at(i) == false) && (distance.at(i) < min)) {
+        min = distance.at(i);
+        minindex = i;
+      }
+    }
+
+    if (minindex != UINT_MAX) {
+      for (uint i = 0; i < size; i++) {
+        if (graph.GetEdge(minindex, i) > 0) {
+          uint temp = min + graph.GetEdge(minindex, i);
+          if (temp < distance.at(i)) {
+            distance.at(i) = temp;
+          }
+        }
+      }
+      visited.at(minindex) = true;
+    }
+  } while (minindex < UINT_MAX);
+  ResultArray path{distance.at(vertex2)};
   return path;
 }
 

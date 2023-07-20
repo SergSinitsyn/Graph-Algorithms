@@ -21,13 +21,14 @@ class ConsoleView {
   void LoadGraph();
   void BreadthFirstSearch();
   void DepthFirstSearch();
+  void DisplayMenu();
+  void ExitAction();
   void ExportGraph();
   void NoAction();
-  void ExitAction();
-  void DisplayMenu();
   int PerformChoice();
-  std::string PerformStringInput();
   int PerformNumericInput(const std::string &msg);
+  std::string PerformStringInput();
+  void ShortestPathBetweenVertices();
 
   bool event_loop_end_ = false;
   Controller *controller_ = nullptr;
