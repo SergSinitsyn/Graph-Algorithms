@@ -23,10 +23,6 @@ void s21::Controller::GetShortestPathsBetweenAllVertices() {
       GraphAlgorithms::GetShortestPathsBetweenAllVertices(*model_);
 }
 
-const GraphAlgorithms::ResultArray &Controller::GetResult() { return result_; }
-const Graph::AdjacencyMatrix &s21::Controller::GetResultAdjacencyMatrix() {
-  return result_adjacency_matrix_;
-}
 bool Controller::IsModelLoaded() {
   return (model_ != nullptr) && (model_->GetVertexCount() > 0);
 };

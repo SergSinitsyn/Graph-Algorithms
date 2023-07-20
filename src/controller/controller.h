@@ -21,8 +21,10 @@ class Controller {
   void GetShortestPathBetweenVertices(const GraphAppData *data);
   void GetShortestPathsBetweenAllVertices();
 
-  const GraphAlgorithms::ResultArray &GetResult();
-  const Graph::AdjacencyMatrix &GetResultAdjacencyMatrix();
+  const GraphAlgorithms::ResultArray &Controller::result() { return result_; }
+  const Graph::AdjacencyMatrix &s21::Controller::result_adjacency_matrix() {
+    return result_adjacency_matrix_;
+  }
   bool IsModelLoaded();
 
  private:

@@ -121,6 +121,3 @@ void Graph::ExportGraphToDot(const std::string& filename) {
   }
   file << "}" << std::endl;
 }
-
-// void Graph::Set_Matrix(AdjacencyMatrix& matrix) { adjacency_matrix_ = matrix;
-// }

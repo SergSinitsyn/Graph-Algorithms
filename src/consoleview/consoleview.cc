@@ -95,10 +95,10 @@ void ConsoleView::BreadthFirstSearch() {
     data_.point_a = PerformNumericInput(prompt);
     controller_->BreadthFirstSearch(&data_);
     // TODO: operator << for GraphAlgorithms::ResultArray
-    //  std::cout << "result : " << controller_->GetResult() << std::endl;
-    for (auto item : controller_->GetResult()) {
+    //  std::cout << "result : " << controller_->result() << std::endl;
+    for (auto item : controller_->result()) {
       std::cout << item;
-      if (item != controller_->GetResult().back()) std::cout << ", ";
+      if (item != controller_->result().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "BreadthFirstSearch finished"
@@ -116,9 +116,9 @@ void ConsoleView::DepthFirstSearch() {
   if (controller_->IsModelLoaded()) {
     data_.point_a = PerformNumericInput(prompt);
     controller_->DepthFirstSearch(&data_);
-    for (auto item : controller_->GetResult()) {
+    for (auto item : controller_->result()) {
       std::cout << item;
-      if (item != controller_->GetResult().back()) std::cout << ", ";
+      if (item != controller_->result().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "DepthFirstSearch finished"
@@ -141,9 +141,9 @@ void ConsoleView::ShortestPathBetweenVertices() {
     data_.point_a = PerformNumericInput(prompt_start);
     data_.point_b = PerformNumericInput(prompt_end);
     controller_->GetShortestPathBetweenVertices(&data_);
-    for (auto item : controller_->GetResult()) {
+    for (auto item : controller_->result()) {
       std::cout << item;
-      if (item != controller_->GetResult().back()) std::cout << ", ";
+      if (item != controller_->result().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "ShortestPathBetweenVertices finished"
@@ -157,10 +157,11 @@ void ConsoleView::ShortestPathBetweenVertices() {
 void ConsoleView::ShortestPathsBetweenAllVertices() {
   if (controller_->IsModelLoaded()) {
     controller_->GetShortestPathsBetweenAllVertices();
-    Graph::AdjacencyMatrix result = controller_->GetResultAdjacencyMatrix();
-    for (size_t i = 0; i < result.size(); i++) {
+    Graph::AdjacencyMatrix result_matrix =
+        controller_->result_adjacency_matrix();
+    for (size_t i = 0; i < result_matrix.size(); i++) {
       for (size_t j = 0; j < result.at(i).size(); j++) {
-        std::cout << std::setw(5) << result[i][j] << " ";
+        std::cout << std::setw(5) << result_matrix[i][j] << " ";
       }
       std::cout << std::endl;
     }
