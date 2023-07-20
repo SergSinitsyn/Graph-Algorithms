@@ -1,6 +1,7 @@
 #include "consoleview.h"
 
 #include <functional>
+#include <iomanip>
 #include <string>
 
 #include "termcolor.hpp"
@@ -18,7 +19,9 @@ ConsoleView::ConsoleView(Controller* c)
           {3, {"DepthFirstSearch", &ConsoleView::DepthFirstSearch}},
           {4,
            {"Shortest path search", &ConsoleView::ShortestPathBetweenVertices}},
-          {5, {"All shoortest paths search", &ConsoleView::NoAction}},
+          {5,
+           {"All shoortest paths search",
+            &ConsoleView::ShortestPathsBetweenAllVertices}},
           {6, {"Get least spanning tree", &ConsoleView::NoAction}},
           {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
@@ -113,8 +116,6 @@ void ConsoleView::DepthFirstSearch() {
   if (controller_->IsModelLoaded()) {
     data_.point_a = PerformNumericInput(prompt);
     controller_->DepthFirstSearch(&data_);
-    // TODO: operator << for GraphAlgorithms::ResultArray
-    //  std::cout << "result : " << controller_->GetResult() << std::endl;
     for (auto item : controller_->GetResult()) {
       std::cout << item;
       if (item != controller_->GetResult().back()) std::cout << ", ";
@@ -140,14 +141,31 @@ void ConsoleView::ShortestPathBetweenVertices() {
     data_.point_a = PerformNumericInput(prompt_start);
     data_.point_b = PerformNumericInput(prompt_end);
     controller_->GetShortestPathBetweenVertices(&data_);
-    // TODO: operator << for GraphAlgorithms::ResultArray
-    //  std::cout << "result : " << controller_->GetResult() << std::endl;
     for (auto item : controller_->GetResult()) {
       std::cout << item;
       if (item != controller_->GetResult().back()) std::cout << ", ";
     }
     std::cout << std::endl
               << termcolor::green << "ShortestPathBetweenVertices finished"
+              << termcolor::reset << std::endl;
+  } else {
+    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
+              << std::endl;
+  }
+};
+
+void ConsoleView::ShortestPathsBetweenAllVertices() {
+  if (controller_->IsModelLoaded()) {
+    controller_->GetShortestPathsBetweenAllVertices();
+    Graph::AdjacencyMatrix result = controller_->GetResultAdjacencyMatrix();
+    for (size_t i = 0; i < result.size(); i++) {
+      for (size_t j = 0; j < result.at(i).size(); j++) {
+        std::cout << std::setw(5) << result[i][j] << " ";
+      }
+      std::cout << std::endl;
+    }
+    std::cout << std::endl
+              << termcolor::green << "ShortestPathsBetweenAllVertices finished"
               << termcolor::reset << std::endl;
   } else {
     std::cout << termcolor::red << "Model is not loaded" << termcolor::reset

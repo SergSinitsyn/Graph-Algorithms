@@ -103,7 +103,7 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
   file.close();
 }
 
-void s21::Graph::ExportGraphToDot(const std::string& filename) {
+void Graph::ExportGraphToDot(const std::string& filename) {
   std::ofstream file(filename);
   if (!file) {
     throw std::invalid_argument("File write error. The file is missing.");
@@ -121,3 +121,6 @@ void s21::Graph::ExportGraphToDot(const std::string& filename) {
   }
   file << "}" << std::endl;
 }
+
+// void Graph::Set_Matrix(AdjacencyMatrix& matrix) { adjacency_matrix_ = matrix;
+// }

@@ -19,12 +19,16 @@ class Controller {
   void BreadthFirstSearch(const GraphAppData *data);
   void DepthFirstSearch(const GraphAppData *data);
   void GetShortestPathBetweenVertices(const GraphAppData *data);
+  void GetShortestPathsBetweenAllVertices();
+
   const GraphAlgorithms::ResultArray &GetResult();
+  const Graph::AdjacencyMatrix &GetResultAdjacencyMatrix();
   bool IsModelLoaded();
 
  private:
   Graph *model_ = nullptr;
   GraphAlgorithms::ResultArray result_;
+  Graph::AdjacencyMatrix result_adjacency_matrix_;
 };
 }  // namespace s21
 #endif  // NAVIGATOR_CONTROLLER_CONTROLLER_H
