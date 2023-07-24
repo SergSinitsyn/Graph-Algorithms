@@ -14,7 +14,7 @@ void Controller::DepthFirstSearch(const GraphAppData *data) {
   result_ = GraphAlgorithms::DepthFirstSearch(*model_, data->point_a);
 }
 void Controller::GetShortestPathBetweenVertices(const GraphAppData *data) {
-  result_ = GraphAlgorithms::GetShortestPathBetweenVertices(
+  value_result_ = GraphAlgorithms::GetShortestPathBetweenVertices(
       *model_, data->point_a, data->point_b);
 }
 

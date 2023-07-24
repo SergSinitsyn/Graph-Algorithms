@@ -23,12 +23,12 @@ class Graph {
   void ExportGraphToDot(const std::string& filename);
   void LoadGraphFromFile(const std::string& filename);
 
+  bool GraphOrientationCheck();
   // void Set_Matrix(AdjacencyMatrix& matrix);
 
  protected:
   size_t CountVerticesGraph(const std::string& sentence);
   std::string GetNonEmptyLine(std::ifstream& file);
-  bool GraphOrientationCheck();
   void ReadLine(uint& line_number, const std::string& line);
   size_t ReadSize(const std::string& line);
   void SetSize(size_t size);

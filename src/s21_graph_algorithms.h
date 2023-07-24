@@ -1,6 +1,7 @@
 #ifndef NAVIGATOR_S21_GRAPH_ALGORITHMS_H_
 #define NAVIGATOR_S21_GRAPH_ALGORITHMS_H_
 
+#include <iostream>
 #include <vector>
 
 #include "s21_graph.h"
@@ -31,12 +32,22 @@ class GraphAlgorithms {
   static Graph::AdjacencyMatrix GetShortestPathsBetweenAllVertices(
       Graph &graph);
   // part 3
-  void GetLeastSpanningTree(Graph &graph);
+  static Graph::AdjacencyMatrix GetLeastSpanningTree(Graph &graph);
   // part 4
   TsmResult SolveTravelingSalesmanProblem(Graph &graph);
   // part 6
   TsmResult SolveTravelingSalesmanProblem1(Graph &graph);
   TsmResult SolveTravelingSalesmanProblem2(Graph &graph);
+
+  static void PrintMatrix(const Graph::AdjacencyMatrix &matrix) {
+    for (size_t i = 0; i < matrix.size(); ++i) {
+      for (size_t j = 0; j < matrix.size(); ++j) {
+        std::cout << matrix[i][j] << " ";
+      }
+      std::cout << std::endl;
+    }
+    std::cout << std::endl;
+  };
 
  private:
   static bool FullTrack(std::vector<bool> visited);
