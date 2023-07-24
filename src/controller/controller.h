@@ -18,6 +18,7 @@ class Controller {
   void ExportGraphToDot(const GraphAppData *data);
   void BreadthFirstSearch(const GraphAppData *data);
   void DepthFirstSearch(const GraphAppData *data);
+  void GetLeastSpanningTree();
   void GetShortestPathBetweenVertices(const GraphAppData *data);
   void GetShortestPathsBetweenAllVertices();
 

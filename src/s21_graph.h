@@ -20,11 +20,9 @@ class Graph {
   AdjacencyMatrix GetMatrix() { return adjacency_matrix_; };
 
   const AdjacencyMatrix& GetMatrix() const;
+  bool GraphOrientationCheck();
   void ExportGraphToDot(const std::string& filename);
   void LoadGraphFromFile(const std::string& filename);
-
-  bool GraphOrientationCheck();
-  // void Set_Matrix(AdjacencyMatrix& matrix);
 
  protected:
   size_t CountVerticesGraph(const std::string& sentence);

@@ -22,7 +22,7 @@ ConsoleView::ConsoleView(Controller* c)
           {5,
            {"All shoortest paths search",
             &ConsoleView::ShortestPathsBetweenAllVertices}},
-          {6, {"Get least spanning tree", &ConsoleView::NoAction}},
+          {6, {"Get least spanning tree", &ConsoleView::LeastSpanningTree}},
           {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
           {9, {"Exit", &ConsoleView::ExitAction}}} {};
@@ -76,16 +76,33 @@ void ConsoleView::LoadGraph() {
   controller_->LoadGraphFromFile(&data_);
   std::cout << termcolor::green << "File " << data_.filename
             << " loaded successfully" << termcolor::reset << std::endl;
-};
+}
 
 void ConsoleView::ExportGraph() {
   data_.filename = PerformStringInput();
   controller_->ExportGraphToDot(&data_);
   std::cout << termcolor::green << "Graph successfully uploaded to file "
-            << data_.filename
-            // << " loaded successfully"
-            << termcolor::reset << std::endl;
-};
+            << data_.filename << termcolor::reset << std::endl;
+}
+void ConsoleView::LeastSpanningTree() {
+  if (controller_->IsModelLoaded()) {
+    controller_->GetLeastSpanningTree();
+    Graph::AdjacencyMatrix result_matrix =
+        controller_->result_adjacency_matrix();
+    for (size_t i = 0; i < result_matrix.size(); i++) {
+      for (size_t j = 0; j < result_matrix.at(i).size(); j++) {
+        std::cout << std::setw(5) << result_matrix[i][j] << " ";
+      }
+      std::cout << std::endl;
+    }
+    std::cout << std::endl
+              << termcolor::green << "LeastSpanningTree finished"
+              << termcolor::reset << std::endl;
+  } else {
+    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
+              << std::endl;
+  }
+}
 
 void ConsoleView::BreadthFirstSearch() {
   std::string prompt = "Input a Vertex number to start search (" +
