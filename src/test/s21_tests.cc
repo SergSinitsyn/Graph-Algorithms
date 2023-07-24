@@ -268,80 +268,56 @@ TEST(GraphAlgorithms, SPBV_0) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_wiki.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 7);
-  GraphAlgorithms::ResultArray expected_result{22};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 7), 22);
 }
 
 TEST(GraphAlgorithms, SPBV_1) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_wiki.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 5);
-  GraphAlgorithms::ResultArray expected_result{14};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 5), 14);
 }
 
 TEST(GraphAlgorithms, SPBV_2) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 3);
-  GraphAlgorithms::ResultArray expected_result{11};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 3), 11);
 }
 
 TEST(GraphAlgorithms, SPBV_3) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 3, 5);
-  GraphAlgorithms::ResultArray expected_result{3};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 3, 5), 3);
 }
 
 TEST(GraphAlgorithms, SPBV_4) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 6, 1);
-  GraphAlgorithms::ResultArray expected_result{9};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 6, 1), 9);
 }
 
 TEST(GraphAlgorithms, SPBV_5) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 1);
-  GraphAlgorithms::ResultArray expected_result{0};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 1), 0);
 }
 
 TEST(GraphAlgorithms, SPBV_6) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 10);
-  GraphAlgorithms::ResultArray expected_result{14};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 10), 14);
 }
 
 TEST(GraphAlgorithms, SPBV_7) {
   Graph graph;
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
-  GraphAlgorithms::ResultArray result =
-      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 10, 1);
-  GraphAlgorithms::ResultArray expected_result{8};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 10, 1), 8);
 }
 
 TEST(GraphAlgorithms, SPBV_8) {
@@ -349,8 +325,7 @@ TEST(GraphAlgorithms, SPBV_8) {
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
   ASSERT_ANY_THROW(
-      GraphAlgorithms::ResultArray result =
-          GraphAlgorithms::GetShortestPathBetweenVertices(graph, 0, 10));
+      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 0, 10));
 }
 
 TEST(GraphAlgorithms, SPBV_9) {
@@ -358,8 +333,7 @@ TEST(GraphAlgorithms, SPBV_9) {
   std::string file_name = "samples/matrices/matrices/test_1.txt";
   graph.LoadGraphFromFile(file_name);
   ASSERT_ANY_THROW(
-      GraphAlgorithms::ResultArray result =
-          GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 11));
+      GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 11));
 }
 
 TEST(GraphAlgorithms, SPBAV_0) {
@@ -378,6 +352,39 @@ TEST(GraphAlgorithms, SPBAV_0) {
   for (size_t i = 0; i < result_size; ++i) {
     for (size_t j = 0; j < result_size; ++j) {
       EXPECT_EQ(matrix[i][j], result_matrix[i][j]);
+    }
+  }
+}
+
+TEST(GraphAlgorithms, SPBAV_VS_SPBV) {
+  Graph graph;
+  std::vector<std::string> file_name_list = {
+      "samples/matrices/matrices/test_1.txt",
+      "samples/matrices/matrices/test_2.txt",
+      "samples/matrices/matrices/test_wiki.txt",
+      "samples/matrices/matrices/3.txt",
+      "samples/matrices/matrices/5.txt",
+      "samples/matrices/matrices/6.txt",
+      "samples/matrices/matrices/10.txt",
+      "samples/matrices/matrices/11.txt",
+      "samples/matrices/matrices/12.txt",
+      "samples/matrices/matrices/kommiv_3.txt",
+      "samples/matrices/matrices/p.txt",
+      "samples/matrices/matrices/orie.txt",
+      "samples/matrices/matrices/test_11.txt"};
+  for (auto &file_name : file_name_list) {
+    graph.LoadGraphFromFile(file_name);
+    Graph::AdjacencyMatrix spbav_matrix =
+        s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
+    uint result_size = graph.size();
+    for (size_t i = 0; i < result_size; ++i) {
+      for (size_t j = 0; j < result_size; ++j) {
+        if (i != j) {
+          uint spbv_result = GraphAlgorithms::GetShortestPathBetweenVertices(
+              graph, i + 1, j + 1);
+          EXPECT_EQ(spbav_matrix[i][j], spbv_result);
+        }
+      }
     }
   }
 }

@@ -52,7 +52,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
   return path;
 }
 
-GraphAlgorithms::ResultArray GraphAlgorithms::GetShortestPathBetweenVertices(
+GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
     Graph &graph, int vertex1, int vertex2) {
   vertex1 -= kVertexStartNumber;
   vertex2 -= kVertexStartNumber;
@@ -84,8 +84,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::GetShortestPathBetweenVertices(
       }
     }
   }
-  ResultArray path{distance.at(vertex2)};
-  return path;
+  return distance.at(vertex2);
 }
 
 Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(

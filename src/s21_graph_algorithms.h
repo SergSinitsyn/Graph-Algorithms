@@ -14,6 +14,7 @@ class GraphAlgorithms {
  public:
   static const int kVertexStartNumber = 1;
   using ResultArray = std::vector<uint>;
+  using Result = uint;
   struct TsmResult {
     std::vector<int> vertices;
     double distance;
@@ -25,8 +26,8 @@ class GraphAlgorithms {
   static ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
   static ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
   // part 2
-  static ResultArray GetShortestPathBetweenVertices(Graph &graph, int vertex1,
-                                                    int vertex2);
+  static Result GetShortestPathBetweenVertices(Graph &graph, int vertex1,
+                                               int vertex2);
   static Graph::AdjacencyMatrix GetShortestPathsBetweenAllVertices(
       Graph &graph);
   // part 3
