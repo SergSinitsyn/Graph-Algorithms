@@ -141,10 +141,11 @@ void ConsoleView::ShortestPathBetweenVertices() {
     data_.point_a = PerformNumericInput(prompt_start);
     data_.point_b = PerformNumericInput(prompt_end);
     controller_->GetShortestPathBetweenVertices(&data_);
-    for (auto item : controller_->result()) {
-      std::cout << item;
-      if (item != controller_->result().back()) std::cout << ", ";
-    }
+    // for (auto item : controller_->result()) {
+    //   std::cout << item;
+    //   if (item != controller_->result().back()) std::cout << ", ";
+    // }
+    std::cout << controller_->value_result() << std::endl;
     std::cout << std::endl
               << termcolor::green << "ShortestPathBetweenVertices finished"
               << termcolor::reset << std::endl;
@@ -160,7 +161,7 @@ void ConsoleView::ShortestPathsBetweenAllVertices() {
     Graph::AdjacencyMatrix result_matrix =
         controller_->result_adjacency_matrix();
     for (size_t i = 0; i < result_matrix.size(); i++) {
-      for (size_t j = 0; j < result.at(i).size(); j++) {
+      for (size_t j = 0; j < result_matrix.at(i).size(); j++) {
         std::cout << std::setw(5) << result_matrix[i][j] << " ";
       }
       std::cout << std::endl;

@@ -389,6 +389,29 @@ TEST(GraphAlgorithms, SPBAV_VS_SPBV) {
   }
 }
 
+TEST(GraphAlgorithms, GLST_0) {
+  Graph graph;
+  std::string file_name = "samples/graph_4.adj";
+  graph.LoadGraphFromFile(file_name);
+  Graph::AdjacencyMatrix matrix = GraphAlgorithms::GetLeastSpanningTree(graph);
+  Graph::AdjacencyMatrix result_matrix = {
+      {0, 0, 20, 0}, {0, 0, 15, 0}, {20, 15, 0, 15}, {0, 0, 15, 0}};
+
+  uint result_size = graph.size();
+  for (size_t i = 0; i < result_size; ++i) {
+    for (size_t j = 0; j < result_size; ++j) {
+      EXPECT_EQ(matrix[i][j], result_matrix[i][j]);
+    }
+  }
+}
+
+TEST(GraphAlgorithms, GLST_1) {
+  Graph graph;
+  std::string file_name = "samples/graph_4_orient.adj";
+  graph.LoadGraphFromFile(file_name);
+  ASSERT_ANY_THROW(GraphAlgorithms::GetLeastSpanningTree(graph));
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

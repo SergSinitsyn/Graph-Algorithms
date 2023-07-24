@@ -115,6 +115,47 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(
   return result_matrix;
 }
 
+Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
+    Graph &graph) {
+  Graph::AdjacencyMatrix result_matrix(graph.GetMatrix());
+  if (!graph.GraphOrientationCheck()) {
+    throw std::invalid_argument("Graph is not oriented");
+  }
+  uint size = graph.size();
+  // PrintMatrix(result_matrix);
+  for (uint i = 0; i < size; i++) {
+    for (uint j = 0; j < size; j++) {
+      result_matrix.at(i).at(j) = 0;
+    }
+  }
+  std::vector<bool> visited(size, false);
+  visited.at(0) = true;  // устанавливаем начальную точку построения дерева.
+  int unvisited = size - 1;
+  while (unvisited) {
+    uint min_dist = UINT_MAX;
+    uint start = 0;
+    uint end = 0;
+    for (uint i = 0; i < size; i++) {
+      if (visited.at(i)) {
+        for (uint j = 0; j < size; j++) {
+          if (j != i && !visited.at(j) && graph.GetEdge(i, j) != 0 &&
+              graph.GetMatrix().at(i).at(j) < min_dist) {
+            min_dist = graph.GetEdge(i, j);
+            start = i;
+            end = j;
+          }
+        }
+      }
+    }
+    result_matrix.at(start).at(end) = min_dist;
+    result_matrix.at(end).at(start) = min_dist;
+    visited.at(end) = true;
+    // PrintMatrix(result_matrix);
+    --unvisited;
+  }
+  return result_matrix;
+}
+
 GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
     Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;

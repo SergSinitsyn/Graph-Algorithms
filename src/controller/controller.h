@@ -21,14 +21,16 @@ class Controller {
   void GetShortestPathBetweenVertices(const GraphAppData *data);
   void GetShortestPathsBetweenAllVertices();
 
-  const GraphAlgorithms::ResultArray &Controller::result() { return result_; }
-  const Graph::AdjacencyMatrix &s21::Controller::result_adjacency_matrix() {
+  const GraphAlgorithms::Result &value_result() { return value_result_; }
+  const GraphAlgorithms::ResultArray &result() { return result_; }
+  const Graph::AdjacencyMatrix &result_adjacency_matrix() {
     return result_adjacency_matrix_;
   }
   bool IsModelLoaded();
 
  private:
   Graph *model_ = nullptr;
+  GraphAlgorithms::Result value_result_;
   GraphAlgorithms::ResultArray result_;
   Graph::AdjacencyMatrix result_adjacency_matrix_;
 };
