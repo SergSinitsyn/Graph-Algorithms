@@ -23,17 +23,17 @@ class Controller {
   void GetShortestPathsBetweenAllVertices();
 
   const GraphAlgorithms::Result &value_result() { return value_result_; }
-  const GraphAlgorithms::ResultArray &result() { return result_; }
-  const Graph::AdjacencyMatrix &result_adjacency_matrix() {
-    return result_adjacency_matrix_;
+  const GraphAlgorithms::ResultArray &array_result() { return array_result_; }
+  const Graph::AdjacencyMatrix &adjacency_matrix_result() {
+    return adjacency_matrix_result_;
   }
   bool IsModelLoaded();
 
  private:
   Graph *model_ = nullptr;
   GraphAlgorithms::Result value_result_;
-  GraphAlgorithms::ResultArray result_;
-  Graph::AdjacencyMatrix result_adjacency_matrix_;
+  GraphAlgorithms::ResultArray array_result_;
+  Graph::AdjacencyMatrix adjacency_matrix_result_;
 };
 }  // namespace s21
 #endif  // NAVIGATOR_CONTROLLER_CONTROLLER_H

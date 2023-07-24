@@ -39,16 +39,6 @@ class GraphAlgorithms {
   TsmResult SolveTravelingSalesmanProblem1(Graph &graph);
   TsmResult SolveTravelingSalesmanProblem2(Graph &graph);
 
-  static void PrintMatrix(const Graph::AdjacencyMatrix &matrix) {
-    for (size_t i = 0; i < matrix.size(); ++i) {
-      for (size_t j = 0; j < matrix.size(); ++j) {
-        std::cout << matrix[i][j] << " ";
-      }
-      std::cout << std::endl;
-    }
-    std::cout << std::endl;
-  };
-
  private:
   static bool FullTrack(std::vector<bool> visited);
 };
