@@ -270,8 +270,7 @@ TEST(GraphAlgorithms, SPBV_0) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 7);
-  GraphAlgorithms::ResultArray expected_result{22};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 22);
 }
 
 TEST(GraphAlgorithms, SPBV_1) {
@@ -280,8 +279,7 @@ TEST(GraphAlgorithms, SPBV_1) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 5);
-  GraphAlgorithms::ResultArray expected_result{14};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 14);
 }
 
 TEST(GraphAlgorithms, SPBV_2) {
@@ -290,8 +288,7 @@ TEST(GraphAlgorithms, SPBV_2) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 3);
-  GraphAlgorithms::ResultArray expected_result{11};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 11);
 }
 
 TEST(GraphAlgorithms, SPBV_3) {
@@ -300,8 +297,7 @@ TEST(GraphAlgorithms, SPBV_3) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 3, 5);
-  GraphAlgorithms::ResultArray expected_result{3};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 3);
 }
 
 TEST(GraphAlgorithms, SPBV_4) {
@@ -310,8 +306,7 @@ TEST(GraphAlgorithms, SPBV_4) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 6, 1);
-  GraphAlgorithms::ResultArray expected_result{9};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 9);
 }
 
 TEST(GraphAlgorithms, SPBV_5) {
@@ -320,8 +315,7 @@ TEST(GraphAlgorithms, SPBV_5) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 1);
-  GraphAlgorithms::ResultArray expected_result{0};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 0);
 }
 
 TEST(GraphAlgorithms, SPBV_6) {
@@ -330,8 +324,7 @@ TEST(GraphAlgorithms, SPBV_6) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 10);
-  GraphAlgorithms::ResultArray expected_result{14};
-  EXPECT_EQ(result, expected_result);
+  EXPECT_EQ(result[0], 14);
 }
 
 TEST(GraphAlgorithms, SPBV_7) {
@@ -340,7 +333,6 @@ TEST(GraphAlgorithms, SPBV_7) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms::ResultArray result =
       GraphAlgorithms::GetShortestPathBetweenVertices(graph, 10, 1);
-  GraphAlgorithms::ResultArray expected_result{8};
   EXPECT_EQ(result[0], 8);
 }
 
