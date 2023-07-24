@@ -54,9 +54,13 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
 
 GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
     Graph &graph, int vertex1, int vertex2) {
+  uint size = graph.size();
+  if (vertex1 < 1 || vertex1 > (int)size || vertex2 < 1 ||
+      vertex2 > (int)size) {
+    throw std::invalid_argument("Vertex is out of range");
+  }
   vertex1 -= kVertexStartNumber;
   vertex2 -= kVertexStartNumber;
-  uint size = graph.size();
   std::vector<bool> visited(size, false);
   std::vector<uint> distance(size, UINT_MAX);
   distance.at(vertex1) = 0;

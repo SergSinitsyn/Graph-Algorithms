@@ -24,12 +24,15 @@ class ConsoleView {
   void DisplayMenu();
   void ExitAction();
   void ExportGraph();
+  void LeastSpanningTree();
   void NoAction();
   int PerformChoice();
   int PerformNumericInput(const std::string &msg);
-  std::string PerformStringInput();
+  void PerformStringInput();
   void ShortestPathBetweenVertices();
   void ShortestPathsBetweenAllVertices();
+
+  void PrintMatrix(const Graph::AdjacencyMatrix &matrix);
 
   bool event_loop_end_ = false;
   Controller *controller_ = nullptr;
