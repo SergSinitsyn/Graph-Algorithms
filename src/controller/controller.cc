@@ -30,5 +30,5 @@ void s21::Controller::GetShortestPathsBetweenAllVertices() {
 }
 
 bool Controller::IsModelLoaded() {
-  return (model_ != nullptr) && (model_->GetVertexCount() > 0);
+  return (model_ != nullptr) && (model_->size() > 0);
 };

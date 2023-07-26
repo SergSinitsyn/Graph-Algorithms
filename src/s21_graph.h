@@ -15,9 +15,7 @@ class Graph {
   static const uint kMaxSize = 100;  //! To be defined!
 
   size_t size() const;
-  size_t GetVertexCount() const;
   uint GetEdge(uint from, uint to) const;
-  AdjacencyMatrix GetMatrix() { return adjacency_matrix_; };
 
   const AdjacencyMatrix& GetMatrix() const;
   bool GraphOrientationCheck();
