@@ -18,14 +18,14 @@ class Graph {
   uint GetEdge(uint from, uint to) const;
 
   const AdjacencyMatrix& GetMatrix() const;
-  bool GraphOrientationCheck();
+  bool GraphOrientationCheck() const;
   void ExportGraphToDot(const std::string& filename);
   void LoadGraphFromFile(const std::string& filename);
 
  protected:
   size_t CountVerticesGraph(const std::string& sentence);
   std::string GetNonEmptyLine(std::ifstream& file);
-  void ReadLine(uint& line_number, const std::string& line);
+  void ReadLine(const uint& line_number, const std::string& line);
   size_t ReadSize(const std::string& line);
   void SetSize(size_t size);
   AdjacencyMatrix adjacency_matrix_;

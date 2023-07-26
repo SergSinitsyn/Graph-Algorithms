@@ -24,20 +24,20 @@ class GraphAlgorithms {
   // TODO: Тип возвращаемого результата для частей 1-4 определить в процессе
   // TODO: исполнения
   //  part 1
-  static ResultArray DepthFirstSearch(Graph &graph, int start_vertex);
-  static ResultArray BreadthFirstSearch(Graph &graph, int start_vertex);
+  static ResultArray DepthFirstSearch(const Graph &graph, int start_vertex);
+  static ResultArray BreadthFirstSearch(const Graph &graph, int start_vertex);
   // part 2
-  static Result GetShortestPathBetweenVertices(Graph &graph, int vertex1,
+  static Result GetShortestPathBetweenVertices(const Graph &graph, int vertex1,
                                                int vertex2);
   static Graph::AdjacencyMatrix GetShortestPathsBetweenAllVertices(
-      Graph &graph);
+      const Graph &graph);
   // part 3
-  static Graph::AdjacencyMatrix GetLeastSpanningTree(Graph &graph);
+  static Graph::AdjacencyMatrix GetLeastSpanningTree(const Graph &graph);
   // part 4
-  TsmResult SolveTravelingSalesmanProblem(Graph &graph);
+  TsmResult SolveTravelingSalesmanProblem(const Graph &graph);
   // part 6
-  TsmResult SolveTravelingSalesmanProblem1(Graph &graph);
-  TsmResult SolveTravelingSalesmanProblem2(Graph &graph);
+  TsmResult SolveTravelingSalesmanProblem1(const Graph &graph);
+  TsmResult SolveTravelingSalesmanProblem2(const Graph &graph);
 
  private:
   static bool FullTrack(std::vector<bool> visited);
