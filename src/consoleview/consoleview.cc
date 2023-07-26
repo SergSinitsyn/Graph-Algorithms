@@ -40,8 +40,7 @@ void ConsoleView::DisplayMenu() {
 int ConsoleView::PerformChoice() {
   int choice = PerformNumericInput("Input a menu item digit: ");
   if (menu_.find(choice) == menu_.end()) {
-    std::cout << termcolor::red << "Item out of range!" << termcolor::reset
-              << std::endl;
+    ErrorMessage("Item out of range!");
   }
   return choice;
 }
@@ -55,8 +54,7 @@ int ConsoleView::PerformNumericInput(const std::string& prompt) {
     try {
       number = std::stoi(input);
     } catch (const std::invalid_argument&) {
-      std::cout << termcolor::red << "Wrong input!" << termcolor::reset
-                << std::endl;
+      ErrorMessage("Wrong input!");
     }
   }
 
@@ -71,34 +69,30 @@ void ConsoleView::PerformStringInput() {
 void ConsoleView::LoadGraph() {
   PerformStringInput();
   controller_->LoadGraphFromFile(&data_);
-  std::cout << termcolor::green << "File " << data_.filename
-            << " loaded successfully" << termcolor::reset << std::endl;
+  std::string message = "File " + data_.filename + " loaded successfully";
+  FinalMessage(message);
 }
 
 void ConsoleView::ExportGraph() {
   PerformStringInput();
   controller_->ExportGraphToDot(&data_);
-  std::cout << termcolor::green << "Graph successfully uploaded to file "
-            << data_.filename << termcolor::reset << std::endl;
+  std::string message = "Graph successfully exported to file " + data_.filename;
+  FinalMessage(message);
 }
 void ConsoleView::LeastSpanningTree() {
   if (!controller_->IsModelLoaded()) {
-    std::cout << termcolor::red << "Model is not loaded." << termcolor::reset
-              << std::endl;
+    ErrorMessage("Model is not loaded");
     return;
   }
   controller_->GetLeastSpanningTree();
   Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
   PrintMatrix(result_matrix);
-  std::cout << std::endl
-            << termcolor::green << "LeastSpanningTree finished"
-            << termcolor::reset << std::endl;
+  FinalMessage("LeastSpanningTree finished");
 }
 
 void ConsoleView::BreadthFirstSearch() {
   if (!controller_->IsModelLoaded()) {
-    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
-              << std::endl;
+    ErrorMessage("Model is not loaded");
     return;
   }
   std::string prompt = "Input a Vertex number to start search (" +
@@ -106,19 +100,13 @@ void ConsoleView::BreadthFirstSearch() {
                        "-" + std::to_string(Graph::kMaxSize) + "): ";
   data_.point_a = PerformNumericInput(prompt);
   controller_->BreadthFirstSearch(&data_);
-  for (auto item : controller_->array_result()) {
-    std::cout << item;
-    if (item != controller_->array_result().back()) std::cout << ", ";
-  }
-  std::cout << std::endl
-            << termcolor::green << "BreadthFirstSearch finished"
-            << termcolor::reset << std::endl;
+  PrintArray(controller_->array_result());
+  FinalMessage("BreadthFirstSearch finished");
 }
 
 void ConsoleView::DepthFirstSearch() {
   if (!controller_->IsModelLoaded()) {
-    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
-              << std::endl;
+    ErrorMessage("Model is not loaded");
     return;
   }
   std::string prompt = "Input a Vertex number to start search (" +
@@ -126,19 +114,13 @@ void ConsoleView::DepthFirstSearch() {
                        "-" + std::to_string(Graph::kMaxSize) + "): ";
   data_.point_a = PerformNumericInput(prompt);
   controller_->DepthFirstSearch(&data_);
-  for (auto item : controller_->array_result()) {
-    std::cout << item;
-    if (item != controller_->array_result().back()) std::cout << ", ";
-  }
-  std::cout << std::endl
-            << termcolor::green << "DepthFirstSearch finished"
-            << termcolor::reset << std::endl;
+  PrintArray(controller_->array_result());
+  FinalMessage("DepthFirstSearch finished");
 }
 
 void ConsoleView::ShortestPathBetweenVertices() {
   if (!controller_->IsModelLoaded()) {
-    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
-              << std::endl;
+    ErrorMessage("Model is not loaded");
     return;
   }
   std::string prompt_start =
@@ -152,27 +134,23 @@ void ConsoleView::ShortestPathBetweenVertices() {
   data_.point_b = PerformNumericInput(prompt_end);
 
   controller_->GetShortestPathBetweenVertices(&data_);
-  std::cout << controller_->value_result() << std::endl;
-  std::cout << std::endl
-            << termcolor::green << "ShortestPathBetweenVertices finished"
-            << termcolor::reset << std::endl;
+  PrintValue(controller_->value_result());
+  FinalMessage("ShortestPathBetweenVertices finished");
 }
 
 void ConsoleView::ShortestPathsBetweenAllVertices() {
   if (!controller_->IsModelLoaded()) {
-    std::cout << termcolor::red << "Model is not loaded" << termcolor::reset
-              << std::endl;
+    ErrorMessage("Model is not loaded");
     return;
   }
   controller_->GetShortestPathsBetweenAllVertices();
   Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
   PrintMatrix(result_matrix);
-  std::cout << std::endl
-            << termcolor::green << "ShortestPathsBetweenAllVertices finished"
-            << termcolor::reset << std::endl;
+  FinalMessage("ShortestPathsBetweenAllVertices finished");
 }
 
 void ConsoleView::PrintMatrix(const Graph::AdjacencyMatrix& matrix) {
+  std::cout << "Result matrix : " << std::endl;
   for (size_t i = 0; i < matrix.size(); i++) {
     for (size_t j = 0; j < matrix.at(i).size(); j++) {
       std::cout << std::setw(5) << matrix[i][j] << " ";
@@ -180,10 +158,30 @@ void ConsoleView::PrintMatrix(const Graph::AdjacencyMatrix& matrix) {
     std::cout << std::endl;
   }
 }
-void ConsoleView::NoAction() {
-  std::cout << termcolor::red << "Action not implemented" << termcolor::reset
-            << std::endl;
+
+void ConsoleView::PrintArray(const GraphAlgorithms::ResultArray& array) {
+  std::cout << "Array traversed vertices: ";
+  for (auto item : array) {
+    std::cout << item;
+    if (item != array.back()) std::cout << ", ";
+  }
+  std::cout << std::endl;
 }
+
+void ConsoleView::PrintValue(const GraphAlgorithms::Result& result) {
+  std::cout << "Smallest distance: " << result;
+  std::cout << std::endl;
+}
+
+void ConsoleView::ErrorMessage(const std::string& message) {
+  std::cout << termcolor::red << message << termcolor::reset << std::endl;
+}
+
+void ConsoleView::FinalMessage(const std::string& message) {
+  std::cout << termcolor::green << message << termcolor::reset << std::endl;
+}
+
+void ConsoleView::NoAction() { ErrorMessage("No action implemented"); }
 
 void ConsoleView::ExitAction() { event_loop_end_ = true; };
 
@@ -191,12 +189,13 @@ void ConsoleView::StartEventLoop() {
   while (!event_loop_end_) {
     DisplayMenu();
     int choice = PerformChoice();
-    if (menu_.find(choice) != menu_.end()) {
+    auto it = menu_.find(choice);
+    if (it != menu_.end()) {
       try {
-        std::invoke(menu_[choice].user_action_method, this);
+        auto& user_action_method = it->second.user_action_method;
+        (this->*user_action_method)();
       } catch (const std::exception& e) {
-        std::cerr << termcolor::red << "Error: " << e.what() << termcolor::reset
-                  << '\n';
+        ErrorMessage(e.what());
       }
     }
   }

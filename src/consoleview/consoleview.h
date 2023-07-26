@@ -32,8 +32,13 @@ class ConsoleView {
   void ShortestPathBetweenVertices();
   void ShortestPathsBetweenAllVertices();
 
+  void ErrorMessage(const std::string &);
+  void FinalMessage(const std::string &);
+  void FinalMessageWithFilename(const std::string &, const std::string &,
+                                const std::string &);
+  void PrintArray(const GraphAlgorithms::ResultArray &array);
   void PrintMatrix(const Graph::AdjacencyMatrix &matrix);
-
+  void PrintValue(const GraphAlgorithms::Result &result);
   bool event_loop_end_ = false;
   Controller *controller_ = nullptr;
   std::map<int, MenuItem> menu_{};
