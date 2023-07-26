@@ -44,6 +44,25 @@ all: $(MAIN_APP)
 
 rebuild: clean all
 
+report/index.html: clean
+	$(CC) $(CFLAGS) --coverage -c $(SRC_DIR)/$(LIB1_SOURCES)
+	ar rc $(LIB1_NAME) $(LIB1_OBJS)
+	$(CLEAN) lib$(LIB1_NAME)
+	ln $(LIB1_NAME) lib$(LIB1_NAME)
+	$(CC) $(CFLAGS) --coverage -c $(SRC_DIR)/$(LIB2_SOURCES)
+	ar rc $(LIB2_NAME) $(LIB2_OBJS)
+	$(CLEAN) lib$(LIB2_NAME)
+	ln $(LIB2_NAME) lib$(LIB2_NAME)
+	$(CC) $(CFLAGS) $(TEST_SOURCES) -L. -l$(LIB1) -l$(LIB2) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) 
+	$(CLEAN) $(OBJECTS)
+	-$(BUILD_DIR)/$(TEST_PROG)
+	gcov -o src/ *.gcda
+	lcov -t "gcov_report" -o gcov_report.info -c -d .
+	-mkdir $(BUILD_DIR)/report
+	genhtml -o $(BUILD_DIR)/report gcov_report.info
+	$(CLEAN) $(BUILD_DIR)/$(TEST_PROG)
+
+
 .cc.o:
 	$(CC) $(CFLAGS) $(INCLUDES:%=-I %) -c $< -o $@
 
@@ -72,22 +91,12 @@ clean:
 
 tests: test
 
-test: $(TEST_PROG)
+test: clean $(TEST_PROG)
 	-$(BUILD_DIR)$(TEST_PROG)
 
 $(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
 	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
 
-report/index.html: $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
-	# make clean
-	$(CC) $(CFLAGS) -g -fprofile-arcs -ftest-coverage -fPIC $(TEST_SOURCES) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
-	$(CLEAN) $(OBJECTS)
-	-$(BUILD_DIR)/$(TEST_PROG)
-	gcov -o src/ *.gcda
-	lcov -t "gcov_report" -o gcov_report.info -c -d .
-	-mkdir $(BUILD_DIR)/report
-	genhtml -o $(BUILD_DIR)/report gcov_report.info
-	$(CLEAN) $(BUILD_DIR)/$(TEST_PROG)
 
 gcov_report: report/index.html
 	open report/index.html

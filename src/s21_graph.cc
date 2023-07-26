@@ -6,8 +6,6 @@ using namespace s21;
 
 size_t Graph::size() const { return size_; };
 
-size_t Graph::GetVertexCount() const { return size_; };
-
 uint Graph::GetEdge(uint from, uint to) const {
   return adjacency_matrix_.at(from).at(to);
 };
@@ -82,10 +80,8 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
   if (file.peek() == std::ifstream::traits_type::eof()) {
     throw std::invalid_argument("File read error. The file is empty.");
   }
-
   std::string line = GetNonEmptyLine(file);
   SetSize(ReadSize(line));
-
   for (uint i = 0; i < size_; ++i) {
     line = GetNonEmptyLine(file);
     if (CountVerticesGraph(line) < size_) {
@@ -93,21 +89,12 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
           "File read error. Number of vertices does not match graph size");
     }
     ReadLine(i, line);
-    if (!line.empty()) {
-      ReadLine(i, line);
-    } else {
-      --i;
-    }
   }
-
   file.close();
 }
 
 void Graph::ExportGraphToDot(const std::string& filename) {
   std::ofstream file(filename);
-  if (!file) {
-    throw std::invalid_argument("File write error. The file is missing.");
-  }
   bool is_oriented = !GraphOrientationCheck();
   const std::string graph_type = (is_oriented ? "digraph" : "graph");
   file << graph_type << " Graph {" << std::endl;
