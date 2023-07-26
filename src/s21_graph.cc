@@ -22,7 +22,7 @@ void Graph::SetSize(size_t size) {
   }
 }
 
-void Graph::ReadLine(uint& line_number, const std::string& line) {
+void Graph::ReadLine(const uint& line_number, const std::string& line) {
   size_t num_size = 0;
   size_t line_index = 0;
   for (uint col_index = 0; col_index < size_; ++col_index) {
@@ -51,7 +51,7 @@ std::string Graph::GetNonEmptyLine(std::ifstream& file) {
   return line;
 }
 
-bool Graph::GraphOrientationCheck() {
+bool Graph::GraphOrientationCheck() const {
   for (uint i = 0; i < size_; ++i) {
     for (uint j = i; j < size_; ++j) {
       if (adjacency_matrix_.at(i).at(j) != adjacency_matrix_.at(j).at(i)) {

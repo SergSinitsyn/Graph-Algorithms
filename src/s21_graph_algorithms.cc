@@ -21,7 +21,7 @@ using namespace s21;
  * @throws std::invalid_argument if the start_vertex is out of range.
  */
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
-    Graph &graph, int start_vertex) {
+    const Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
   std::vector<bool> visited(graph.size(), false);
   std::queue<uint> q;  // TODO: replace with s21_queue
@@ -53,7 +53,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
 }
 
 GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
-    Graph &graph, int vertex1, int vertex2) {
+    const Graph &graph, int vertex1, int vertex2) {
   uint size = graph.size();
   if (vertex1 < 1 || vertex1 > (int)size || vertex2 < 1 ||
       vertex2 > (int)size) {
@@ -92,7 +92,7 @@ GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
 }
 
 Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(
-    Graph &graph) {
+    const Graph &graph) {
   Graph::AdjacencyMatrix result_matrix(graph.GetMatrix());
   uint size = graph.size();
   for (uint i = 0; i < size; i++) {
@@ -120,7 +120,7 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(
 }
 
 Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
-    Graph &graph) {
+    const Graph &graph) {
   Graph::AdjacencyMatrix result_matrix(graph.GetMatrix());
   if (!graph.GraphOrientationCheck()) {
     throw std::invalid_argument("Graph is not oriented");
@@ -161,7 +161,7 @@ Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
 }
 
 GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
-    Graph &graph, int start_vertex) {
+    const Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
   std::vector<bool> visited(graph.size(), false);
   s21::stack<uint> stack;

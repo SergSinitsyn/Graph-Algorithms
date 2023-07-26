@@ -113,8 +113,6 @@ cppcheck:
 
 leaks:  $(TEST_PROG) 
 	@$(LEAKS)
-	# @$(LEAKS) > leaks.log 2>&1
-	# @$(SHOW_LEAKS)
 
 valgrind: leaks
 
