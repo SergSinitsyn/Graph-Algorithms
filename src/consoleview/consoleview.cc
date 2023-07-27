@@ -6,9 +6,6 @@
 
 #include "termcolor.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
 using namespace s21;
 
 ConsoleView::ConsoleView(Controller* c)
@@ -27,67 +24,20 @@ ConsoleView::ConsoleView(Controller* c)
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
           {9, {"Exit", &ConsoleView::ExitAction}}} {};
 
-void ConsoleView::DisplayMenu() {
-  std::cout << "=========" << std::endl;
-  std::cout << " M E N U " << std::endl;
-  std::cout << "=========" << std::endl;
-  for (const auto& item : menu_) {
-    std::cout << item.first << ". " << item.second.name << std::endl;
-  }
-  std::cout << "=========" << std::endl;
-}
-
-int ConsoleView::PerformChoice() {
-  int choice = PerformNumericInput("Input a menu item digit: ");
-  if (menu_.find(choice) == menu_.end()) {
-    ErrorMessage("Item out of range!");
-  }
-  return choice;
-}
-
-int ConsoleView::PerformNumericInput(const std::string& prompt) {
-  int number = 0;
-  std::string input;
-  while (number == 0) {
-    std::cout << prompt;
-    getline(std::cin, input);
-    try {
-      number = std::stoi(input);
-    } catch (const std::invalid_argument&) {
-      ErrorMessage("Wrong input!");
+void ConsoleView::StartEventLoop() {
+  while (!event_loop_end_) {
+    DisplayMenu();
+    int choice = PerformChoice();
+    auto it = menu_.find(choice);
+    if (it != menu_.end()) {
+      try {
+        auto& user_action_method = it->second.user_action_method;
+        (this->*user_action_method)();
+      } catch (const std::exception& e) {
+        ErrorMessage(e.what());
+      }
     }
   }
-
-  return number;
-}
-
-void ConsoleView::PerformStringInput() {
-  std::cout << "Input a filename: ";
-  getline(cin, data_.filename);
-}
-
-void ConsoleView::LoadGraph() {
-  PerformStringInput();
-  controller_->LoadGraphFromFile(&data_);
-  std::string message = "File " + data_.filename + " loaded successfully";
-  FinalMessage(message);
-}
-
-void ConsoleView::ExportGraph() {
-  PerformStringInput();
-  controller_->ExportGraphToDot(&data_);
-  std::string message = "Graph successfully exported to file " + data_.filename;
-  FinalMessage(message);
-}
-void ConsoleView::LeastSpanningTree() {
-  if (!controller_->IsModelLoaded()) {
-    ErrorMessage("Model is not loaded");
-    return;
-  }
-  controller_->GetLeastSpanningTree();
-  Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
-  PrintMatrix(result_matrix);
-  FinalMessage("LeastSpanningTree finished");
 }
 
 void ConsoleView::BreadthFirstSearch() {
@@ -116,6 +66,74 @@ void ConsoleView::DepthFirstSearch() {
   controller_->DepthFirstSearch(&data_);
   PrintArray(controller_->array_result());
   FinalMessage("DepthFirstSearch finished");
+}
+
+void ConsoleView::DisplayMenu() {
+  std::cout << "=========" << std::endl;
+  std::cout << " M E N U " << std::endl;
+  std::cout << "=========" << std::endl;
+  for (const auto& item : menu_) {
+    std::cout << item.first << ". " << item.second.name << std::endl;
+  }
+  std::cout << "=========" << std::endl;
+}
+
+void ConsoleView::ExitAction() { event_loop_end_ = true; };
+
+void ConsoleView::ExportGraph() {
+  PerformStringInput();
+  controller_->ExportGraphToDot(&data_);
+  std::string message = "Graph successfully exported to file " + data_.filename;
+  FinalMessage(message);
+}
+
+void ConsoleView::LeastSpanningTree() {
+  if (!controller_->IsModelLoaded()) {
+    ErrorMessage("Model is not loaded");
+    return;
+  }
+  controller_->GetLeastSpanningTree();
+  Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
+  PrintMatrix(result_matrix);
+  FinalMessage("LeastSpanningTree finished");
+}
+
+void ConsoleView::LoadGraph() {
+  PerformStringInput();
+  controller_->LoadGraphFromFile(&data_);
+  std::string message = "File " + data_.filename + " loaded successfully";
+  FinalMessage(message);
+}
+
+void ConsoleView::NoAction() { ErrorMessage("No action implemented"); }
+
+int ConsoleView::PerformChoice() {
+  int choice = PerformNumericInput("Input a menu item digit: ");
+  if (menu_.find(choice) == menu_.end()) {
+    ErrorMessage("Item out of range!");
+  }
+  return choice;
+}
+
+int ConsoleView::PerformNumericInput(const std::string& prompt) {
+  int number = 0;
+  std::string input;
+  while (number == 0) {
+    std::cout << prompt;
+    getline(std::cin, input);
+    try {
+      number = std::stoi(input);
+    } catch (const std::invalid_argument&) {
+      ErrorMessage("Wrong input!");
+    }
+  }
+
+  return number;
+}
+
+void ConsoleView::PerformStringInput() {
+  std::cout << "Input a filename: ";
+  getline(std::cin, data_.filename);
 }
 
 void ConsoleView::ShortestPathBetweenVertices() {
@@ -149,14 +167,12 @@ void ConsoleView::ShortestPathsBetweenAllVertices() {
   FinalMessage("ShortestPathsBetweenAllVertices finished");
 }
 
-void ConsoleView::PrintMatrix(const Graph::AdjacencyMatrix& matrix) {
-  std::cout << "Result matrix : " << std::endl;
-  for (size_t i = 0; i < matrix.size(); i++) {
-    for (size_t j = 0; j < matrix.at(i).size(); j++) {
-      std::cout << std::setw(5) << matrix[i][j] << " ";
-    }
-    std::cout << std::endl;
-  }
+void ConsoleView::ErrorMessage(const std::string& message) {
+  std::cout << termcolor::red << message << termcolor::reset << std::endl;
+}
+
+void ConsoleView::FinalMessage(const std::string& message) {
+  std::cout << termcolor::green << message << termcolor::reset << std::endl;
 }
 
 void ConsoleView::PrintArray(const GraphAlgorithms::ResultArray& array) {
@@ -168,35 +184,17 @@ void ConsoleView::PrintArray(const GraphAlgorithms::ResultArray& array) {
   std::cout << std::endl;
 }
 
+void ConsoleView::PrintMatrix(const Graph::AdjacencyMatrix& matrix) {
+  std::cout << "Result matrix : " << std::endl;
+  for (size_t i = 0; i < matrix.size(); i++) {
+    for (size_t j = 0; j < matrix.at(i).size(); j++) {
+      std::cout << std::setw(5) << matrix[i][j] << " ";
+    }
+    std::cout << std::endl;
+  }
+}
+
 void ConsoleView::PrintValue(const GraphAlgorithms::Result& result) {
   std::cout << "Smallest distance: " << result;
   std::cout << std::endl;
-}
-
-void ConsoleView::ErrorMessage(const std::string& message) {
-  std::cout << termcolor::red << message << termcolor::reset << std::endl;
-}
-
-void ConsoleView::FinalMessage(const std::string& message) {
-  std::cout << termcolor::green << message << termcolor::reset << std::endl;
-}
-
-void ConsoleView::NoAction() { ErrorMessage("No action implemented"); }
-
-void ConsoleView::ExitAction() { event_loop_end_ = true; };
-
-void ConsoleView::StartEventLoop() {
-  while (!event_loop_end_) {
-    DisplayMenu();
-    int choice = PerformChoice();
-    auto it = menu_.find(choice);
-    if (it != menu_.end()) {
-      try {
-        auto& user_action_method = it->second.user_action_method;
-        (this->*user_action_method)();
-      } catch (const std::exception& e) {
-        ErrorMessage(e.what());
-      }
-    }
-  }
 }
