@@ -14,20 +14,21 @@ struct GraphAppData {
 class Controller {
  public:
   explicit Controller(Graph *m) : model_(m){};
-  void LoadGraphFromFile(const GraphAppData *data);
-  void ExportGraphToDot(const GraphAppData *data);
-  void BreadthFirstSearch(const GraphAppData *data);
-  void DepthFirstSearch(const GraphAppData *data);
-  void GetLeastSpanningTree();
-  void GetShortestPathBetweenVertices(const GraphAppData *data);
-  void GetShortestPathsBetweenAllVertices();
 
   const GraphAlgorithms::Result &value_result() { return value_result_; }
   const GraphAlgorithms::ResultArray &array_result() { return array_result_; }
   const Graph::AdjacencyMatrix &adjacency_matrix_result() {
     return adjacency_matrix_result_;
   }
+
+  void BreadthFirstSearch(const GraphAppData *data);
+  void DepthFirstSearch(const GraphAppData *data);
+  void ExportGraphToDot(const GraphAppData *data);
+  void GetLeastSpanningTree();
+  void GetShortestPathBetweenVertices(const GraphAppData *data);
+  void GetShortestPathsBetweenAllVertices();
   bool IsModelLoaded();
+  void LoadGraphFromFile(const GraphAppData *data);
 
  private:
   Graph *model_ = nullptr;
