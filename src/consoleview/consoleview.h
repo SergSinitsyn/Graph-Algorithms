@@ -17,14 +17,14 @@ class ConsoleView {
   explicit ConsoleView(Controller *c);
   void StartEventLoop();
 
- protected:
-  void LoadGraph();
+ private:
   void BreadthFirstSearch();
   void DepthFirstSearch();
   void DisplayMenu();
   void ExitAction();
   void ExportGraph();
   void LeastSpanningTree();
+  void LoadGraph();
   void NoAction();
   int PerformChoice();
   int PerformNumericInput(const std::string &msg);
@@ -34,15 +34,14 @@ class ConsoleView {
 
   void ErrorMessage(const std::string &);
   void FinalMessage(const std::string &);
-  void FinalMessageWithFilename(const std::string &, const std::string &,
-                                const std::string &);
   void PrintArray(const GraphAlgorithms::ResultArray &array);
   void PrintMatrix(const Graph::AdjacencyMatrix &matrix);
   void PrintValue(const GraphAlgorithms::Result &result);
-  bool event_loop_end_ = false;
+
   Controller *controller_ = nullptr;
-  std::map<int, MenuItem> menu_{};
   GraphAppData data_{};
+  bool event_loop_end_ = false;
+  std::map<int, MenuItem> menu_{};
 };
 }  // namespace s21
 #endif  // NAVIGATOR_CONSOLEVIEW_CONSOLEVIEW_H
