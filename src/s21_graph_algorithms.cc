@@ -6,46 +6,65 @@
 #include <stack>
 #include <stdexcept>
 
+#include "containers/s21_queue.h"
 #include "containers/s21_stack.h"
 using namespace s21;
 
-/**
- * Performs a breadth-first search on a graph starting from a specified vertex.
- *
- * @param graph The graph to perform the breadth-first search on.
- * @param start_vertex The vertex to start the breadth-first search from.
- * Vertex numbers starts from 1
- *
- * @return The path traversed during the breadth-first search.
- *
- * @throws std::invalid_argument if the start_vertex is out of range.
- */
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     const Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
   std::vector<bool> visited(graph.size(), false);
-  std::queue<uint> q;  // TODO: replace with s21_queue
+  s21::queue<uint> queue;
   ResultArray path{};
   if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
   }
-  q.push(start_vertex);
+  queue.push(start_vertex);
   visited[start_vertex] = true;
   path.push_back(start_vertex);
-
-  while (!q.empty()) {
-    uint current = q.front();
-    q.pop();
-
+  while (!queue.empty()) {
+    uint current = queue.front();
+    queue.pop();
     for (size_t i = 0; i < graph.size(); i++) {
       if (graph.GetEdge(current, i) != 0 && !visited[i]) {
-        q.push(i);
+        queue.push(i);
         visited[i] = true;
         path.push_back(i);
       }
     }
   }
+  std::transform(path.begin(), path.end(), path.begin(),
+                 [](uint v) { return v + kVertexStartNumber; });
 
+  return path;
+}
+
+GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
+    const Graph &graph, int start_vertex) {
+  start_vertex -= kVertexStartNumber;
+  std::vector<bool> visited(graph.size(), false);
+  s21::stack<uint> stack;
+  ResultArray path{};
+  if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
+    throw std::invalid_argument("Vertex is out of range");
+  }
+  stack.push(start_vertex);
+  visited[start_vertex] = true;
+  path.push_back(start_vertex);
+  while (!stack.empty()) {
+    uint current = stack.top();
+    for (size_t i = 0; i < graph.size(); i++) {
+      if (graph.GetEdge(current, i) != 0 && !visited[i]) {
+        stack.push(i);
+        visited[i] = true;
+        path.push_back(i);
+        break;
+      }
+    }
+    if (current == stack.top()) {
+      stack.pop();
+    }
+  }
   std::transform(path.begin(), path.end(), path.begin(),
                  [](uint v) { return v + kVertexStartNumber; });
 
@@ -126,7 +145,6 @@ Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
     throw std::invalid_argument("Graph is not oriented");
   }
   uint size = graph.size();
-  // PrintMatrix(result_matrix);
   for (uint i = 0; i < size; i++) {
     for (uint j = 0; j < size; j++) {
       result_matrix.at(i).at(j) = 0;
@@ -154,41 +172,7 @@ Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
     result_matrix.at(start).at(end) = min_dist;
     result_matrix.at(end).at(start) = min_dist;
     visited.at(end) = true;
-    // PrintMatrix(result_matrix);
     --unvisited;
   }
   return result_matrix;
-}
-
-GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
-    const Graph &graph, int start_vertex) {
-  start_vertex -= kVertexStartNumber;
-  std::vector<bool> visited(graph.size(), false);
-  s21::stack<uint> stack;
-  ResultArray path{};
-  if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
-    throw std::invalid_argument("Vertex is out of range");
-  }
-  stack.push(start_vertex);
-  visited[start_vertex] = true;
-  path.push_back(start_vertex);
-
-  while (!stack.empty()) {
-    uint current = stack.top();
-    for (size_t i = 0; i < graph.size(); i++) {
-      if (graph.GetEdge(current, i) != 0 && !visited[i]) {
-        stack.push(i);
-        visited[i] = true;
-        path.push_back(i);
-        break;
-      }
-    }
-    if (current == stack.top()) {
-      stack.pop();
-    }
-  }
-  std::transform(path.begin(), path.end(), path.begin(),
-                 [](uint v) { return v + kVertexStartNumber; });
-
-  return path;
 }

@@ -21,11 +21,9 @@ class GraphAlgorithms {
     double distance;
   };
 
-  // TODO: Тип возвращаемого результата для частей 1-4 определить в процессе
-  // TODO: исполнения
   //  part 1
-  static ResultArray DepthFirstSearch(const Graph &graph, int start_vertex);
   static ResultArray BreadthFirstSearch(const Graph &graph, int start_vertex);
+  static ResultArray DepthFirstSearch(const Graph &graph, int start_vertex);
   // part 2
   static Result GetShortestPathBetweenVertices(const Graph &graph, int vertex1,
                                                int vertex2);
