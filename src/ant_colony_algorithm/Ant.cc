@@ -9,19 +9,25 @@
 namespace s21 {
 
 void Ant::RunAnt() {
+  ClearAllData();
+
+  path_.push(starting_vertex_);
   visited_vertices.insert(starting_vertex_);
   current_vertex_ = starting_vertex_;
+
   for (int i = 0; i < size_ - 1; ++i) {
     uint new_vertex = ChooseVertex();
-    visited_vertices.insert(current_vertex_);
-    path_.insert(current_vertex_, new_vertex);
     distance_ += graph_.GetEdge(current_vertex_, new_vertex);
+
+    path_.push(new_vertex);
+    visited_vertices.insert(new_vertex);
     current_vertex_ = new_vertex;
   }
-  path_.insert(current_vertex_, starting_vertex_);
+
+  path_.push(starting_vertex_);
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
 
-  double deposited_pheromone = kPheromoneValue / distance_;
+  PlacePheromones(kPheromoneValue / distance_);
 }
 
 uint Ant::ChooseVertex() {
@@ -43,7 +49,8 @@ uint Ant::ChooseVertex() {
 }
 
 void Ant::FindPossibleMoves() {
-  s for (int vertex = 0; vertex < size_;) {
+  possible_moves_.clear();
+  for (int vertex = 0; vertex < size_;) {
     if (graph_.GetEdge(current_vertex_, vertex) &&
         !visited_vertices_.count(vertex)) {
       possible_moves_.insert(vertex);
@@ -51,18 +58,41 @@ void Ant::FindPossibleMoves() {
   }
 
   // TODO if no moves?
+  if (possible_moves_.empty()) {
+  }
 }
 
 double Ant::CalculateProbabilities() {
+  probabilities_.clear();
   double sum = 0;
   for (const auto& next_vertex : possible_moves_) {
     double probability =
         pow(closeness_.GetEdge(current_vertex_, next_vertex), kBeta) *
         pow(pheromones_.GetEdge(current_vertex_, next_vertex), kAlpha);
-    probabilities_.insert(std::pair<uint, double>(next_vertex, probability));
+    probabilities_.insert({next_vertex, probability});
     sum += probability;
   }
   return sum;
+}
+
+void Ant::PlacePheromones(double value) {
+  // for (int i = 0; i < path_.size() - 1; ++i) {
+  //   new_pheromones_.SetEdge(path_.at(i), path_.at(i + 1), value);
+  // }
+
+  std::for_each(path_.begin(), path_.end() - 1, [&](const auto& node) {
+    new_pheromones_.SetEdge(node, *(std::next(&node)), value);
+  });
+}
+
+void Ant::ClearData() {
+  current_vertex_ = starting_vertex_;
+  distance_ = 0;
+  visited_vertices_.clear();
+  possible_moves_.clear();
+  probabilities_.clear();
+  path_.clear();
+  solution_.clear();
 }
 
 }  // namespace s21

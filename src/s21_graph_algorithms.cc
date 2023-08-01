@@ -183,5 +183,11 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     const Graph &graph) {
   AntColonyAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
-  return algorithm.GetResult();
+  std::pair<double, std::vector<uint>> result = algorithm.GetResult();
+
+  std::vector<uint> modified_vector = result.second;
+  std::transform(result.second.begin(), result.second.end(),
+                 result.second.begin(), [](uint &val) { return val + 1; });
+  TsmResult tsm_result = {modified_vector, result.first};
+  return tsm_result;
 }

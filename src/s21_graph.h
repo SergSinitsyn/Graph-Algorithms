@@ -21,11 +21,10 @@ class Graph {
   uint GetEdge(uint from, uint to) const {
     return adjacency_matrix_.at(from).at(to);
   }
-  uint SetEdge(uint from, uint to, uint value) {
+  void SetEdge(uint from, uint to, uint value) {
     adjacency_matrix_.at(from).at(to) = value;
   }
   const AdjacencyMatrix& GetMatrix() const { return adjacency_matrix_; }
-  const AdjacencyMatrix& GetMatrix() { return adjacency_matrix_; }
 
   void ExportGraphToDot(const std::string& filename);
   bool GraphOrientationCheck() const;

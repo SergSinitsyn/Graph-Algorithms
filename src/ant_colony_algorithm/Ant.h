@@ -3,6 +3,7 @@
 
 #include <map>
 #include <set>
+#include <vector>
 
 #include "../s21_graph.h"
 
@@ -22,12 +23,14 @@ class Ant {
   void Run(){};
 
   Graph GetNewPheromones() const { return new_pheromones_; };
+  std::pair<double, std::vector> GetResult() const { return solution_; };
 
  private:
   void RunAnt();
   uint ChooseVertex();
   void FindPossibleMoves();
   double CalculateProbabilities();
+  void PlacePheromones(double value);
 
   Graph graph_;
   Graph closeness_;
@@ -36,18 +39,18 @@ class Ant {
 
   static const double kAlpha = 1;
   static const double kBeta = 1;
-  static const double kPheromoneValue = 1000;
+  static const double kPheromoneValue = 100;
 
   uint size_;
   uint starting_vertex_;
   uint current_vertex_;
-
-  uint distance_;
+  double distance_;
 
   std::set<uint> visited_vertices_;
   std::set<uint> possible_moves_;
   std::map<uint, double> probabilities_;
-  std::map<uint, uint> path_;
+  std::vector<uint> path_;
+  std::pair<double, std::vector<uint>> solution_;
 };
 
 }  // namespace s21

@@ -1,19 +1,27 @@
 #ifndef NAVIGATOR_ANT_COLONY_ALGORITHM_H_
 #define NAVIGATOR_ANT_COLONY_ALGORITHM_H_
 
-#include "../21_graph.h"
+#include <map>
+#include <set>
+#include <vector>
+
+#include "../s21_graph.h"
 
 namespace s21 {
 
 class AntColonyAlgorithm {
  public:
-  struct TsmResult {
-    std::vector<int> vertices;
-    double distance;
-  };
   AntColonyAlgorithm(const Graph &graph);
   void RunAlgorithm();
-  TsmResult GetResult() const { return result_; };
+  std::pair<double, std::vector<uint>> GetResult() const {
+    auto it = solutions_.begin();
+    if (it != solutions_.end()) {
+      return std::pair<double, std::vector<unsigned int>>(it->first,
+                                                          it->second);
+    } else {
+      return {0.0, std::vector<uint>()};
+    }
+  };
 
  private:
   void Itetation();
@@ -22,14 +30,14 @@ class AntColonyAlgorithm {
   Graph closeness_;
   Graph pheromones_;
 
-  TsmResult result_;
-
-  static const int kInitialPheromoneValue = 0.2;
-  static const int kMagicLength = 100;
-  static const float kVaporization = 0.5;
-  static const int kInetations = 100;
+  static constexpr const double kInitialPheromoneValue = 0.2;
+  static constexpr const double kMagicLength = 100;
+  static constexpr const double kVaporization = 0.5;
+  static constexpr const int kInetations = 10;
   int ants_count_;
   int size_;
+
+  std::multimap<double, std::vector<uint>> solutions_;
 };
 
 }  // namespace s21

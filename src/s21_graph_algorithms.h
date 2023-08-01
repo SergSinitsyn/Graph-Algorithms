@@ -13,6 +13,10 @@
 namespace s21 {
 class GraphAlgorithms {
  public:
+  struct TsmResult {
+    std::vector<uint> vertices;
+    double distance;
+  };
   static const int kVertexStartNumber = 1;
   using ResultArray = std::vector<uint>;
   using Result = uint;

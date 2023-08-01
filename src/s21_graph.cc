@@ -100,15 +100,15 @@ void Graph::SetSize(size_t size) {
 }
 
 void Graph::AddGraph(const Graph& graph) {
-  for (int i = 0; i < size_; ++i) {
-    for (int j = 0; j < size_; ++j) {
+  for (uint i = 0; i < size_; ++i) {
+    for (uint j = 0; j < size_; ++j) {
       adjacency_matrix_.at(i).at(j) += graph.GetEdge(i, j);
     }
   }
 }
 void Graph::MultNumber(const uint& number) {
-  for (int i = 0; i < size_; ++i) {
-    for (int j = 0; j < size_; ++j) {
+  for (uint i = 0; i < size_; ++i) {
+    for (uint j = 0; j < size_; ++j) {
       adjacency_matrix_.at(i).at(j) *= number;
     }
   }
