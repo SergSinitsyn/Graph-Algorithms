@@ -1,7 +1,10 @@
 #ifndef NAVIGATOR_S21_GRAPH_H_
 #define NAVIGATOR_S21_GRAPH_H_
+
 #include <string>
 #include <vector>
+
+using uint = unsigned int;
 namespace s21 {
 
 /** Graph
@@ -18,11 +21,17 @@ class Graph {
   uint GetEdge(uint from, uint to) const {
     return adjacency_matrix_.at(from).at(to);
   }
+  uint SetEdge(uint from, uint to, uint value) {
+    adjacency_matrix_.at(from).at(to) = value;
+  }
   const AdjacencyMatrix& GetMatrix() const { return adjacency_matrix_; }
+  const AdjacencyMatrix& GetMatrix() { return adjacency_matrix_; }
 
   void ExportGraphToDot(const std::string& filename);
   bool GraphOrientationCheck() const;
   void LoadGraphFromFile(const std::string& filename);
+  void AddGraph(const Graph& graph);
+  void MultNumber(const uint& number);
 
  private:
   size_t CountVerticesGraph(const std::string& sentence);

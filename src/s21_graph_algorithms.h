@@ -16,10 +16,6 @@ class GraphAlgorithms {
   static const int kVertexStartNumber = 1;
   using ResultArray = std::vector<uint>;
   using Result = uint;
-  struct TsmResult {
-    std::vector<int> vertices;
-    double distance;
-  };
 
   //  part 1
   static ResultArray BreadthFirstSearch(const Graph &graph, int start_vertex);

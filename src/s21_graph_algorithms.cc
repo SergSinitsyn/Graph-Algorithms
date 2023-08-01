@@ -6,8 +6,10 @@
 #include <stack>
 #include <stdexcept>
 
+#include "ant_colony_algorithm/AntColonyAlgorithm.h"
 #include "containers/s21_queue.h"
 #include "containers/s21_stack.h"
+
 using namespace s21;
 
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
@@ -175,4 +177,11 @@ Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
     --unvisited;
   }
   return result_matrix;
+}
+
+GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph &graph) {
+  AntColonyAlgorithm algorithm(graph);
+  algorithm.RunAlgorithm();
+  return algorithm.GetResult();
 }
