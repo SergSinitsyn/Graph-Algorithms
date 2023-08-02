@@ -7,20 +7,20 @@
 
 #include "../s21_graph.h"
 
-namespace s21 {
+using namespace s21;
 
 class Ant {
  public:
-  using Solution = std::pair<std::vector<uint>, double>;
+  using Solution = std::pair<double, std::vector<size_t>>;
 
   Ant(const Graph &graph, const Graph &closeness, const Graph &pheromones);
-  void SetStartingVertex(uint starting_vertex);
+  void SetStartingVertex(size_t starting_vertex);
   void RunAnt();
   Graph GetNewPheromones() const { return new_pheromones_; };
   Solution GetSolution() const { return solution_; };
 
  private:
-  uint ChooseVertex();
+  size_t ChooseVertex();
   void FindPossibleMoves();
   double CalculateProbabilities();
   void PlacePheromones(double value);
@@ -35,18 +35,16 @@ class Ant {
   static constexpr double kBeta = 1;
   static constexpr double kPheromoneValue = 100;
 
-  uint size_;
-  uint starting_vertex_;
-  uint current_vertex_;
+  size_t size_;
+  size_t starting_vertex_;
+  size_t current_vertex_;
   double distance_;
 
-  std::set<uint> visited_vertices_;
-  std::set<uint> possible_moves_;
-  std::map<uint, double> probabilities_;
-  std::vector<uint> path_;
+  std::set<size_t> visited_vertices_;
+  std::set<size_t> possible_moves_;
+  std::map<size_t, double> probabilities_;
+  std::vector<size_t> path_;
   Solution solution_;
 };
-
-}  // namespace s21
 
 #endif  // NAVIGATOR_ANT_H_

@@ -2,15 +2,16 @@
 
 #include <fstream>
 #include <sstream>
-using namespace s21;
+
+namespace s21 {
 
 void Graph::ExportGraphToDot(const std::string& filename) {
   std::ofstream file(filename);
   bool is_oriented = !GraphOrientationCheck();
   const std::string graph_type = (is_oriented ? "digraph" : "graph");
   file << graph_type << " Graph {" << std::endl;
-  for (uint i = 0; i < size_; ++i) {
-    for (uint j = (is_oriented ? 0 : i); j < size_; ++j) {
+  for (size_t i = 0; i < size_; ++i) {
+    for (size_t j = (is_oriented ? 0 : i); j < size_; ++j) {
       if (adjacency_matrix_.at(i).at(j)) {
         file << "    " << i + 1 << (is_oriented ? "->" : "--") << j + 1
              << "[label=" << adjacency_matrix_.at(i).at(j) << "];" << std::endl;
@@ -21,8 +22,8 @@ void Graph::ExportGraphToDot(const std::string& filename) {
 }
 
 bool Graph::GraphOrientationCheck() const {
-  for (uint i = 0; i < size_; ++i) {
-    for (uint j = i; j < size_; ++j) {
+  for (size_t i = 0; i < size_; ++i) {
+    for (size_t j = i; j < size_; ++j) {
       if (adjacency_matrix_.at(i).at(j) != adjacency_matrix_.at(j).at(i)) {
         return false;
       }
@@ -41,7 +42,7 @@ void Graph::LoadGraphFromFile(const std::string& filename) {
   }
   std::string line = GetNonEmptyLine(file);
   SetSize(ReadSize(line));
-  for (uint i = 0; i < size_; ++i) {
+  for (size_t i = 0; i < size_; ++i) {
     line = GetNonEmptyLine(file);
     if (CountVerticesGraph(line) < size_) {
       throw std::invalid_argument(
@@ -71,11 +72,11 @@ std::string Graph::GetNonEmptyLine(std::ifstream& file) {
   return line;
 }
 
-void Graph::ReadLine(const uint& line_number, const std::string& line) {
+void Graph::ReadLine(const size_t& line_number, const std::string& line) {
   size_t num_size = 0;
   size_t line_index = 0;
-  for (uint col_index = 0; col_index < size_; ++col_index) {
-    uint number = std::stoi(&line.at(line_index), &num_size);
+  for (size_t col_index = 0; col_index < size_; ++col_index) {
+    size_t number = std::stoi(&line.at(line_index), &num_size);
     adjacency_matrix_.at(line_number).at(col_index) = number;
     line_index += num_size;
   }
@@ -100,16 +101,18 @@ void Graph::SetSize(size_t size) {
 }
 
 void Graph::AddGraph(const Graph& graph) {
-  for (uint i = 0; i < size_; ++i) {
-    for (uint j = 0; j < size_; ++j) {
+  for (size_t i = 0; i < size_; ++i) {
+    for (size_t j = 0; j < size_; ++j) {
       adjacency_matrix_.at(i).at(j) += graph.GetEdge(i, j);
     }
   }
 }
-void Graph::MultNumber(const uint& number) {
-  for (uint i = 0; i < size_; ++i) {
-    for (uint j = 0; j < size_; ++j) {
+void Graph::MultNumber(const size_t& number) {
+  for (size_t i = 0; i < size_; ++i) {
+    for (size_t j = 0; j < size_; ++j) {
       adjacency_matrix_.at(i).at(j) *= number;
     }
   }
 }
+
+}  // namespace s21

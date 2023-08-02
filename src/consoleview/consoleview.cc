@@ -6,7 +6,7 @@
 
 #include "termcolor.hpp"
 
-using namespace s21;
+namespace s21 {
 
 ConsoleView::ConsoleView(Controller* c)
     : controller_(c),
@@ -20,7 +20,9 @@ ConsoleView::ConsoleView(Controller* c)
            {"All shoortest paths search",
             &ConsoleView::ShortestPathsBetweenAllVertices}},
           {6, {"Get least spanning tree", &ConsoleView::LeastSpanningTree}},
-          {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
+          {7,
+           {"Travelling Salesman Problem",
+            &ConsoleView::SolveTravellingSalesmanProblem}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
           {9, {"Exit", &ConsoleView::ExitAction}}} {};
 
@@ -167,6 +169,17 @@ void ConsoleView::ShortestPathsBetweenAllVertices() {
   FinalMessage("ShortestPathsBetweenAllVertices finished");
 }
 
+void ConsoleView::SolveTravellingSalesmanProblem() {
+  if (!controller_->IsModelLoaded()) {
+    ErrorMessage("Model is not loaded");
+    return;
+  }
+  controller_->SolveTravellingSalesmanProblem();
+  PrintArray(controller_->array_result());
+  PrintValue(controller_->value_result());
+  FinalMessage("Travelling Salesman Problem is resolved");
+}
+
 void ConsoleView::ErrorMessage(const std::string& message) {
   std::cout << termcolor::red << message << termcolor::reset << std::endl;
 }
@@ -198,3 +211,5 @@ void ConsoleView::PrintValue(const GraphAlgorithms::Result& result) {
   std::cout << "Smallest distance: " << result;
   std::cout << std::endl;
 }
+
+}  // namespace s21

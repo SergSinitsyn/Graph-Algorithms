@@ -11,17 +11,18 @@
  *! неоходимо преобразовывать на входе в метод и при выдаче результата
  */
 namespace s21 {
+
 class GraphAlgorithms {
  public:
   struct TsmResult {
-    std::vector<uint> vertices;
+    std::vector<size_t> vertices;
     double distance;
   };
   static const int kVertexStartNumber = 1;
-  using ResultArray = std::vector<uint>;
-  using Result = uint;
+  using ResultArray = std::vector<size_t>;
+  using Result = size_t;
 
-  //  part 1
+  // part 1
   static ResultArray BreadthFirstSearch(const Graph &graph, int start_vertex);
   static ResultArray DepthFirstSearch(const Graph &graph, int start_vertex);
   // part 2
@@ -40,5 +41,7 @@ class GraphAlgorithms {
  private:
   static bool FullTrack(std::vector<bool> visited);
 };
-};      // namespace s21
+
+}  // namespace s21
+
 #endif  // NAVIGATOR_S21_GRAPH_ALGORITHMS_H_

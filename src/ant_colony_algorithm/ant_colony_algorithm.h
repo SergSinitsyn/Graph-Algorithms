@@ -8,11 +8,11 @@
 #include "../s21_graph.h"
 #include "ant.h"
 
-namespace s21 {
+using namespace s21;
 
 class AntColonyAlgorithm {
  public:
-  AntColonyAlgorithm(const Graph &graph);
+  AntColonyAlgorithm(const Graph &graph, size_t size);
   void RunAlgorithm();
   Ant::Solution GetResult() const;
 
@@ -20,6 +20,8 @@ class AntColonyAlgorithm {
   void Itetation();
 
   Graph graph_;
+  size_t size_;
+  size_t ants_count_;
   Graph closeness_;
   Graph pheromones_;
 
@@ -27,12 +29,8 @@ class AntColonyAlgorithm {
   static constexpr double kMagicLength = 100;
   static constexpr double kVaporization = 0.5;
   static constexpr int kInetations = 10;
-  uint ants_count_;
-  uint size_;
 
-  std::multimap<double, std::vector<uint>> solutions_;
+  std::multimap<double, std::vector<size_t>> solutions_;
 };
-
-}  // namespace s21
 
 #endif  // NAVIGATOR_ANT_COLONY_ALGORITHM_H_

@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-using uint = unsigned int;
 namespace s21 {
 
 /** Graph
@@ -13,16 +12,18 @@ namespace s21 {
  */
 class Graph {
  public:
-  using AdjacencyMatrix = std::vector<std::vector<uint>>;
-  static const uint kMinSize = 1;
-  static const uint kMaxSize = 100;  //! To be defined!
+  using AdjacencyMatrix = std::vector<std::vector<size_t>>;
+  static const size_t kMinSize = 1;
+  static const size_t kMaxSize = 100;  //! To be defined!
 
-  Graph(uint size) : size_(size) { SetSize(size_); };
+  Graph() : size_(){};
+  Graph(size_t size) : size_(size) { SetSize(size_); };
+
   size_t size() const { return size_; }
-  uint GetEdge(uint from, uint to) const {
+  size_t GetEdge(size_t from, size_t to) const {
     return adjacency_matrix_.at(from).at(to);
   }
-  void SetEdge(uint from, uint to, uint value) {
+  void SetEdge(size_t from, size_t to, size_t value) {
     adjacency_matrix_.at(from).at(to) = value;
   }
   const AdjacencyMatrix& GetMatrix() const { return adjacency_matrix_; }
@@ -31,17 +32,19 @@ class Graph {
   bool GraphOrientationCheck() const;
   void LoadGraphFromFile(const std::string& filename);
   void AddGraph(const Graph& graph);
-  void MultNumber(const uint& number);
+  void MultNumber(const size_t& number);
 
  private:
   size_t CountVerticesGraph(const std::string& sentence);
   std::string GetNonEmptyLine(std::ifstream& file);
-  void ReadLine(const uint& line_number, const std::string& line);
+  void ReadLine(const size_t& line_number, const std::string& line);
   size_t ReadSize(const std::string& line);
   void SetSize(size_t size);
 
   AdjacencyMatrix adjacency_matrix_;
   size_t size_ = 0;
 };
+
 }  // namespace s21
+
 #endif  // NAVIGATOR_S21_GRAPH_H_

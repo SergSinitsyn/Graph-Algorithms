@@ -1,50 +1,50 @@
 #include "ant.h"
 
+#include <algorithm>
 #include <map>
-#include <pair>
 #include <random>
 #include <set>
 
 #include "../s21_graph.h"
 
-namespace s21 {
+using namespace s21;
 
 Ant::Ant(const Graph& graph, const Graph& closeness, const Graph& pheromones)
     : graph_(graph), closeness_(closeness), pheromones_(pheromones) {
-  size_ = static_cast<uint>(graph.size());
+  size_ = graph.size();
 }
 
-void Ant::SetStartingVertex(uint starting_vertex)
-    : starting_vertex_(starting_vertex) {
+void Ant::SetStartingVertex(size_t starting_vertex) {
+  starting_vertex_ = starting_vertex;
   if (starting_vertex >= graph_.size()) {
     starting_vertex_ = starting_vertex % graph_.size();
   }
 }
 
 void Ant::RunAnt() {
-  ClearAllData();
+  ClearData();
 
-  path_.push(starting_vertex_);
-  visited_vertices.insert(starting_vertex_);
+  path_.push_back(starting_vertex_);
+  visited_vertices_.insert(starting_vertex_);
   current_vertex_ = starting_vertex_;
 
-  for (int i = 0; i < size_ - 1; ++i) {
-    uint new_vertex = ChooseVertex();
+  for (size_t i = 0; i < size_ - 1; ++i) {
+    size_t new_vertex = ChooseVertex();
     distance_ += graph_.GetEdge(current_vertex_, new_vertex);
 
-    path_.push(new_vertex);
-    visited_vertices.insert(new_vertex);
+    path_.push_back(new_vertex);
+    visited_vertices_.insert(new_vertex);
     current_vertex_ = new_vertex;
   }
 
-  path_.push(starting_vertex_);
+  path_.push_back(starting_vertex_);
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
 
   PlacePheromones(kPheromoneValue / distance_);
-  solution_ = std::make_pair{path_, distance_};
+  solution_ = std::make_pair(distance_, path_);
 }
 
-uint Ant::ChooseVertex() {
+size_t Ant::ChooseVertex() {
   FindPossibleMoves();
   double sum_of_probabilities = CalculateProbabilities();
 
@@ -53,18 +53,20 @@ uint Ant::ChooseVertex() {
   std::uniform_real_distribution<double> distribution(0.0,
                                                       sum_of_probabilities);
   double random_number = distribution(gen);
+  double result = 0;
 
   for (const auto& sector : probabilities_) {
     random_number -= sector.second;
     if (random_number <= 0.0) {
-      return sector.first;
+      result = sector.first;
     }
   }
+  return result;
 }
 
 void Ant::FindPossibleMoves() {
   possible_moves_.clear();
-  for (int vertex = 0; vertex < size_;) {
+  for (size_t vertex = 0; vertex < size_;) {
     if (graph_.GetEdge(current_vertex_, vertex) &&
         !visited_vertices_.count(vertex)) {
       possible_moves_.insert(vertex);
@@ -72,8 +74,8 @@ void Ant::FindPossibleMoves() {
   }
 
   // TODO if no moves?
-  if (possible_moves_.empty()) {
-  }
+  // if (possible_moves_.empty()) {
+  // }
 }
 
 double Ant::CalculateProbabilities() {
@@ -90,10 +92,6 @@ double Ant::CalculateProbabilities() {
 }
 
 void Ant::PlacePheromones(double value) {
-  // for (int i = 0; i < path_.size() - 1; ++i) {
-  //   new_pheromones_.SetEdge(path_.at(i), path_.at(i + 1), value);
-  // }
-
   std::for_each(path_.begin(), path_.end() - 1, [&](const auto& node) {
     new_pheromones_.SetEdge(node, *(std::next(&node)), value);
   });
@@ -106,7 +104,5 @@ void Ant::ClearData() {
   possible_moves_.clear();
   probabilities_.clear();
   path_.clear();
-  solution_.clear();
+  solution_ = {};
 }
-
-}  // namespace s21
