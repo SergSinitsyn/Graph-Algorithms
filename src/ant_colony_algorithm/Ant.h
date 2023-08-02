@@ -11,35 +11,29 @@ namespace s21 {
 
 class Ant {
  public:
-  Ant(const Graph &graph, const Graph &closeness, const Graph &pheromones)
-      : graph_(graph),
-        closeness_(closeness),
-        pheromones_(pheromones),
-        size_(graph.size()){};
+  using Solution = std::pair<std::vector<uint>, double>;
 
-  void SetStartingVertex(uint starting_vertex)
-      starting_vertex_(starting_vertex){};
-
-  void Run(){};
-
+  Ant(const Graph &graph, const Graph &closeness, const Graph &pheromones);
+  void SetStartingVertex(uint starting_vertex);
+  void RunAnt();
   Graph GetNewPheromones() const { return new_pheromones_; };
-  std::pair<double, std::vector> GetResult() const { return solution_; };
+  Solution GetSolution() const { return solution_; };
 
  private:
-  void RunAnt();
   uint ChooseVertex();
   void FindPossibleMoves();
   double CalculateProbabilities();
   void PlacePheromones(double value);
+  void ClearData();
 
   Graph graph_;
   Graph closeness_;
   Graph pheromones_;
   Graph new_pheromones_;
 
-  static const double kAlpha = 1;
-  static const double kBeta = 1;
-  static const double kPheromoneValue = 100;
+  static constexpr double kAlpha = 1;
+  static constexpr double kBeta = 1;
+  static constexpr double kPheromoneValue = 100;
 
   uint size_;
   uint starting_vertex_;
@@ -50,7 +44,7 @@ class Ant {
   std::set<uint> possible_moves_;
   std::map<uint, double> probabilities_;
   std::vector<uint> path_;
-  std::pair<double, std::vector<uint>> solution_;
+  Solution solution_;
 };
 
 }  // namespace s21

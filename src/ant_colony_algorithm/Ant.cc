@@ -1,12 +1,25 @@
-#include "Ant.h"
+#include "ant.h"
 
 #include <map>
+#include <pair>
 #include <random>
 #include <set>
 
 #include "../s21_graph.h"
 
 namespace s21 {
+
+Ant::Ant(const Graph& graph, const Graph& closeness, const Graph& pheromones)
+    : graph_(graph), closeness_(closeness), pheromones_(pheromones) {
+  size_ = static_cast<uint>(graph.size());
+}
+
+void Ant::SetStartingVertex(uint starting_vertex)
+    : starting_vertex_(starting_vertex) {
+  if (starting_vertex >= graph_.size()) {
+    starting_vertex_ = starting_vertex % graph_.size();
+  }
+}
 
 void Ant::RunAnt() {
   ClearAllData();
@@ -28,6 +41,7 @@ void Ant::RunAnt() {
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
 
   PlacePheromones(kPheromoneValue / distance_);
+  solution_ = std::make_pair{path_, distance_};
 }
 
 uint Ant::ChooseVertex() {

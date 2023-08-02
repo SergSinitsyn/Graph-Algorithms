@@ -34,7 +34,7 @@ LIB1_OBJS=$(LIB1_SOURCES:.cc=.o)
 
 LIB2=s21_graph_algorithms
 LIB2_NAME=s21_graph_algorithms.a
-LIB2_SOURCES=s21_graph_algorithms.cc
+LIB2_SOURCES=s21_graph_algorithms.cc ant_colony_algorithm/ant_colony_algorithm.cc
 LIB2_OBJS=$(LIB2_SOURCES:.cc=.o)
 
 .SUFFIXES:

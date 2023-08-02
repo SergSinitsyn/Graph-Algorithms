@@ -17,6 +17,7 @@ class Graph {
   static const uint kMinSize = 1;
   static const uint kMaxSize = 100;  //! To be defined!
 
+  Graph(uint size) : size_(size) { SetSize(size_); };
   size_t size() const { return size_; }
   uint GetEdge(uint from, uint to) const {
     return adjacency_matrix_.at(from).at(to);
