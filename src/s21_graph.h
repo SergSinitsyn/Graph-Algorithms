@@ -1,7 +1,9 @@
 #ifndef NAVIGATOR_S21_GRAPH_H_
 #define NAVIGATOR_S21_GRAPH_H_
+#include <numeric>
 #include <string>
 #include <vector>
+
 namespace s21 {
 
 /** Graph
@@ -15,6 +17,12 @@ class Graph {
   static const uint kMaxSize = 100;  //! To be defined!
 
   size_t size() const { return size_; }
+  size_t GetNumVertices() const { return adjacency_matrix_.size(); }
+  std::vector<uint> GetVertices() const {
+    auto vertexes = std::vector<uint>(GetNumVertices());
+    std::iota(vertexes.begin(), vertexes.end(), 1);
+    return std::move(vertexes);
+  }
   uint GetEdge(uint from, uint to) const {
     return adjacency_matrix_.at(from).at(to);
   }
@@ -32,7 +40,8 @@ class Graph {
   void SetSize(size_t size);
 
   AdjacencyMatrix adjacency_matrix_;
-  size_t size_ = 0;
+  size_t size_ = 0;  //! что это за размер - плохое название переменной - через
+                     //! месяц забыл о чем она
 };
 }  // namespace s21
 #endif  // NAVIGATOR_S21_GRAPH_H_
