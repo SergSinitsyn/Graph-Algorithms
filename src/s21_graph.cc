@@ -100,19 +100,4 @@ void Graph::SetSize(size_t size) {
   }
 }
 
-void Graph::AddGraph(const Graph& graph) {
-  for (size_t i = 0; i < size_; ++i) {
-    for (size_t j = 0; j < size_; ++j) {
-      adjacency_matrix_.at(i).at(j) += graph.GetEdge(i, j);
-    }
-  }
-}
-void Graph::MultNumber(const size_t& number) {
-  for (size_t i = 0; i < size_; ++i) {
-    for (size_t j = 0; j < size_; ++j) {
-      adjacency_matrix_.at(i).at(j) *= number;
-    }
-  }
-}
-
 }  // namespace s21

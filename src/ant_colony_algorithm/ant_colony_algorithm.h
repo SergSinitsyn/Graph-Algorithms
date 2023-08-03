@@ -22,13 +22,13 @@ class AntColonyAlgorithm {
   Graph graph_;
   size_t size_;
   size_t ants_count_;
-  Graph closeness_;
-  Graph pheromones_;
+  Matrix closeness_;
+  Matrix pheromones_;
 
-  static constexpr double kInitialPheromoneValue = 0.2;
+  static constexpr double kInitialPheromoneValue = 1.0;
   static constexpr double kMagicLength = 100;
   static constexpr double kVaporization = 0.5;
-  static constexpr int kInetations = 10;
+  static constexpr int kIterations = 10;
 
   std::multimap<double, std::vector<size_t>> solutions_;
 };

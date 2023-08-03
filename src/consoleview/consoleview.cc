@@ -190,9 +190,11 @@ void ConsoleView::FinalMessage(const std::string& message) {
 
 void ConsoleView::PrintArray(const GraphAlgorithms::ResultArray& array) {
   std::cout << "Array traversed vertices: ";
-  for (auto item : array) {
-    std::cout << item;
-    if (item != array.back()) std::cout << ", ";
+  for (auto it = array.begin(); it != array.end(); ++it) {
+    std::cout << *it;
+    if (it != array.end() - 1) {
+      std::cout << ", ";
+    }
   }
   std::cout << std::endl;
 }

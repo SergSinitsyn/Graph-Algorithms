@@ -88,6 +88,7 @@ clean:
 	$(CLEAN) consoleapp
 	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
 	$(CLEAN) samples/temp.dot
+	$(CLEAN) ant_colony_algorithm/$(OBJECTS) 
 
 tests: test
 

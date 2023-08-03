@@ -1,6 +1,7 @@
 #include "ant.h"
 
 #include <algorithm>
+#include <iostream>
 #include <map>
 #include <random>
 #include <set>
@@ -9,15 +10,16 @@
 
 using namespace s21;
 
-Ant::Ant(const Graph& graph, const Graph& closeness, const Graph& pheromones)
+Ant::Ant(const Graph& graph, const Matrix& closeness, const Matrix& pheromones)
     : graph_(graph), closeness_(closeness), pheromones_(pheromones) {
   size_ = graph.size();
+  new_pheromones_.SetSize(size_);
 }
 
 void Ant::SetStartingVertex(size_t starting_vertex) {
   starting_vertex_ = starting_vertex;
-  if (starting_vertex >= graph_.size()) {
-    starting_vertex_ = starting_vertex % graph_.size();
+  if (starting_vertex >= size_) {
+    starting_vertex_ = starting_vertex % size_;
   }
 }
 
@@ -66,7 +68,7 @@ size_t Ant::ChooseVertex() {
 
 void Ant::FindPossibleMoves() {
   possible_moves_.clear();
-  for (size_t vertex = 0; vertex < size_;) {
+  for (size_t vertex = 0; vertex < size_; ++vertex) {
     if (graph_.GetEdge(current_vertex_, vertex) &&
         !visited_vertices_.count(vertex)) {
       possible_moves_.insert(vertex);
@@ -80,11 +82,15 @@ void Ant::FindPossibleMoves() {
 
 double Ant::CalculateProbabilities() {
   probabilities_.clear();
-  double sum = 0;
+  double sum = 0.0;
   for (const auto& next_vertex : possible_moves_) {
-    double probability =
-        pow(closeness_.GetEdge(current_vertex_, next_vertex), kBeta) *
-        pow(pheromones_.GetEdge(current_vertex_, next_vertex), kAlpha);
+    // double probability =
+    //     powl(closeness_.GetEdge(current_vertex_, next_vertex), kBeta) *
+    //     powl(pheromones_.GetEdge(current_vertex_, next_vertex), kAlpha);
+
+    double probability = closeness_(current_vertex_, next_vertex) *
+                         pheromones_(current_vertex_, next_vertex);
+
     probabilities_.insert({next_vertex, probability});
     sum += probability;
   }
@@ -92,9 +98,9 @@ double Ant::CalculateProbabilities() {
 }
 
 void Ant::PlacePheromones(double value) {
-  std::for_each(path_.begin(), path_.end() - 1, [&](const auto& node) {
-    new_pheromones_.SetEdge(node, *(std::next(&node)), value);
-  });
+  for (size_t i = 0; i < path_.size() - 1; ++i) {
+    new_pheromones_(path_.at(i), path_.at(i + 1)) = value;
+  }
 }
 
 void Ant::ClearData() {

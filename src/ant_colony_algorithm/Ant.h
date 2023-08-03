@@ -13,10 +13,10 @@ class Ant {
  public:
   using Solution = std::pair<double, std::vector<size_t>>;
 
-  Ant(const Graph &graph, const Graph &closeness, const Graph &pheromones);
+  Ant(const Graph &graph, const Matrix &closeness, const Matrix &pheromones);
   void SetStartingVertex(size_t starting_vertex);
   void RunAnt();
-  Graph GetNewPheromones() const { return new_pheromones_; };
+  Matrix GetNewPheromones() const { return new_pheromones_; };
   Solution GetSolution() const { return solution_; };
 
  private:
@@ -27,13 +27,13 @@ class Ant {
   void ClearData();
 
   Graph graph_;
-  Graph closeness_;
-  Graph pheromones_;
-  Graph new_pheromones_;
+  Matrix closeness_;
+  Matrix pheromones_;
+  Matrix new_pheromones_;
 
   static constexpr double kAlpha = 1;
   static constexpr double kBeta = 1;
-  static constexpr double kPheromoneValue = 100;
+  static constexpr double kPheromoneValue = 10;
 
   size_t size_;
   size_t starting_vertex_;

@@ -185,8 +185,11 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   Ant::Solution result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.second;
-  std::transform(result.second.begin(), result.second.end(),
-                 result.second.begin(), [](size_t &val) { return val + 1; });
+
+  for (size_t i = 0; i < modified_vector.size(); ++i) {
+    modified_vector[i] += 1;
+  }
+
   TsmResult tsm_result = {modified_vector, result.first};
   return tsm_result;
 }
