@@ -21,10 +21,10 @@ class Ant {
 
  private:
   size_t ChooseVertex();
-  void FindPossibleMoves();
+  void VisitVertex(size_t vertex);
   double CalculateProbabilities();
+  double GetRandom(double value);
   void PlacePheromones(double value);
-  void ClearData();
 
   Graph graph_;
   Matrix closeness_;
@@ -33,14 +33,14 @@ class Ant {
 
   static constexpr double kAlpha = 1;
   static constexpr double kBeta = 1;
-  static constexpr double kPheromoneValue = 10;
 
   size_t size_;
   size_t starting_vertex_;
   size_t current_vertex_;
   double distance_;
+  double kPheromoneValue;
 
-  std::set<size_t> visited_vertices_;
+  std::set<size_t> unvisited_vertices_;
   std::set<size_t> possible_moves_;
   std::map<size_t, double> probabilities_;
   std::vector<size_t> path_;

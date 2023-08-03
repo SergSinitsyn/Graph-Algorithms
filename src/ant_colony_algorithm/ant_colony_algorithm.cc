@@ -53,7 +53,4 @@ void AntColonyAlgorithm::Itetation() {
   std::cout << "best solution: " << solutions_.begin()->first << std::endl;
   pheromones_.MultNumber(kVaporization);
   pheromones_.Add(new_pheromones);
-  std::cout << "pheromones_ " << std::endl;
-  pheromones_.PrintMatrix();
-  std::cout << "pheromones_ ??? " << std::endl;
 }

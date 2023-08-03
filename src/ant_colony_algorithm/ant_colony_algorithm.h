@@ -25,10 +25,11 @@ class AntColonyAlgorithm {
   Matrix closeness_;
   Matrix pheromones_;
 
-  static constexpr double kInitialPheromoneValue = 1.0;
-  static constexpr double kMagicLength = 100;
-  static constexpr double kVaporization = 0.5;
-  static constexpr int kIterations = 10;
+  static constexpr double kInitialPheromoneValue = 1;
+  static constexpr double kMagicLength = 1;
+  static constexpr double kVaporization = 0.8;
+
+  static constexpr int kIterations = 1000;
 
   std::multimap<double, std::vector<size_t>> solutions_;
 };
