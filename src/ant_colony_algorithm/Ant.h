@@ -13,7 +13,8 @@ class Ant {
  public:
   using Solution = std::pair<double, std::vector<size_t>>;
 
-  Ant(const Graph &graph, const Matrix &closeness, const Matrix &pheromones);
+  Ant(const Graph &graph, const Matrix &closeness, const Matrix &pheromones,
+      double pheromone_value);
   void SetStartingVertex(size_t starting_vertex);
   void RunAnt();
   Matrix GetNewPheromones() const { return new_pheromones_; };
@@ -38,7 +39,7 @@ class Ant {
   size_t starting_vertex_;
   size_t current_vertex_;
   double distance_;
-  double kPheromoneValue;
+  double pheromone_value_;
 
   std::set<size_t> unvisited_vertices_;
   std::set<size_t> possible_moves_;

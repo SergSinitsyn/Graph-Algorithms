@@ -12,12 +12,12 @@ using namespace s21;
 
 class AntColonyAlgorithm {
  public:
-  AntColonyAlgorithm(const Graph &graph, size_t size);
+  AntColonyAlgorithm(const Graph &graph);
   void RunAlgorithm();
   Ant::Solution GetResult() const;
 
  private:
-  void Itetation();
+  void Iteration();
 
   Graph graph_;
   size_t size_;
@@ -25,13 +25,14 @@ class AntColonyAlgorithm {
   Matrix closeness_;
   Matrix pheromones_;
 
-  static constexpr double kInitialPheromoneValue = 1;
-  static constexpr double kMagicLength = 1;
-  static constexpr double kVaporization = 0.8;
+  static constexpr double kInitialPheromoneValue = 0.2;
+  static constexpr double kVaporization = 0.6;
 
   static constexpr int kIterations = 1000;
 
-  std::multimap<double, std::vector<size_t>> solutions_;
+  double average_distance_;
+
+  Ant::Solution solution_;
 };
 
 #endif  // NAVIGATOR_ANT_COLONY_ALGORITHM_H_

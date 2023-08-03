@@ -180,7 +180,7 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     const Graph &graph) {
-  AntColonyAlgorithm algorithm(graph, graph.size());
+  AntColonyAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
   Ant::Solution result = algorithm.GetResult();
 

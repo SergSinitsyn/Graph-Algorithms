@@ -10,19 +10,22 @@
 
 using namespace s21;
 
-Ant::Ant(const Graph& graph, const Matrix& closeness, const Matrix& pheromones)
+Ant::Ant(const Graph& graph, const Matrix& closeness, const Matrix& pheromones,
+         double pheromone_value)
     : graph_(graph),
       closeness_(closeness),
       pheromones_(pheromones),
       new_pheromones_(graph.size()) {
   size_ = graph.size();
   new_pheromones_.SetSize(size_);
-  kPheromoneValue = static_cast<double>(size_);
+
   unvisited_vertices_.clear();
   possible_moves_.clear();
   probabilities_.clear();
   path_.clear();
   solution_ = {};
+  pheromone_value_ = pheromone_value;
+  distance_ = 0;
 
   for (size_t i = 0; i < size_; ++i) {
     unvisited_vertices_.insert(i);
@@ -38,7 +41,6 @@ void Ant::SetStartingVertex(size_t starting_vertex) {
 }
 
 void Ant::RunAnt() {
-  distance_ = 0;
   VisitVertex(starting_vertex_);
 
   while (!unvisited_vertices_.empty()) {
@@ -48,9 +50,8 @@ void Ant::RunAnt() {
   }
 
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
-  // path_.push_back(starting_vertex_);  // нужен ли вывод посдлей точки (нача)
 
-  PlacePheromones(kPheromoneValue / distance_);
+  PlacePheromones(pheromone_value_ / distance_);
   solution_ = std::make_pair(distance_, path_);
 }
 
@@ -86,12 +87,9 @@ double Ant::CalculateProbabilities() {
   probabilities_.clear();
   double sum = 0.0;
   for (const auto& next_vertex : unvisited_vertices_) {
-    // double probability =
-    //     powl(closeness_.GetEdge(current_vertex_, next_vertex), kBeta) *
-    //     powl(pheromones_.GetEdge(current_vertex_, next_vertex), kAlpha);
-
-    double probability = closeness_(current_vertex_, next_vertex) *
-                         pheromones_(current_vertex_, next_vertex);
+    double probability =
+        powl(pheromones_(current_vertex_, next_vertex), kAlpha) *
+        powl(closeness_(current_vertex_, next_vertex), kBeta);
 
     probabilities_.insert({next_vertex, probability});
     sum += probability;
@@ -103,4 +101,5 @@ void Ant::PlacePheromones(double value) {
   for (size_t i = 0; i < path_.size() - 1; ++i) {
     new_pheromones_(path_.at(i), path_.at(i + 1)) = value;
   }
+  new_pheromones_(path_.back(), path_.front()) = value;
 }
