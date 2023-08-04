@@ -9,6 +9,7 @@
 #include "ant_colony_algorithm/ant_colony_algorithm.h"
 #include "containers/s21_queue.h"
 #include "containers/s21_stack.h"
+#include "monte_carlo_algorithm/monte_carlo_algorithm.h"
 
 namespace s21 {
 
@@ -180,9 +181,13 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     const Graph &graph) {
-  AntColonyAlgorithm algorithm(graph);
+  // AntColonyAlgorithm algorithm(graph);
+  // algorithm.RunAlgorithm();
+  // AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  MonteCarloAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
-  AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
+  MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
   std::transform(modified_vector.begin(), modified_vector.end(),
