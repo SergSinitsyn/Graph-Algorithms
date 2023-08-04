@@ -20,7 +20,7 @@ class Graph {
   static const size_t kMaxSize = 100;  //! To be defined!
 
   Graph() : size_(){};
-  Graph(size_t size) : size_(size) { SetSize(size_); };
+  explicit Graph(size_t size) : size_(size) { SetSize(size_); };
 
   size_t size() const { return size_; }
   void SetSize(size_t size);

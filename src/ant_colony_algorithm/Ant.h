@@ -12,13 +12,16 @@ using namespace s21;
 
 class Ant {
  public:
-  using Solution = std::pair<double, std::vector<size_t>>;
+  struct Solution {
+    double distance;
+    std::vector<size_t> path;
+    Matrix pheromones;
+  };
 
-  Ant(const Graph &graph, const Matrix &closeness, double pheromone_value);
-  void SetStartingVertex(size_t starting_vertex);
+  Ant(const Graph &graph, const Matrix &closeness, double pheromone_value,
+      size_t starting_vetrex);
   void RunAnt();
   void SetPheromones(const Matrix &pheromones);
-  Matrix GetNewPheromones() const { return new_pheromones_; };
   Solution GetSolution() const { return solution_; };
 
  private:
@@ -35,11 +38,12 @@ class Ant {
   Matrix new_pheromones_;
 
   static constexpr double kPheromonesImpact = 1;
-  static constexpr double KClosenessImpact = 1;
+  static constexpr double kClosenessImpact = 5;
 
   size_t size_;
-  size_t starting_vertex_{0};
+  size_t starting_vertex_;
   size_t current_vertex_{0};
+
   double distance_{0.0};
   double pheromone_value_;
 

@@ -184,9 +184,10 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   auto start = std::chrono::high_resolution_clock::now();
   AntColonyAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
-  Ant::Solution result = algorithm.GetResult();
+  AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
 
-  std::vector<size_t> modified_vector = result.second;
+  std::vector<size_t> modified_vector = result.first;
+
   std::transform(modified_vector.begin(), modified_vector.end(),
                  modified_vector.begin(),
                  [](size_t value) { return value + 1; });
@@ -194,7 +195,7 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = end - start;
   std::cout << "Execution time: " << elapsed.count() << " seconds" << std::endl;
-  return {modified_vector, result.first};
+  return {modified_vector, result.second};
 }
 
 }  // namespace s21

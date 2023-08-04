@@ -6,7 +6,7 @@ class Matrix {
  public:
   Matrix() : Matrix(1, 1) {}
 
-  Matrix(size_t size) : Matrix(size, size) {}
+  explicit Matrix(size_t size) : Matrix(size, size) {}
 
   Matrix(size_t rows, size_t cols)
       : matrix_(rows, std::vector<double>(cols)), rows_(rows), cols_(cols) {}
@@ -96,14 +96,6 @@ class Matrix {
     for (size_t i = 0; i < rows_; ++i) {
       for (size_t j = 0; j < cols_; ++j) {
         matrix_[i][j] += other.matrix_[i][j];
-      }
-    }
-  }
-
-  void ZeroOut() {
-    for (auto& row : matrix_) {
-      for (auto& element : row) {
-        element = 0.0;
       }
     }
   }

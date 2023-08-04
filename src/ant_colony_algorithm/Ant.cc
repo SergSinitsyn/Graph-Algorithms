@@ -9,23 +9,25 @@
 
 using namespace s21;
 
-Ant::Ant(const Graph& graph, const Matrix& closeness, double pheromone_value)
+Ant::Ant(const Graph& graph, const Matrix& closeness, double pheromone_value,
+         size_t starting_vetrex)
     : graph_(graph),
       closeness_(closeness),
       pheromones_(graph.size()),
-      new_pheromones_(graph.size()) {
-  size_ = graph.size();
-  new_pheromones_.SetSize(size_);
-  pheromone_value_ = pheromone_value;
-
-  random_number_generator_.seed(std::random_device()());
-  random_number_distribution_ =
-      std::uniform_real_distribution<double>(0.0, 1.0);
-}
-
-void Ant::SetStartingVertex(size_t starting_vertex) {
-  starting_vertex_ = starting_vertex % size_;
-  current_vertex_ = starting_vertex_;
+      new_pheromones_(graph.size()),
+      size_(graph.size()),
+      starting_vertex_(starting_vetrex),
+      current_vertex_(0),
+      distance_(0.0),
+      pheromone_value_(pheromone_value),
+      unvisited_vertices_(),
+      possible_moves_(),
+      probabilities_(),
+      path_(),
+      solution_(),
+      random_number_generator_(std::random_device()()),
+      random_number_distribution_(0.0, 1.0) {
+  SetDefaultData();
 }
 
 void Ant::SetPheromones(const Matrix& pheromones) { pheromones_ = pheromones; }
@@ -44,7 +46,7 @@ void Ant::RunAnt() {
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
 
   PlacePheromones(pheromone_value_ / distance_);
-  solution_ = std::make_pair(distance_, path_);
+  solution_ = {distance_, path_, new_pheromones_};
 }
 
 void Ant::VisitVertex(size_t vertex) {
@@ -76,7 +78,7 @@ double Ant::CalculateProbabilities() {
   for (const auto& next_vertex : unvisited_vertices_) {
     double probability =
         powl(pheromones_(current_vertex_, next_vertex), kPheromonesImpact) *
-        powl(closeness_(current_vertex_, next_vertex), KClosenessImpact);
+        powl(closeness_(current_vertex_, next_vertex), kClosenessImpact);
 
     probabilities_.insert({next_vertex, probability});
     sum += probability;
@@ -85,10 +87,11 @@ double Ant::CalculateProbabilities() {
 }
 
 void Ant::PlacePheromones(double value) {
-  for (size_t i = 0; i < path_.size() - 1; ++i) {
-    new_pheromones_(path_.at(i), path_.at(i + 1)) = value;
+  size_t size = path_.size();
+  for (size_t i = 0; i < size - 1; ++i) {
+    new_pheromones_(path_[i], path_[i + 1]) = value;
   }
-  new_pheromones_(path_.back(), path_.front()) = value;
+  new_pheromones_(path_[size - 1], path_[0]) = value;
 }
 
 void Ant::SetDefaultData() {
