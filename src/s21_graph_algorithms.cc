@@ -1,7 +1,6 @@
 #include "s21_graph_algorithms.h"
 
 #include <algorithm>
-#include <chrono>  // TODO
 #include <limits>
 #include <queue>
 #include <stack>
@@ -181,20 +180,14 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     const Graph &graph) {
-  auto start = std::chrono::high_resolution_clock::now();
   AntColonyAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
   AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
-
   std::transform(modified_vector.begin(), modified_vector.end(),
                  modified_vector.begin(),
                  [](size_t value) { return value + 1; });
-
-  auto end = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = end - start;
-  std::cout << "Execution time: " << elapsed.count() << " seconds" << std::endl;
   return {modified_vector, result.second};
 }
 
