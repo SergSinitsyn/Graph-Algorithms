@@ -1,7 +1,6 @@
 #include "ant.h"
 
 #include <algorithm>
-#include <iostream>
 #include <map>
 #include <random>
 #include <set>
@@ -10,37 +9,30 @@
 
 using namespace s21;
 
-Ant::Ant(const Graph& graph, const Matrix& closeness, const Matrix& pheromones,
-         double pheromone_value)
+Ant::Ant(const Graph& graph, const Matrix& closeness, double pheromone_value)
     : graph_(graph),
       closeness_(closeness),
-      pheromones_(pheromones),
+      pheromones_(graph.size()),
       new_pheromones_(graph.size()) {
   size_ = graph.size();
   new_pheromones_.SetSize(size_);
-
-  unvisited_vertices_.clear();
-  possible_moves_.clear();
-  probabilities_.clear();
-  path_.clear();
-  solution_ = {};
   pheromone_value_ = pheromone_value;
-  distance_ = 0;
 
-  for (size_t i = 0; i < size_; ++i) {
-    unvisited_vertices_.insert(i);
-  }
+  random_number_generator_.seed(std::random_device()());
+  random_number_distribution_ =
+      std::uniform_real_distribution<double>(0.0, 1.0);
 }
 
 void Ant::SetStartingVertex(size_t starting_vertex) {
-  starting_vertex_ = starting_vertex;
-  if (starting_vertex >= size_) {
-    starting_vertex_ = starting_vertex % size_;
-  }
+  starting_vertex_ = starting_vertex % size_;
   current_vertex_ = starting_vertex_;
 }
 
+void Ant::SetPheromones(const Matrix& pheromones) { pheromones_ = pheromones; }
+
 void Ant::RunAnt() {
+  SetDefaultData();
+
   VisitVertex(starting_vertex_);
 
   while (!unvisited_vertices_.empty()) {
@@ -63,24 +55,19 @@ void Ant::VisitVertex(size_t vertex) {
 
 size_t Ant::ChooseVertex() {
   double random_number = GetRandom(CalculateProbabilities());
-  size_t result = 0;
 
   for (const auto& sector : probabilities_) {
     random_number -= sector.second;
     if (random_number <= 0.0) {
-      result = sector.first;
-      break;
+      return sector.first;
     }
   }
 
-  return result;
+  return probabilities_.begin()->first;
 }
 
 double Ant::GetRandom(double value) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_real_distribution<double> distribution(0.0, value);
-  return distribution(gen);
+  return random_number_distribution_(random_number_generator_) * value;
 }
 
 double Ant::CalculateProbabilities() {
@@ -88,8 +75,8 @@ double Ant::CalculateProbabilities() {
   double sum = 0.0;
   for (const auto& next_vertex : unvisited_vertices_) {
     double probability =
-        powl(pheromones_(current_vertex_, next_vertex), kAlpha) *
-        powl(closeness_(current_vertex_, next_vertex), kBeta);
+        powl(pheromones_(current_vertex_, next_vertex), kPheromonesImpact) *
+        powl(closeness_(current_vertex_, next_vertex), KClosenessImpact);
 
     probabilities_.insert({next_vertex, probability});
     sum += probability;
@@ -102,4 +89,17 @@ void Ant::PlacePheromones(double value) {
     new_pheromones_(path_.at(i), path_.at(i + 1)) = value;
   }
   new_pheromones_(path_.back(), path_.front()) = value;
+}
+
+void Ant::SetDefaultData() {
+  unvisited_vertices_.clear();
+  for (size_t i = 0; i < size_; ++i) {
+    unvisited_vertices_.insert(i);
+  }
+
+  distance_ = 0.0;
+  possible_moves_.clear();
+  probabilities_.clear();
+  path_.clear();
+  solution_ = {};
 }

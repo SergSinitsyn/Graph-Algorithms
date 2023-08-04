@@ -44,28 +44,31 @@ class Matrix {
   }
 
   double operator()(size_t row, size_t col) const {
-    if (row >= rows_ || col >= cols_) {
-      throw std::out_of_range("Matrix index out of range");
-    }
-    return matrix_[row][col];
+    return matrix_.at(row).at(col);
   }
 
-  double& operator()(size_t row, size_t col) {
-    if (row >= rows_ || col >= cols_) {
-      throw std::out_of_range("Matrix index out of range");
-    }
-    return matrix_[row][col];
-  }
+  double& operator()(size_t row, size_t col) { return matrix_.at(row).at(col); }
 
-  void Add(const Matrix& other) {
-    if (rows_ != other.rows_ || cols_ != other.cols_) {
-      throw std::runtime_error("Matrix sizes are not compatible for addition");
-    }
+  Matrix operator*(const double number) const {
+    Matrix result(rows_, cols_);
     for (size_t i = 0; i < rows_; ++i) {
       for (size_t j = 0; j < cols_; ++j) {
-        matrix_[i][j] += other.matrix_[i][j];
+        result.matrix_[i][j] = matrix_[i][j] * number;
       }
     }
+    return result;
+  }
+
+  Matrix Transpose() const {
+    size_t rows = GetCols();
+    size_t cols = GetRows();
+    Matrix result(cols, rows);
+    for (size_t i = 0; i < rows; ++i) {
+      for (size_t j = 0; j < cols; ++j) {
+        result(j, i) = (*this)(i, j);
+      }
+    }
+    return result;
   }
 
   void MultNumber(const double number) {
@@ -82,6 +85,26 @@ class Matrix {
         std::cout << element << " ";
       }
       std::cout << std::endl;
+    }
+  }
+
+  void Add(const Matrix& other) {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+      throw std::runtime_error("Matrix sizes are not compatible for addition");
+    }
+
+    for (size_t i = 0; i < rows_; ++i) {
+      for (size_t j = 0; j < cols_; ++j) {
+        matrix_[i][j] += other.matrix_[i][j];
+      }
+    }
+  }
+
+  void ZeroOut() {
+    for (auto& row : matrix_) {
+      for (auto& element : row) {
+        element = 0.0;
+      }
     }
   }
 
