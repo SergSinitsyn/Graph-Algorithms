@@ -4,6 +4,7 @@
 #include <map>
 
 #include "../controller/controller.h"
+
 namespace s21 {
 
 class ConsoleView {
@@ -31,6 +32,7 @@ class ConsoleView {
   void PerformStringInput();
   void ShortestPathBetweenVertices();
   void ShortestPathsBetweenAllVertices();
+  void SolveTravellingSalesmanProblem();
   void TSP1();
 
   void ErrorMessage(const std::string &);
@@ -44,5 +46,7 @@ class ConsoleView {
   bool event_loop_end_ = false;
   std::map<int, MenuItem> menu_{};
 };
+
 }  // namespace s21
+
 #endif  // NAVIGATOR_CONSOLEVIEW_CONSOLEVIEW_H

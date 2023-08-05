@@ -1,10 +1,11 @@
 #ifndef NAVIGATOR_CONTROLLER_CONTROLLER_H
 #define NAVIGATOR_CONTROLLER_CONTROLLER_H
 
-#include "s21_graph.h"
-#include "s21_graph_algorithms.h"
+#include "../s21_graph.h"
+#include "../s21_graph_algorithms.h"
 
 namespace s21 {
+
 struct GraphAppData {
   int point_a;
   int point_b;
@@ -27,6 +28,7 @@ class Controller {
   void GetLeastSpanningTree();
   void GetShortestPathBetweenVertices(const GraphAppData *data);
   void GetShortestPathsBetweenAllVertices();
+  void SolveTravellingSalesmanProblem();
   bool IsModelLoaded();
   void LoadGraphFromFile(const GraphAppData *data);
 
@@ -36,5 +38,7 @@ class Controller {
   GraphAlgorithms::ResultArray array_result_;
   Graph::AdjacencyMatrix adjacency_matrix_result_;
 };
+
 }  // namespace s21
+
 #endif  // NAVIGATOR_CONTROLLER_CONTROLLER_H

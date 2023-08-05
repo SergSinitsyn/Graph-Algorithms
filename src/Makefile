@@ -34,7 +34,7 @@ LIB1_OBJS=$(LIB1_SOURCES:.cc=.o)
 
 LIB2=s21_graph_algorithms
 LIB2_NAME=s21_graph_algorithms.a
-LIB2_SOURCES=s21_graph_algorithms.cc
+LIB2_SOURCES=s21_graph_algorithms.cc ant_colony_algorithm/ant_colony_algorithm.cc ant_colony_algorithm/ant.cc monte_carlo_algorithm/monte_carlo_algorithm.cc
 LIB2_OBJS=$(LIB2_SOURCES:.cc=.o)
 
 .SUFFIXES:
@@ -88,6 +88,8 @@ clean:
 	$(CLEAN) consoleapp
 	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
 	$(CLEAN) samples/temp.dot
+	$(CLEAN) ant_colony_algorithm/$(OBJECTS)
+	$(CLEAN) monte_carlo_algorithm/$(OBJECTS)
 
 tests: test
 

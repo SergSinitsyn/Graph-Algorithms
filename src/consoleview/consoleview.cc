@@ -6,7 +6,7 @@
 
 #include "termcolor.hpp"
 
-using namespace s21;
+namespace s21 {
 
 ConsoleView::ConsoleView(Controller* c)
     : controller_(c),
@@ -20,7 +20,9 @@ ConsoleView::ConsoleView(Controller* c)
            {"All shoortest paths search",
             &ConsoleView::ShortestPathsBetweenAllVertices}},
           {6, {"Get least spanning tree", &ConsoleView::LeastSpanningTree}},
-          {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
+          {7,
+           {"Travelling Salesman Problem",
+            &ConsoleView::SolveTravellingSalesmanProblem}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
           {9, {"Traveling Salesman Problem", &ConsoleView::TSP1}},
           {10, {"Exit", &ConsoleView::ExitAction}}} {};
@@ -168,6 +170,17 @@ void ConsoleView::ShortestPathsBetweenAllVertices() {
   FinalMessage("ShortestPathsBetweenAllVertices finished");
 }
 
+void ConsoleView::SolveTravellingSalesmanProblem() {
+  if (!controller_->IsModelLoaded()) {
+    ErrorMessage("Model is not loaded");
+    return;
+  }
+  controller_->SolveTravellingSalesmanProblem();
+  PrintArray(controller_->array_result());
+  PrintValue(controller_->value_result());
+  FinalMessage("Travelling Salesman Problem is resolved");
+}
+
 void ConsoleView::TSP1() {
   if (!controller_->IsModelLoaded()) {
     ErrorMessage("Model is not loaded");
@@ -190,9 +203,11 @@ void ConsoleView::FinalMessage(const std::string& message) {
 
 void ConsoleView::PrintArray(const GraphAlgorithms::ResultArray& array) {
   std::cout << "Array traversed vertices: ";
-  for (auto item : array) {
-    std::cout << item;
-    if (item != array.back()) std::cout << ", ";
+  for (auto it = array.begin(); it != array.end(); ++it) {
+    std::cout << *it;
+    if (it != array.end() - 1) {
+      std::cout << ", ";
+    }
   }
   std::cout << std::endl;
 }
@@ -211,3 +226,5 @@ void ConsoleView::PrintValue(const GraphAlgorithms::Result& result) {
   std::cout << "Smallest distance: " << result;
   std::cout << std::endl;
 }
+
+}  // namespace s21

@@ -1,5 +1,6 @@
 #include "controller.h"
-using namespace s21;
+
+namespace s21 {
 
 void Controller::BreadthFirstSearch(const GraphAppData *data) {
   array_result_ = GraphAlgorithms::BreadthFirstSearch(*model_, data->point_a);
@@ -22,9 +23,17 @@ void Controller::GetShortestPathBetweenVertices(const GraphAppData *data) {
       *model_, data->point_a, data->point_b);
 }
 
-void s21::Controller::GetShortestPathsBetweenAllVertices() {
+void Controller::GetShortestPathsBetweenAllVertices() {
   adjacency_matrix_result_ =
       GraphAlgorithms::GetShortestPathsBetweenAllVertices(*model_);
+}
+
+void Controller::SolveTravellingSalesmanProblem() {
+  GraphAlgorithms algorithm;
+  GraphAlgorithms::TsmResult result =
+      algorithm.SolveTravelingSalesmanProblem(*model_);
+  value_result_ = result.distance;
+  array_result_ = result.vertices;
 }
 
 bool Controller::IsModelLoaded() {
@@ -34,3 +43,5 @@ bool Controller::IsModelLoaded() {
 void Controller::LoadGraphFromFile(const GraphAppData *data) {
   model_->LoadGraphFromFile(data->filename);
 }
+
+}  // namespace s21

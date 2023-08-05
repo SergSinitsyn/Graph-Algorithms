@@ -6,15 +6,18 @@
 #include <stack>
 #include <stdexcept>
 
+#include "ant_colony_algorithm/ant_colony_algorithm.h"
 #include "containers/s21_queue.h"
 #include "containers/s21_stack.h"
-using namespace s21;
+#include "monte_carlo_algorithm/monte_carlo_algorithm.h"
+
+namespace s21 {
 
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     const Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
   std::vector<bool> visited(graph.size(), false);
-  s21::queue<uint> queue;
+  s21::queue<size_t> queue;
   ResultArray path{};
   if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
@@ -23,7 +26,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
   visited[start_vertex] = true;
   path.push_back(start_vertex);
   while (!queue.empty()) {
-    uint current = queue.front();
+    size_t current = queue.front();
     queue.pop();
     for (size_t i = 0; i < graph.size(); i++) {
       if (graph.GetEdge(current, i) != 0 && !visited[i]) {
@@ -34,7 +37,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     }
   }
   std::transform(path.begin(), path.end(), path.begin(),
-                 [](uint v) { return v + kVertexStartNumber; });
+                 [](size_t v) { return v + kVertexStartNumber; });
 
   return path;
 }
@@ -43,7 +46,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
     const Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
   std::vector<bool> visited(graph.size(), false);
-  s21::stack<uint> stack;
+  s21::stack<size_t> stack;
   ResultArray path{};
   if (start_vertex < 0 || start_vertex >= +(int)graph.size()) {
     throw std::invalid_argument("Vertex is out of range");
@@ -52,7 +55,7 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
   visited[start_vertex] = true;
   path.push_back(start_vertex);
   while (!stack.empty()) {
-    uint current = stack.top();
+    size_t current = stack.top();
     for (size_t i = 0; i < graph.size(); i++) {
       if (graph.GetEdge(current, i) != 0 && !visited[i]) {
         stack.push(i);
@@ -66,14 +69,14 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
     }
   }
   std::transform(path.begin(), path.end(), path.begin(),
-                 [](uint v) { return v + kVertexStartNumber; });
+                 [](size_t v) { return v + kVertexStartNumber; });
 
   return path;
 }
 
 GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
     const Graph &graph, int vertex1, int vertex2) {
-  uint size = graph.size();
+  size_t size = graph.size();
   if (vertex1 < 1 || vertex1 > (int)size || vertex2 < 1 ||
       vertex2 > (int)size) {
     throw std::invalid_argument("Vertex is out of range");
@@ -81,26 +84,26 @@ GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
   vertex1 -= kVertexStartNumber;
   vertex2 -= kVertexStartNumber;
   std::vector<bool> visited(size, false);
-  std::vector<uint> distance(size, UINT_MAX);
+  std::vector<size_t> distance(size, SIZE_T_MAX);
   distance.at(vertex1) = 0;
   while (true) {
-    uint min_index = UINT_MAX;
-    uint min_dist = UINT_MAX;
-    for (uint i = 0; i < size; i++) {
+    size_t min_index = SIZE_T_MAX;
+    size_t min_dist = SIZE_T_MAX;
+    for (size_t i = 0; i < size; i++) {
       if (!visited.at(i) && (distance.at(i) < min_dist)) {
         min_dist = distance.at(i);
         min_index = i;
       }
     }
-    if (min_index == UINT_MAX) {
+    if (min_index == SIZE_T_MAX) {
       break;
     }
 
     visited.at(min_index) = true;
-    for (uint i = 0; i < size; i++) {
-      uint edge_weight = graph.GetEdge(min_index, i);
+    for (size_t i = 0; i < size; i++) {
+      size_t edge_weight = graph.GetEdge(min_index, i);
       if (edge_weight > 0) {
-        uint temp = min_dist + edge_weight;
+        size_t temp = min_dist + edge_weight;
         if (temp < distance.at(i)) {
           distance.at(i) = temp;
         }
@@ -113,20 +116,19 @@ GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
 Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(
     const Graph &graph) {
   Graph::AdjacencyMatrix result_matrix(graph.GetMatrix());
-  uint size = graph.size();
-  for (uint i = 0; i < size; i++) {
-    for (uint j = 0; j < size; j++) {
+  size_t size = graph.size();
+  for (size_t i = 0; i < size; i++) {
+    for (size_t j = 0; j < size; j++) {
       if (graph.GetEdge(i, j) == 0 && i != j) {
-        result_matrix.at(i).at(j) = UINT_MAX;
+        result_matrix.at(i).at(j) = SIZE_T_MAX;
       }
     }
   }
-
-  for (uint k = 0; k < size; k++) {
-    for (uint i = 0; i < size; i++) {
-      for (uint j = 0; j < size; j++) {
-        if (result_matrix.at(i).at(k) != UINT_MAX &&
-            result_matrix.at(k).at(j) != UINT_MAX &&
+  for (size_t k = 0; k < size; k++) {
+    for (size_t i = 0; i < size; i++) {
+      for (size_t j = 0; j < size; j++) {
+        if (result_matrix.at(i).at(k) != SIZE_T_MAX &&
+            result_matrix.at(k).at(j) != SIZE_T_MAX &&
             (result_matrix.at(i).at(j) >
              result_matrix.at(i).at(k) + result_matrix.at(k).at(j))) {
           result_matrix.at(i).at(j) =
@@ -138,15 +140,15 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(
   return result_matrix;
 }
 
-Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
+Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
     const Graph &graph) {
   Graph::AdjacencyMatrix result_matrix(graph.GetMatrix());
   if (!graph.GraphOrientationCheck()) {
     throw std::invalid_argument("Graph is not oriented");
   }
-  uint size = graph.size();
-  for (uint i = 0; i < size; i++) {
-    for (uint j = 0; j < size; j++) {
+  size_t size = graph.size();
+  for (size_t i = 0; i < size; i++) {
+    for (size_t j = 0; j < size; j++) {
       result_matrix.at(i).at(j) = 0;
     }
   }
@@ -154,12 +156,12 @@ Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
   visited.at(0) = true;  // устанавливаем начальную точку построения дерева.
   int unvisited = size - 1;
   while (unvisited) {
-    uint min_dist = UINT_MAX;
-    uint start = 0;
-    uint end = 0;
-    for (uint i = 0; i < size; i++) {
+    size_t min_dist = SIZE_T_MAX;
+    size_t start = 0;
+    size_t end = 0;
+    for (size_t i = 0; i < size; i++) {
       if (visited.at(i)) {
-        for (uint j = 0; j < size; j++) {
+        for (size_t j = 0; j < size; j++) {
           if (j != i && !visited.at(j) && graph.GetEdge(i, j) != 0 &&
               graph.GetMatrix().at(i).at(j) < min_dist) {
             min_dist = graph.GetEdge(i, j);
@@ -176,7 +178,6 @@ Graph::AdjacencyMatrix s21::GraphAlgorithms::GetLeastSpanningTree(
   }
   return result_matrix;
 };
-
 // using namespace GraphAlgorithms;
 
 void GraphAlorithms::TspState::updatePath(int vertex) {
@@ -217,6 +218,23 @@ void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
   }
 }
 
+GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph &graph) {
+  // AntColonyAlgorithm algorithm(graph);
+  // algorithm.RunAlgorithm();
+  // AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  MonteCarloAlgorithm algorithm(graph);
+  algorithm.RunAlgorithm();
+  MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  std::vector<size_t> modified_vector = result.first;
+  std::transform(modified_vector.begin(), modified_vector.end(),
+                 modified_vector.begin(),
+                 [](size_t value) { return value + 1; });
+  return {modified_vector, result.second};
+}
+
 GraphAlgorithms::TsmResult SolveTravelingSalesmanProblem1(
     const s21::Graph &graph) {
   TspState optimalState;
@@ -231,3 +249,4 @@ GraphAlgorithms::TsmResult SolveTravelingSalesmanProblem1(
   optimalResult.distance = optimalState.getCost();
   return optimalResult;
 }
+}  // namespace s21

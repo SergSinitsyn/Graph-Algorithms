@@ -348,7 +348,7 @@ TEST(GraphAlgorithms, SPBAV_0) {
                                           {2, 1, 6, 0, 3},
                                           {6, 5, 10, 4, 0}};
 
-  uint result_size = graph.size();
+  size_t result_size = graph.size();
   for (size_t i = 0; i < result_size; ++i) {
     for (size_t j = 0; j < result_size; ++j) {
       EXPECT_EQ(matrix[i][j], result_matrix[i][j]);
@@ -376,11 +376,11 @@ TEST(GraphAlgorithms, SPBAV_VS_SPBV) {
     graph.LoadGraphFromFile(file_name);
     Graph::AdjacencyMatrix spbav_matrix =
         s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
-    uint result_size = graph.size();
+    size_t result_size = graph.size();
     for (size_t i = 0; i < result_size; ++i) {
       for (size_t j = 0; j < result_size; ++j) {
         if (i != j) {
-          uint spbv_result = GraphAlgorithms::GetShortestPathBetweenVertices(
+          size_t spbv_result = GraphAlgorithms::GetShortestPathBetweenVertices(
               graph, i + 1, j + 1);
           EXPECT_EQ(spbav_matrix[i][j], spbv_result);
         }
@@ -397,7 +397,7 @@ TEST(GraphAlgorithms, GLST_0) {
   Graph::AdjacencyMatrix result_matrix = {
       {0, 0, 20, 0}, {0, 0, 15, 0}, {20, 15, 0, 15}, {0, 0, 15, 0}};
 
-  uint result_size = graph.size();
+  size_t result_size = graph.size();
   for (size_t i = 0; i < result_size; ++i) {
     for (size_t j = 0; j < result_size; ++j) {
       EXPECT_EQ(matrix[i][j], result_matrix[i][j]);
