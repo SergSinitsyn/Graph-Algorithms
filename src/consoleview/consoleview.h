@@ -31,6 +31,7 @@ class ConsoleView {
   void PerformStringInput();
   void ShortestPathBetweenVertices();
   void ShortestPathsBetweenAllVertices();
+  void TSP1();
 
   void ErrorMessage(const std::string &);
   void FinalMessage(const std::string &);

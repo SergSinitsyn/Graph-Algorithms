@@ -3,18 +3,20 @@
 #include <vector>
 
 #include "s21_graph.h"
+#include "s21_graph_algorithms.h"
 
+using namespace s21;
 class TspState {
  public:
-  std::vector<int> path;
-  double cost;
   // Обновление состояния решения
   void updatePath(int vertex);
   void updateCost(double cost);
-
   // Получение текущего пути и стоимости
   std::vector<int> getPath();
   double getCost();
+
+  std::vector<int> path;
+  double cost;
 };
 
 void TspState::updatePath(int vertex) { path.push_back(vertex); }
@@ -52,7 +54,7 @@ void findOptimalPath(const s21::Graph& graph, TspState state, int currentVertex,
   }
 }
 
-TspState solveTsp(const s21::Graph& graph) {
+GraphAlgorithms::TsmResult solveTsp(const s21::Graph& graph) {
   TspState optimalState;
   double upperBound = std::numeric_limits<double>::max();
 
@@ -60,19 +62,8 @@ TspState solveTsp(const s21::Graph& graph) {
     TspState state;
     findOptimalPath(graph, state, vertex, upperBound, optimalState);
   }
-
-  return optimalState;
-}
-
-int main() {
-  s21::Graph graph;
-  // ...
-
-  TspState optimalState = solveTsp(graph);
-
-  std::vector<int> optimalPath = optimalState.getPath();
-  double optimalCost = optimalState.getCost();
-  // ...
-
-  return 0;
+  GraphAlgorithms::TsmResult optimalResult;
+  optimalResult.vertices = optimalState.getPath();
+  optimalResult.distance = optimalState.getCost();
+  return optimalResult;
 }

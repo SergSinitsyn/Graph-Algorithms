@@ -22,7 +22,8 @@ ConsoleView::ConsoleView(Controller* c)
           {6, {"Get least spanning tree", &ConsoleView::LeastSpanningTree}},
           {7, {"Traveling Salesman Problem", &ConsoleView::NoAction}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
-          {9, {"Exit", &ConsoleView::ExitAction}}} {};
+          {9, {"Traveling Salesman Problem", &ConsoleView::TSP1}},
+          {10, {"Exit", &ConsoleView::ExitAction}}} {};
 
 void ConsoleView::StartEventLoop() {
   while (!event_loop_end_) {
@@ -162,6 +163,17 @@ void ConsoleView::ShortestPathsBetweenAllVertices() {
     return;
   }
   controller_->GetShortestPathsBetweenAllVertices();
+  Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
+  PrintMatrix(result_matrix);
+  FinalMessage("ShortestPathsBetweenAllVertices finished");
+}
+
+void ConsoleView::TSP1() {
+  if (!controller_->IsModelLoaded()) {
+    ErrorMessage("Model is not loaded");
+    return;
+  }
+  controller_->TSP1();
   Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
   PrintMatrix(result_matrix);
   FinalMessage("ShortestPathsBetweenAllVertices finished");

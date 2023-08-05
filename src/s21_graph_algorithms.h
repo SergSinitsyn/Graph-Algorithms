@@ -38,6 +38,21 @@ class GraphAlgorithms {
   TsmResult SolveTravelingSalesmanProblem2(const Graph &graph);
 
  private:
+  class TspState {
+   public:
+    // Обновление состояния решения
+    void updatePath(int vertex);
+    void updateCost(double cost);
+    // Получение текущего пути и стоимости
+    std::vector<int> getPath();
+    double getCost();
+
+    std::vector<int> path;
+    double cost;
+  };
+  void findOptimalPath(const s21::Graph &graph, TspState state,
+                       int currentVertex, double &upperBound,
+                       TspState &optimalState);
   static bool FullTrack(std::vector<bool> visited);
 };
 };      // namespace s21
