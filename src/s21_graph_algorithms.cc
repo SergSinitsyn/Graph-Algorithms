@@ -11,6 +11,10 @@
 #include "containers/s21_stack.h"
 #include "monte_carlo_algorithm/monte_carlo_algorithm.h"
 
+#ifndef SIZE_T_MAX
+#define SIZE_T_MAX std::numeric_limits<size_t>::max()
+#endif
+
 namespace s21 {
 
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
