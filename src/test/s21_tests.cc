@@ -419,11 +419,9 @@ TEST(GraphAlgorithms, ant) {
   GraphAlgorithms algorithm;
   GraphAlgorithms::TsmResult result =
       algorithm.SolveTravelingSalesmanProblem(graph);
-  // GraphAlgorithms::ResultArray expected_result{2, 7,  3, 8, 5, 4,
-  //                                              6, 10, 9, 1, 11};
-  // EXPECT_EQ(result.vertices, expected_result);
   EXPECT_LE(result.distance, 260);
 }
+
 TEST(GraphAlgorithms, branch_and_bounds) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
@@ -431,10 +429,10 @@ TEST(GraphAlgorithms, branch_and_bounds) {
   GraphAlgorithms algorithm;
   GraphAlgorithms::TsmResult result =
       algorithm.SolveTravelingSalesmanProblem1(graph);
-  // GraphAlgorithms::ResultArray expected_result{2, 7,  3, 8, 5, 4,
-  //                                              6, 10, 9, 1, 11};
-  // EXPECT_EQ(result.vertices, expected_result);
-  EXPECT_LE(result.distance, 260);
+  GraphAlgorithms::ResultArray expected_result{1, 8, 5, 4,  10, 6,
+                                               3, 7, 2, 11, 9};
+  EXPECT_EQ(result.vertices, expected_result);
+  EXPECT_LE(result.distance, 253);
 }
 
 int main(int argc, char **argv) {

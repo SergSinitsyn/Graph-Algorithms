@@ -199,7 +199,7 @@ void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
   state.updatePath(currentVertex);
 
   if (state.path.size() == graph.GetNumVertices()) {
-    double cost = graph.GetEdge(currentVertex, state.path[0]);
+    double cost = state.getCost() + graph.GetEdge(currentVertex, state.path[0]);
 
     if (cost < upperBound) {
       state.updateCost(cost);
@@ -216,6 +216,8 @@ void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
           TspState nextState = state;
           nextState.updateCost(cost + state.cost);
           findOptimalPath(graph, nextState, vertex, upperBound, optimalState);
+        } else {
+          break;
         }
       }
     }
@@ -228,29 +230,31 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
   double upperBound = std::numeric_limits<double>::max();
 
   for (int vertex : graph.GetVertices()) {
-    TspState state;
-    findOptimalPath(graph, state, vertex, upperBound, optimalState);
+    findOptimalPath(graph, {}, vertex, upperBound, optimalState);
   }
   TsmResult optimalResult;
   optimalResult.vertices = optimalState.getPath();
+  std::transform(optimalResult.vertices.begin(), optimalResult.vertices.end(),
+                 optimalResult.vertices.begin(),
+                 [](size_t v) { return v + kVertexStartNumber; });
   optimalResult.distance = optimalState.getCost();
   return optimalResult;
 }
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     const Graph &graph) {
-  // AntColonyAlgorithm algorithm(graph);
-  // algorithm.RunAlgorithm();
-  // AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
-
-  MonteCarloAlgorithm algorithm(graph);
+  AntColonyAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
-  MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
+  AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  // MonteCarloAlgorithm algorithm(graph);
+  // algorithm.RunAlgorithm();
+  // MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
   std::transform(modified_vector.begin(), modified_vector.end(),
                  modified_vector.begin(),
-                 [](size_t value) { return value + 1; });
+                 [](size_t value) { return value + kVertexStartNumber; });
   return {modified_vector, result.second};
 }
 }  // namespace s21
