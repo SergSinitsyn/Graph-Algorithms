@@ -173,10 +173,11 @@ void ConsoleView::TSP1() {
     ErrorMessage("Model is not loaded");
     return;
   }
-  controller_->TSP1();
-  Graph::AdjacencyMatrix result_matrix = controller_->adjacency_matrix_result();
-  PrintMatrix(result_matrix);
-  FinalMessage("ShortestPathsBetweenAllVertices finished");
+  // controller_->TSP1();
+
+  // Graph::AdjacencyMatrix result_matrix =
+  // controller_->adjacency_matrix_result(); PrintMatrix(result_matrix);
+  // FinalMessage("ShortestPathsBetweenAllVertices finished");
 }
 
 void ConsoleView::ErrorMessage(const std::string& message) {
