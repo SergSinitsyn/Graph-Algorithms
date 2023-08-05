@@ -1,4 +1,4 @@
-CFLAGS=-std=c++17 -Wall -Werror -Wextra $(shell pkg-config --cflags gtest) 
+CFLAGS=-g -std=c++17 -Wall -Werror -Wextra $(shell pkg-config --cflags gtest) 
 CLEAN=rm -rf
 uname_S := $(shell uname -s)
 ifeq ($(uname_S), Linux)

@@ -27,7 +27,7 @@ class Graph {
   size_t GetNumVertices() const { return adjacency_matrix_.size(); }
   std::vector<uint> GetVertices() const {
     auto vertexes = std::vector<uint>(GetNumVertices());
-    std::iota(vertexes.begin(), vertexes.end(), 1);
+    std::iota(vertexes.begin(), vertexes.end(), 0);
     return vertexes;
   }
   void SetSize(size_t size);

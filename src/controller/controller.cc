@@ -36,6 +36,14 @@ void Controller::SolveTravellingSalesmanProblem() {
   array_result_ = result.vertices;
 }
 
+void Controller::SolveTravellingSalesmanProblem1() {
+  GraphAlgorithms algorithm;
+  GraphAlgorithms::TsmResult result =
+      algorithm.SolveTravelingSalesmanProblem1(*model_);
+  value_result_ = result.distance;
+  array_result_ = result.vertices;
+}
+
 bool Controller::IsModelLoaded() {
   return (model_ != nullptr) && (model_->size() > 0);
 }

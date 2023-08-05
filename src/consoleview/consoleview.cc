@@ -24,7 +24,9 @@ ConsoleView::ConsoleView(Controller* c)
            {"Travelling Salesman Problem",
             &ConsoleView::SolveTravellingSalesmanProblem}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
-          {9, {"Traveling Salesman Problem", &ConsoleView::TSP1}},
+          {9,
+           {"Traveling Salesman Problem",
+            &ConsoleView::SolveTravellingSalesmanProblem1}},
           {10, {"Exit", &ConsoleView::ExitAction}}} {};
 
 void ConsoleView::StartEventLoop() {
@@ -181,16 +183,15 @@ void ConsoleView::SolveTravellingSalesmanProblem() {
   FinalMessage("Travelling Salesman Problem is resolved");
 }
 
-void ConsoleView::TSP1() {
+void ConsoleView::SolveTravellingSalesmanProblem1() {
   if (!controller_->IsModelLoaded()) {
     ErrorMessage("Model is not loaded");
     return;
   }
-  // controller_->TSP1();
-
-  // Graph::AdjacencyMatrix result_matrix =
-  // controller_->adjacency_matrix_result(); PrintMatrix(result_matrix);
-  // FinalMessage("ShortestPathsBetweenAllVertices finished");
+  controller_->SolveTravellingSalesmanProblem1();
+  PrintArray(controller_->array_result());
+  PrintValue(controller_->value_result());
+  FinalMessage("Travelling Salesman Problem is resolved");
 }
 
 void ConsoleView::ErrorMessage(const std::string& message) {

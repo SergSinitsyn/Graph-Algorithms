@@ -412,6 +412,31 @@ TEST(GraphAlgorithms, GLST_1) {
   ASSERT_ANY_THROW(GraphAlgorithms::GetLeastSpanningTree(graph));
 }
 
+TEST(GraphAlgorithms, ant) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms algorithm;
+  GraphAlgorithms::TsmResult result =
+      algorithm.SolveTravelingSalesmanProblem(graph);
+  // GraphAlgorithms::ResultArray expected_result{2, 7,  3, 8, 5, 4,
+  //                                              6, 10, 9, 1, 11};
+  // EXPECT_EQ(result.vertices, expected_result);
+  EXPECT_LE(result.distance, 260);
+}
+TEST(GraphAlgorithms, branch_and_bounds) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms algorithm;
+  GraphAlgorithms::TsmResult result =
+      algorithm.SolveTravelingSalesmanProblem1(graph);
+  // GraphAlgorithms::ResultArray expected_result{2, 7,  3, 8, 5, 4,
+  //                                              6, 10, 9, 1, 11};
+  // EXPECT_EQ(result.vertices, expected_result);
+  EXPECT_LE(result.distance, 260);
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

@@ -182,20 +182,19 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   }
   return result_matrix;
 };
-// using namespace GraphAlgorithms;
 
-void GraphAlorithms::TspState::updatePath(int vertex) {
+void GraphAlgorithms::TspState::updatePath(size_t vertex) {
   path.push_back(vertex);
 }
 
-void GraphAlorithms::TspState::updateCost(double cost) { this->cost = cost; }
+void GraphAlgorithms::TspState::updateCost(double cost) { this->cost = cost; }
 
-std::vector<int> GraphAlgorithms::TSpState::getPath() { return path; }
+std::vector<size_t> GraphAlgorithms::TspState::getPath() { return path; }
 
 double GraphAlgorithms::TspState::getCost() { return cost; }
 
 void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
-                                      int currentVertex, double &upperBound,
+                                      size_t currentVertex, double &upperBound,
                                       TspState &optimalState) {
   state.updatePath(currentVertex);
 
@@ -215,11 +214,27 @@ void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
 
         if (cost + state.cost < upperBound) {
           TspState nextState = state;
+          nextState.updateCost(cost + state.cost);
           findOptimalPath(graph, nextState, vertex, upperBound, optimalState);
         }
       }
     }
   }
+}
+
+GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
+    const s21::Graph &graph) {
+  TspState optimalState;
+  double upperBound = std::numeric_limits<double>::max();
+
+  for (int vertex : graph.GetVertices()) {
+    TspState state;
+    findOptimalPath(graph, state, vertex, upperBound, optimalState);
+  }
+  TsmResult optimalResult;
+  optimalResult.vertices = optimalState.getPath();
+  optimalResult.distance = optimalState.getCost();
+  return optimalResult;
 }
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
@@ -237,20 +252,5 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
                  modified_vector.begin(),
                  [](size_t value) { return value + 1; });
   return {modified_vector, result.second};
-}
-
-GraphAlgorithms::TsmResult SolveTravelingSalesmanProblem1(
-    const s21::Graph &graph) {
-  TspState optimalState;
-  double upperBound = std::numeric_limits<double>::max();
-
-  for (int vertex : graph.GetVertices()) {
-    TspState state;
-    findOptimalPath(graph, state, vertex, upperBound, optimalState);
-  }
-  GraphAlgorithms::TsmResult optimalResult;
-  optimalResult.vertices = optimalState.getPath();
-  optimalResult.distance = optimalState.getCost();
-  return optimalResult;
 }
 }  // namespace s21

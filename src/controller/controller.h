@@ -29,6 +29,7 @@ class Controller {
   void GetShortestPathBetweenVertices(const GraphAppData *data);
   void GetShortestPathsBetweenAllVertices();
   void SolveTravellingSalesmanProblem();
+  void SolveTravellingSalesmanProblem1();
   bool IsModelLoaded();
   void LoadGraphFromFile(const GraphAppData *data);
 

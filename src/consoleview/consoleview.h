@@ -33,7 +33,7 @@ class ConsoleView {
   void ShortestPathBetweenVertices();
   void ShortestPathsBetweenAllVertices();
   void SolveTravellingSalesmanProblem();
-  void TSP1();
+  void SolveTravellingSalesmanProblem1();
 
   void ErrorMessage(const std::string &);
   void FinalMessage(const std::string &);

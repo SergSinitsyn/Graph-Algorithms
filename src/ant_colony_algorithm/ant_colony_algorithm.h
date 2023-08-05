@@ -5,8 +5,8 @@
 #include <set>
 #include <vector>
 
-#include "../s21_graph.h"
-#include "Ant.h"
+#include "ant.h"
+#include "s21_graph.h"
 
 using namespace s21;
 

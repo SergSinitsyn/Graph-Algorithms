@@ -42,17 +42,17 @@ class GraphAlgorithms {
   class TspState {
    public:
     // Обновление состояния решения
-    void updatePath(int vertex);
+    void updatePath(size_t vertex);
     void updateCost(double cost);
     // Получение текущего пути и стоимости
-    std::vector<int> getPath();
+    ResultArray getPath();
     double getCost();
 
-    std::vector<int> path;
+    ResultArray path;
     double cost;
   };
   void findOptimalPath(const s21::Graph &graph, TspState state,
-                       int currentVertex, double &upperBound,
+                       size_t currentVertex, double &upperBound,
                        TspState &optimalState);
   static bool FullTrack(std::vector<bool> visited);
 };
