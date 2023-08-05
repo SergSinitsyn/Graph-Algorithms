@@ -28,7 +28,7 @@ class Graph {
   std::vector<uint> GetVertices() const {
     auto vertexes = std::vector<uint>(GetNumVertices());
     std::iota(vertexes.begin(), vertexes.end(), 1);
-    return std::move(vertexes);
+    return vertexes;
   }
   void SetSize(size_t size);
   size_t GetEdge(size_t from, size_t to) const {

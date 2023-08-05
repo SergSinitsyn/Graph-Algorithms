@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../s21_graph.h"
-#include "ant.h"
+#include "Ant.h"
 
 using namespace s21;
 
