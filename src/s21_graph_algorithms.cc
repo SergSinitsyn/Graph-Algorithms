@@ -209,21 +209,21 @@ void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
       upperBound = cost;
     }
   } else {
-    if (state.cost < upperBound)
-      for (int vertex : graph.GetVertices()) {
-        if (std::find(state.path.begin(), state.path.end(), vertex) ==
-            state.path.end()) {
-          double cost = graph.GetEdge(currentVertex, vertex);
+    // if (state.cost < upperBound)
+    for (int vertex : graph.GetVertices()) {
+      if (std::find(state.path.begin(), state.path.end(), vertex) ==
+          state.path.end()) {
+        double cost = graph.GetEdge(currentVertex, vertex);
 
-          if (cost + state.cost < upperBound) {
-            TspState nextState = state;
-            nextState.updateCost(cost + state.cost);
-            findOptimalPath(graph, nextState, vertex, upperBound, optimalState);
-          } else {
-            break;
-          }
+        if (cost + state.cost < upperBound) {
+          TspState nextState = state;
+          nextState.updateCost(cost + state.cost);
+          findOptimalPath(graph, nextState, vertex, upperBound, optimalState);
+        } else {
+          break;
         }
       }
+    }
   }
 }
 
@@ -235,7 +235,7 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
   for (int vertex : graph.GetVertices()) {
     findOptimalPath(graph, {}, vertex, upperBound, optimalState);
   }
-  printf("Iterations: %ld\n", optimalState.iteration);
+  // printf("Iterations: %ld\n", optimalState.iteration);
   TsmResult optimalResult;
   optimalResult.vertices = optimalState.getPath();
   std::transform(optimalResult.vertices.begin(), optimalResult.vertices.end(),
