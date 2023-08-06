@@ -45,18 +45,18 @@ all: $(MAIN_APP)
 rebuild: clean all
 
 report/index.html: clean
-	$(CC) $(CFLAGS) --coverage -c $(SRC_DIR)/$(LIB1_SOURCES)
+	$(CC) $(CFLAGS) --coverage $(INCLUDES:%=-I %) -c $(SRC_DIR)/$(LIB1_SOURCES)
 	ar rc $(LIB1_NAME) $(LIB1_OBJS)
 	$(CLEAN) lib$(LIB1_NAME)
 	ln $(LIB1_NAME) lib$(LIB1_NAME)
-	$(CC) $(CFLAGS) --coverage -c $(SRC_DIR)/$(LIB2_SOURCES)
-	ar rc $(LIB2_NAME) $(LIB2_OBJS)
+	$(CC) $(CFLAGS) --coverage $(INCLUDES:%=-I %) -c $(SRC_DIR)/$(LIB2_SOURCES)
+	ar rc $(LIB2_NAME) $(notdir $(LIB2_OBJS))
 	$(CLEAN) lib$(LIB2_NAME)
 	ln $(LIB2_NAME) lib$(LIB2_NAME)
-	$(CC) $(CFLAGS) $(TEST_SOURCES) -L. -l$(LIB1) -l$(LIB2) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) 
+	$(CC) $(CFLAGS) --coverage $(INCLUDES:%=-I %) $(TEST_SOURCES) -L. -l$(LIB1) -l$(LIB2) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) 
 	$(CLEAN) $(OBJECTS)
 	-$(BUILD_DIR)/$(TEST_PROG)
-	gcov -o src/ *.gcda
+	gcov  -o src/ *.gcda
 	lcov -t "gcov_report" -o gcov_report.info -c -d .
 	-mkdir $(BUILD_DIR)/report
 	genhtml -o $(BUILD_DIR)/report gcov_report.info

@@ -421,6 +421,15 @@ TEST(GraphAlgorithms, ant) {
       algorithm.SolveTravelingSalesmanProblem(graph);
   EXPECT_LE(result.distance, 260);
 }
+TEST(GraphAlgorithms, carlo) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  GraphAlgorithms algorithm;
+  GraphAlgorithms::TsmResult result =
+      algorithm.SolveTravelingSalesmanProblem2(graph);
+  EXPECT_LE(result.distance, 260);
+}
 
 TEST(GraphAlgorithms, branch_and_bounds) {
   Graph graph;
