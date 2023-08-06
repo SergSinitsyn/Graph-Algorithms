@@ -48,8 +48,9 @@ class GraphAlgorithms {
     ResultArray getPath();
     double getCost();
 
-    ResultArray path;
+    std::vector<size_t> path;
     double cost;
+    size_t iteration{0};
   };
   void findOptimalPath(const s21::Graph &graph, TspState state,
                        size_t currentVertex, double &upperBound,
