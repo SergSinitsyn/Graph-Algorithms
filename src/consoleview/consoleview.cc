@@ -25,8 +25,8 @@ ConsoleView::ConsoleView(Controller* c)
             &ConsoleView::SolveTravellingSalesmanProblem}},
           {8, {"Export graph to file .dot", &ConsoleView::ExportGraph}},
           {9,
-           {"Traveling Salesman Problem",
-            &ConsoleView::SolveTravellingSalesmanProblem1}},
+           {"Compare Travelling Salesman Problem solving methods",
+            &ConsoleView::TSPComare}},
           {10, {"Exit", &ConsoleView::ExitAction}}} {};
 
 void ConsoleView::StartEventLoop() {
@@ -110,7 +110,7 @@ void ConsoleView::LoadGraph() {
   FinalMessage(message);
 }
 
-void ConsoleView::NoAction() { ErrorMessage("No action implemented"); }
+// void ConsoleView::NoAction() { ErrorMessage("No action implemented"); }
 
 int ConsoleView::PerformChoice() {
   int choice = PerformNumericInput("Input a menu item digit: ");
@@ -183,15 +183,18 @@ void ConsoleView::SolveTravellingSalesmanProblem() {
   FinalMessage("Travelling Salesman Problem is resolved");
 }
 
-void ConsoleView::SolveTravellingSalesmanProblem1() {
+void ConsoleView::TSPComare() {
   if (!controller_->IsModelLoaded()) {
     ErrorMessage("Model is not loaded");
     return;
   }
-  controller_->SolveTravellingSalesmanProblem1();
-  PrintArray(controller_->array_result());
-  PrintValue(controller_->value_result());
-  FinalMessage("Travelling Salesman Problem is resolved");
+  data_.n_cycles = PerformNumericInput("Input number of test cycles:");
+
+  controller_->PerformTSPMethodsCompare(&data_);
+  for (auto i = 0; i < 3; ++i)
+    PrintValue(controller_->time_result(i).count(),
+               "Time " + std::to_string(i + 1) + ": ");
+  FinalMessage("Comparison finished");
 }
 
 void ConsoleView::ErrorMessage(const std::string& message) {
@@ -223,8 +226,9 @@ void ConsoleView::PrintMatrix(const Graph::AdjacencyMatrix& matrix) {
   }
 }
 
-void ConsoleView::PrintValue(const GraphAlgorithms::Result& result) {
-  std::cout << "Smallest distance: " << result;
+void ConsoleView::PrintValue(const GraphAlgorithms::Result result,
+                             const std::string& msg) {
+  std::cout << msg << result;
   std::cout << std::endl;
 }
 

@@ -14,7 +14,7 @@ else
 endif
 SOURCES=consoleapp.cc consoleview/consoleview.cc controller/controller.cc
 SRC_DIR=./
-INCLUDES = consoleview/ controller/ containers/ ./
+INCLUDES = consoleview/ controller/ containers/ ./ ant_colony_algorithm/ monte_carlo_algorithm/
 HEADERS=*.h
 OBJECTS=*.o
 MAIN_APP=consoleapp

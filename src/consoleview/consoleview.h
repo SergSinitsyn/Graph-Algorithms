@@ -3,7 +3,7 @@
 #include <iostream>
 #include <map>
 
-#include "../controller/controller.h"
+#include "controller.h"
 
 namespace s21 {
 
@@ -33,13 +33,14 @@ class ConsoleView {
   void ShortestPathBetweenVertices();
   void ShortestPathsBetweenAllVertices();
   void SolveTravellingSalesmanProblem();
-  void SolveTravellingSalesmanProblem1();
+  void TSPComare();
 
   void ErrorMessage(const std::string &);
   void FinalMessage(const std::string &);
   void PrintArray(const GraphAlgorithms::ResultArray &array);
   void PrintMatrix(const Graph::AdjacencyMatrix &matrix);
-  void PrintValue(const GraphAlgorithms::Result &result);
+  void PrintValue(const GraphAlgorithms::Result result,
+                  const std::string &msg = "Smallest distance: ");
 
   Controller *controller_ = nullptr;
   GraphAppData data_{};

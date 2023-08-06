@@ -6,10 +6,10 @@
 #include <stack>
 #include <stdexcept>
 
-#include "ant_colony_algorithm/ant_colony_algorithm.h"
-#include "containers/s21_queue.h"
-#include "containers/s21_stack.h"
-#include "monte_carlo_algorithm/monte_carlo_algorithm.h"
+#include "ant_colony_algorithm.h"
+#include "monte_carlo_algorithm.h"
+#include "s21_queue.h"
+#include "s21_stack.h"
 
 #ifndef SIZE_T_MAX
 #define SIZE_T_MAX std::numeric_limits<size_t>::max()
@@ -183,66 +183,84 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   return result_matrix;
 };
 
-void GraphAlgorithms::TspState::updatePath(size_t vertex) {
-  path.push_back(vertex);
+void GraphAlgorithms::TspState::UpdatePath(size_t vertex) {
+  path_.push_back(vertex);
 }
 
-void GraphAlgorithms::TspState::updateCost(double cost) { this->cost = cost; }
+void GraphAlgorithms::TspState::UpdateCost(double cost) { this->cost_ = cost; }
 
-std::vector<size_t> GraphAlgorithms::TspState::getPath() {
-  return std::vector(path.begin(), path.end());
+std::vector<size_t> GraphAlgorithms::TspState::GetPath() {
+  return std::vector(path_.begin(), path_.end());
 }
 
-double GraphAlgorithms::TspState::getCost() { return cost; }
+double GraphAlgorithms::TspState::GetCost() { return cost_; }
 
-void GraphAlgorithms::findOptimalPath(const s21::Graph &graph, TspState state,
+void GraphAlgorithms::FindOptimalPath(const s21::Graph &graph, TspState state,
                                       size_t currentVertex, double &upperBound,
                                       TspState &optimalState) {
-  state.updatePath(currentVertex);
-  optimalState.iteration++;
+  state.UpdatePath(currentVertex);
+  optimalState.iteration_++;
 
-  if (state.path.size() == graph.GetNumVertices()) {
-    double cost = state.getCost() + graph.GetEdge(currentVertex, state.path[0]);
+  if (state.path_.size() == graph.GetNumVertices()) {
+    double cost =
+        state.GetCost() + graph.GetEdge(currentVertex, state.path_[0]);
     if (cost < upperBound) {
-      state.updateCost(cost);
+      state.UpdateCost(cost);
       optimalState = state;
       upperBound = cost;
     }
   } else {
-    // if (state.cost < upperBound)
-    for (int vertex : graph.GetVertices()) {
-      if (std::find(state.path.begin(), state.path.end(), vertex) ==
-          state.path.end()) {
-        double cost = graph.GetEdge(currentVertex, vertex);
+    if (state.cost_ < upperBound)
+      for (int vertex : graph.GetVertices()) {
+        if (std::find(state.path_.begin(), state.path_.end(), vertex) ==
+            state.path_.end()) {
+          double cost = graph.GetEdge(currentVertex, vertex);
 
-        if (cost + state.cost < upperBound) {
-          TspState nextState = state;
-          nextState.updateCost(cost + state.cost);
-          findOptimalPath(graph, nextState, vertex, upperBound, optimalState);
-        } else {
-          break;
+          if (cost + state.cost_ < upperBound) {
+            TspState nextState = state;
+            nextState.UpdateCost(cost + state.cost_);
+            FindOptimalPath(graph, nextState, vertex, upperBound, optimalState);
+          } else {
+            break;
+          }
         }
       }
-    }
   }
 }
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
     const s21::Graph &graph) {
-  TspState optimalState;
+  TspState optimalState{};
   double upperBound = std::numeric_limits<double>::max();
 
   for (int vertex : graph.GetVertices()) {
-    findOptimalPath(graph, {}, vertex, upperBound, optimalState);
+    FindOptimalPath(graph, {}, vertex, upperBound, optimalState);
   }
   // printf("Iterations: %ld\n", optimalState.iteration);
   TsmResult optimalResult;
-  optimalResult.vertices = optimalState.getPath();
+  optimalResult.vertices = optimalState.GetPath();
   std::transform(optimalResult.vertices.begin(), optimalResult.vertices.end(),
                  optimalResult.vertices.begin(),
                  [](size_t v) { return v + kVertexStartNumber; });
-  optimalResult.distance = optimalState.getCost();
+  optimalResult.distance = optimalState.GetCost();
   return optimalResult;
+}
+
+GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem2(
+    const Graph &graph) {
+  // AntColonyAlgorithm algorithm(graph);
+  // algorithm.RunAlgorithm();
+  // AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  MonteCarloAlgorithm algorithm(graph);
+  algorithm.RunAlgorithm();
+  MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  std::vector<size_t> modified_vector = result.first;
+  std::transform(modified_vector.begin(), modified_vector.end(),
+                 modified_vector.begin(),
+                 [](size_t value) { return value + kVertexStartNumber; });
+  return {modified_vector, result.second};
 }
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(

@@ -1,5 +1,7 @@
 #include "controller.h"
 
+#include <chrono>
+
 namespace s21 {
 
 void Controller::BreadthFirstSearch(const GraphAppData *data) {
@@ -36,12 +38,26 @@ void Controller::SolveTravellingSalesmanProblem() {
   array_result_ = result.vertices;
 }
 
-void Controller::SolveTravellingSalesmanProblem1() {
+std::chrono::milliseconds Controller::RunMethodTimed(
+    const GraphAppData *data, GraphAlgorithms *algorithm,
+    GraphAlgorithms::TsmResult (GraphAlgorithms::*method)(const Graph &graph)) {
+  auto begin = std::chrono::steady_clock::now();
+  for (int i = 0; i < data->n_cycles; i++) {
+    (algorithm->*method)(*model_);
+  }
+  auto end = std::chrono::steady_clock::now();
+  auto elapsed_ms =
+      std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+  return elapsed_ms;
+}
+void Controller::PerformTSPMethodsCompare(const GraphAppData *data) {
   GraphAlgorithms algorithm;
-  GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem1(*model_);
-  value_result_ = result.distance;
-  array_result_ = result.vertices;
+  time_result_[0] = RunMethodTimed(
+      data, &algorithm, &GraphAlgorithms::SolveTravelingSalesmanProblem);
+  time_result_[1] = RunMethodTimed(
+      data, &algorithm, &GraphAlgorithms::SolveTravelingSalesmanProblem1);
+  time_result_[2] = RunMethodTimed(
+      data, &algorithm, &GraphAlgorithms::SolveTravelingSalesmanProblem2);
 }
 
 bool Controller::IsModelLoaded() {
