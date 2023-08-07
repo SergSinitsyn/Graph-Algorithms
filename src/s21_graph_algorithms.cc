@@ -183,39 +183,6 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   return result_matrix;
 };
 
-void GraphAlgorithms::FindOptimalPath(const s21::Graph &graph, TspState state,
-                                      size_t currentVertex, double &upperBound,
-                                      TspState &optimalState) {
-  state.UpdatePath(currentVertex);
-  optimalState.iteration_++;
-
-  if (state.path_.size() == graph.GetNumVertices()) {
-    double cost =
-        state.GetCost() + graph.GetEdge(currentVertex, state.path_[0]);
-    if (cost < upperBound) {
-      state.UpdateCost(cost);
-      optimalState = state;
-      upperBound = cost;
-    }
-  } else {
-    if (state.cost_ < upperBound)
-      for (int vertex : graph.GetVertices()) {
-        if (std::find(state.path_.begin(), state.path_.end(), vertex) ==
-            state.path_.end()) {
-          double cost = graph.GetEdge(currentVertex, vertex);
-
-          if (cost + state.cost_ < upperBound) {
-            TspState nextState = state;
-            nextState.UpdateCost(cost + state.cost_);
-            FindOptimalPath(graph, nextState, vertex, upperBound, optimalState);
-          } else {
-            break;
-          }
-        }
-      }
-  }
-}
-
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
     const Graph &graph) {
   AntColonyAlgorithm algorithm(graph);
@@ -257,5 +224,38 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem2(
                  modified_vector.begin(),
                  [](size_t value) { return value + kVertexStartNumber; });
   return {modified_vector, result.second};
+}
+
+void GraphAlgorithms::FindOptimalPath(const s21::Graph &graph, TspState state,
+                                      size_t currentVertex, double &upperBound,
+                                      TspState &optimalState) {
+  state.UpdatePath(currentVertex);
+  optimalState.iteration_++;
+
+  if (state.path_.size() == graph.GetNumVertices()) {
+    double cost =
+        state.GetCost() + graph.GetEdge(currentVertex, state.path_[0]);
+    if (cost < upperBound) {
+      state.UpdateCost(cost);
+      optimalState = state;
+      upperBound = cost;
+    }
+  } else {
+    if (state.cost_ < upperBound)
+      for (int vertex : graph.GetVertices()) {
+        if (std::find(state.path_.begin(), state.path_.end(), vertex) ==
+            state.path_.end()) {
+          double cost = graph.GetEdge(currentVertex, vertex);
+
+          if (cost + state.cost_ < upperBound) {
+            TspState nextState = state;
+            nextState.UpdateCost(cost + state.cost_);
+            FindOptimalPath(graph, nextState, vertex, upperBound, optimalState);
+          } else {
+            break;
+          }
+        }
+      }
+  }
 }
 }  // namespace s21
