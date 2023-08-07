@@ -427,7 +427,7 @@ TEST(GraphAlgorithms, carlo) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms algorithm;
   GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem2(graph);
+      algorithm.MonteCarloMethod(graph);
   EXPECT_LE(result.distance, 260);
 }
 
@@ -437,7 +437,7 @@ TEST(GraphAlgorithms, branch_and_bounds) {
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms algorithm;
   GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem1(graph);
+      algorithm.DynamicProgrammingMethod(graph);
   GraphAlgorithms::ResultArray expected_result{1, 8, 5, 4,  10, 6,
                                                3, 7, 2, 11, 9};
   EXPECT_EQ(result.vertices, expected_result);

@@ -17,6 +17,13 @@
 
 namespace s21 {
 
+GraphAlgorithms::ResultArray &GraphAlgorithms::AddVertexStartNumber(
+    ResultArray &array) {
+  std::transform(array.begin(), array.end(), array.begin(),
+                 [](size_t v) { return v + kVertexStartNumber; });
+  return array;
+}
+
 GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
     const Graph &graph, int start_vertex) {
   start_vertex -= kVertexStartNumber;
@@ -40,10 +47,8 @@ GraphAlgorithms::ResultArray GraphAlgorithms::BreadthFirstSearch(
       }
     }
   }
-  std::transform(path.begin(), path.end(), path.begin(),
-                 [](size_t v) { return v + kVertexStartNumber; });
 
-  return path;
+  return GraphAlgorithms::AddVertexStartNumber(path);
 }
 
 GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
@@ -72,10 +77,8 @@ GraphAlgorithms::ResultArray GraphAlgorithms::DepthFirstSearch(
       stack.pop();
     }
   }
-  std::transform(path.begin(), path.end(), path.begin(),
-                 [](size_t v) { return v + kVertexStartNumber; });
 
-  return path;
+  return GraphAlgorithms::AddVertexStartNumber(path);
 }
 
 GraphAlgorithms::Result GraphAlgorithms::GetShortestPathBetweenVertices(
@@ -190,67 +193,67 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
-  std::transform(modified_vector.begin(), modified_vector.end(),
-                 modified_vector.begin(),
-                 [](size_t value) { return value + kVertexStartNumber; });
-  return {modified_vector, result.second};
+
+  return {GraphAlgorithms::AddVertexStartNumber(modified_vector),
+          result.second};
 }
 
-GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
+GraphAlgorithms::TsmResult GraphAlgorithms::DynamicProgrammingMethod(
     const s21::Graph &graph) {
-  TspState optimalState{};
-  double upperBound = std::numeric_limits<double>::max();
+  TspState optimal_state{};
+  double upper_bound = std::numeric_limits<double>::max();
 
   for (int vertex : graph.GetVertices()) {
-    FindOptimalPath(graph, {}, vertex, upperBound, optimalState);
+    FindOptimalPath(graph, {}, vertex, upper_bound, optimal_state);
   }
-  TsmResult optimalResult;
-  optimalResult.vertices = optimalState.GetPath();
-  std::transform(optimalResult.vertices.begin(), optimalResult.vertices.end(),
-                 optimalResult.vertices.begin(),
-                 [](size_t v) { return v + kVertexStartNumber; });
-  optimalResult.distance = optimalState.GetCost();
-  return optimalResult;
+  TsmResult optimal_result;
+  optimal_result.vertices = optimal_state.GetPath();
+
+  GraphAlgorithms::AddVertexStartNumber(optimal_result.vertices);
+
+  optimal_result.distance = optimal_state.GetCost();
+  return optimal_result;
 }
 
-GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem2(
+GraphAlgorithms::TsmResult GraphAlgorithms::MonteCarloMethod(
     const Graph &graph) {
   MonteCarloAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
   MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
-  std::transform(modified_vector.begin(), modified_vector.end(),
-                 modified_vector.begin(),
-                 [](size_t value) { return value + kVertexStartNumber; });
-  return {modified_vector, result.second};
+
+  return {GraphAlgorithms::AddVertexStartNumber(modified_vector),
+          result.second};
 }
 
 void GraphAlgorithms::FindOptimalPath(const s21::Graph &graph, TspState state,
-                                      size_t currentVertex, double &upperBound,
-                                      TspState &optimalState) {
-  state.UpdatePath(currentVertex);
-  optimalState.iteration_++;
+                                      size_t current_vertex,
+                                      double &upper_bound,
+                                      TspState &optimal_state) {
+  state.UpdatePath(current_vertex);
+  optimal_state.iteration_++;
 
   if (state.path_.size() == graph.GetNumVertices()) {
     double cost =
-        state.GetCost() + graph.GetEdge(currentVertex, state.path_[0]);
-    if (cost < upperBound) {
+        state.GetCost() + graph.GetEdge(current_vertex, state.path_[0]);
+    if (cost < upper_bound) {
       state.UpdateCost(cost);
-      optimalState = state;
-      upperBound = cost;
+      optimal_state = state;
+      upper_bound = cost;
     }
   } else {
-    if (state.cost_ < upperBound)
+    if (state.cost_ < upper_bound)
       for (int vertex : graph.GetVertices()) {
         if (std::find(state.path_.begin(), state.path_.end(), vertex) ==
             state.path_.end()) {
-          double cost = graph.GetEdge(currentVertex, vertex);
+          double cost = graph.GetEdge(current_vertex, vertex);
 
-          if (cost + state.cost_ < upperBound) {
+          if (cost + state.cost_ < upper_bound) {
             TspState nextState = state;
             nextState.UpdateCost(cost + state.cost_);
-            FindOptimalPath(graph, nextState, vertex, upperBound, optimalState);
+            FindOptimalPath(graph, nextState, vertex, upper_bound,
+                            optimal_state);
           } else {
             break;
           }

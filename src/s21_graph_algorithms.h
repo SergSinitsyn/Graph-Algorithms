@@ -35,8 +35,8 @@ class GraphAlgorithms {
   // part 4
   TsmResult SolveTravelingSalesmanProblem(const Graph &graph);
   // part 6
-  TsmResult SolveTravelingSalesmanProblem1(const Graph &graph);
-  TsmResult SolveTravelingSalesmanProblem2(const Graph &graph);
+  TsmResult DynamicProgrammingMethod(const Graph &graph);
+  TsmResult MonteCarloMethod(const Graph &graph);
 
  private:
   class TspState {
@@ -52,6 +52,7 @@ class GraphAlgorithms {
     double cost_ = 0;
     size_t iteration_ = 0;
   };
+  static ResultArray &AddVertexStartNumber(ResultArray &array);
   void FindOptimalPath(const s21::Graph &graph, TspState state,
                        size_t currentVertex, double &upperBound,
                        TspState &optimalState);
