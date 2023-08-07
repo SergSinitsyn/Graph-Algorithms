@@ -26,7 +26,6 @@ class ConsoleView {
   void ExportGraph();
   void LeastSpanningTree();
   void LoadGraph();
-  void NoAction();
   int PerformChoice();
   int PerformNumericInput(const std::string &msg);
   void PerformStringInput();

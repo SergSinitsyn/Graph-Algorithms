@@ -110,8 +110,6 @@ void ConsoleView::LoadGraph() {
   FinalMessage(message);
 }
 
-// void ConsoleView::NoAction() { ErrorMessage("No action implemented"); }
-
 int ConsoleView::PerformChoice() {
   int choice = PerformNumericInput("Input a menu item digit: ");
   if (menu_.find(choice) == menu_.end()) {
