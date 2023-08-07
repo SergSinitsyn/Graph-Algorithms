@@ -4,6 +4,7 @@
 #include <map>
 #include <random>
 #include <set>
+#include <vector>
 
 #include "../s21_graph.h"
 
@@ -24,11 +25,9 @@ Ant::Ant(const Graph& graph, size_t starting_vetrex)
   SetDefaultData();
 }
 
-void Ant::SetProbabilities(const Matrix& probabilities) {
+void Ant::RunAnt(const Matrix& probabilities) {
   probabilities_ = probabilities;
-}
 
-void Ant::RunAnt() {
   SetDefaultData();
 
   VisitVertex(starting_vertex_);
@@ -40,7 +39,7 @@ void Ant::RunAnt() {
   }
 
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
-  solution_ = {distance_, path_, new_pheromones_};
+  solution_ = {distance_, path_};
 }
 
 void Ant::VisitVertex(size_t vertex) {

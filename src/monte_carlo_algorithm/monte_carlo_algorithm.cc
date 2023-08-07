@@ -10,6 +10,7 @@ using namespace s21;
 
 MonteCarloAlgorithm::MonteCarloAlgorithm(const Graph& graph)
     : graph_(graph), size_(graph.size()) {
+  break_limit_ = 1000 * size_ * size_;
   for (size_t i = 0; i < size_; ++i) {
     sequence_.push_back(i);
   }

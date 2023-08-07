@@ -18,7 +18,7 @@ class GraphAlgorithms {
     std::vector<size_t> vertices;
     double distance;
   };
-  static const int kVertexStartNumber = 1;
+  static const size_t kVertexStartNumber = 1;
   using ResultArray = std::vector<size_t>;
   using Result = size_t;
 

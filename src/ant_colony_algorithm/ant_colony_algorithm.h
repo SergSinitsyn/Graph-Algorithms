@@ -1,5 +1,5 @@
-#ifndef NAVIGATOR_ANT_COLONY_ALGORITHM_H_
-#define NAVIGATOR_ANT_COLONY_ALGORITHM_H_
+#ifndef NAVIGATOR_ANT_COLONY_ALGORITHM_ANT_COLONY_ALGORITHM_H_
+#define NAVIGATOR_ANT_COLONY_ALGORITHM_ANT_COLONY_ALGORITHM_H_
 
 #include <map>
 #include <set>
@@ -19,16 +19,28 @@ class AntColonyAlgorithm {
   ResultTSP GetResult() const;
 
  private:
-  void Iteration();
   void InitializeMatrices();
-  void UpdateProbabilitiesMatrix();
+  void InitializeAnts();
+  void LaunchAnts();
+  void GetPaths();
   Matrix CreatePheromones(std::vector<size_t> path, double value);
+  void UpdatePheromones();
+  void UpdateProbabilities();
 
   std::vector<Ant> ants_;
+  std::multimap<double, Ant::Solution> solutions_;
 
   Graph graph_;
+
+  double average_distance_;
   size_t size_;
-  size_t ants_count_;
+  size_t ants_number_;
+  size_t break_count_;
+  size_t break_limit_;
+  size_t elite_ants_number_;
+  size_t rank_ants_number_;
+  bool undirected_graph_{false};
+
   Matrix closeness_;
   Matrix pheromones_;
   Matrix probabilities_;
@@ -39,15 +51,7 @@ class AntColonyAlgorithm {
   static constexpr double kPheromonesImpact = 1;
   static constexpr double kClosenessImpact = 5;
 
-  double average_distance_;
-  size_t break_count_{0};
-  size_t break_limit_;
-  size_t elite_ants_count_;
-  size_t rank_ants_count_;
-
-  bool undirected_graph_{false};
-
   Ant::Solution best_solution_;
 };
 
-#endif  // NAVIGATOR_ANT_COLONY_ALGORITHM_H_
+#endif  // NAVIGATOR_ANT_COLONY_ALGORITHM_ANT_COLONY_ALGORITHM_H_

@@ -1,5 +1,5 @@
-#ifndef NAVIGATOR_ANT_H_
-#define NAVIGATOR_ANT_H_
+#ifndef NAVIGATOR_ANT_COLONY_ALGORITHM_ANT_H_
+#define NAVIGATOR_ANT_COLONY_ALGORITHM_ANT_H_
 
 #include <map>
 #include <random>
@@ -18,8 +18,7 @@ class Ant {
   };
 
   Ant(const Graph &graph, size_t starting_vetrex);
-  void RunAnt();
-  void SetProbabilities(const Matrix &probabilities);
+  void RunAnt(const Matrix &probabilities);
   Solution GetSolution() const { return solution_; };
 
  private:
@@ -41,10 +40,11 @@ class Ant {
   std::set<size_t> unvisited_vertices_;
   std::map<size_t, double> variants_;
   std::vector<size_t> path_;
+
   Solution solution_{};
 
   std::mt19937 random_number_generator_;
   std::uniform_real_distribution<double> random_number_distribution_;
 };
 
-#endif  // NAVIGATOR_ANT_H_
+#endif  // NAVIGATOR_ANT_COLONY_ALGORITHM_ANT_H_

@@ -25,7 +25,7 @@ class MonteCarloAlgorithm {
   std::vector<size_t> shuffled_sequence_;
   size_t size_;
 
-  size_t break_limit_ = 100000;
+  size_t break_limit_;
   size_t best_solution_{SIZE_MAX};
 
   ResultTSP result_{};
