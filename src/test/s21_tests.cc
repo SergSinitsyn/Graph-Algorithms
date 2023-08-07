@@ -438,13 +438,12 @@ TEST(GraphAlgorithms, carlo) {
   EXPECT_LE(result.distance, 265);
 }
 
-TEST(GraphAlgorithms, branch_and_bounds) {
+TEST(GraphAlgorithms, dynamic) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms algorithm;
-  GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem1(graph);
+  GraphAlgorithms::TsmResult result = algorithm.DynamicProgrammingMethod(graph);
   GraphAlgorithms::ResultArray expected_result{1, 8, 5, 4,  10, 6,
                                                3, 7, 2, 11, 9};
   EXPECT_EQ(result.vertices, expected_result);

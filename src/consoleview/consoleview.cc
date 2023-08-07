@@ -120,12 +120,14 @@ int ConsoleView::PerformChoice() {
 
 int ConsoleView::PerformNumericInput(const std::string& prompt) {
   int number = 0;
+  bool finish = false;
   std::string input;
-  while (number == 0) {
+  while (!finish) {
     std::cout << prompt;
     getline(std::cin, input);
     try {
       number = std::stoi(input);
+      finish = true;
     } catch (const std::invalid_argument&) {
       ErrorMessage("Wrong input!");
     }
@@ -182,6 +184,8 @@ void ConsoleView::SolveTravellingSalesmanProblem() {
 }
 
 void ConsoleView::TSPComare() {
+  std::string const method_names[3] = {"Ant", "DynamicProgramming",
+                                       "MonteCarlo"};
   if (!controller_->IsModelLoaded()) {
     ErrorMessage("Model is not loaded");
     return;
@@ -191,7 +195,7 @@ void ConsoleView::TSPComare() {
   controller_->PerformTSPMethodsCompare(&data_);
   for (auto i = 0; i < 3; ++i)
     PrintValue(controller_->time_result(i).count(),
-               "Time " + std::to_string(i + 1) + ": ");
+               "Method " + method_names[i] + " used: ");
   FinalMessage("Comparison finished");
 }
 
