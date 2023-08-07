@@ -433,8 +433,7 @@ TEST(GraphAlgorithms, carlo) {
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms algorithm;
-  GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem2(graph);
+  GraphAlgorithms::TsmResult result = algorithm.MonteCarloMethod(graph);
   EXPECT_LE(result.distance, 265);
 }
 
