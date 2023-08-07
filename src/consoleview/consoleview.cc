@@ -184,7 +184,8 @@ void ConsoleView::SolveTravellingSalesmanProblem() {
 }
 
 void ConsoleView::TSPComare() {
-  std::string method_names[3] = {"Ant", "DynamicProgramming", "MonteCarlo"};
+  std::string const method_names[3] = {"Ant", "DynamicProgramming",
+                                       "MonteCarlo"};
   if (!controller_->IsModelLoaded()) {
     ErrorMessage("Model is not loaded");
     return;

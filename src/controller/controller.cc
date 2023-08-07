@@ -54,10 +54,10 @@ void Controller::PerformTSPMethodsCompare(const GraphAppData *data) {
   GraphAlgorithms algorithm;
   time_result_[0] = RunMethodTimed(
       data, &algorithm, &GraphAlgorithms::SolveTravelingSalesmanProblem);
-  time_result_[1] = RunMethodTimed(
-      data, &algorithm, &GraphAlgorithms::DynamicProgrammingMethod);
-  time_result_[2] = RunMethodTimed(
-      data, &algorithm, &GraphAlgorithms::MonteCarloMethod);
+  time_result_[1] = RunMethodTimed(data, &algorithm,
+                                   &GraphAlgorithms::DynamicProgrammingMethod);
+  time_result_[2] =
+      RunMethodTimed(data, &algorithm, &GraphAlgorithms::MonteCarloMethod);
 }
 
 bool Controller::IsModelLoaded() {
