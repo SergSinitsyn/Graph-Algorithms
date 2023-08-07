@@ -41,12 +41,12 @@ class GraphAlgorithms {
  private:
   class TspState {
    public:
-    // Обновление состояния решения
-    void UpdatePath(size_t vertex);
-    void UpdateCost(double cost);
+    double GetCost() { return cost_; }
     // Получение текущего пути и стоимости
-    ResultArray GetPath();
-    double GetCost();
+    ResultArray GetPath() { return std::vector(path_.begin(), path_.end()); }
+    // Обновление состояния решения
+    void UpdateCost(double cost) { this->cost_ = cost; }
+    void UpdatePath(size_t vertex) { path_.push_back(vertex); }
 
     std::vector<size_t> path_;
     double cost_ = 0;
@@ -55,7 +55,6 @@ class GraphAlgorithms {
   void FindOptimalPath(const s21::Graph &graph, TspState state,
                        size_t currentVertex, double &upperBound,
                        TspState &optimalState);
-  static bool FullTrack(std::vector<bool> visited);
 };
 
 }  // namespace s21
