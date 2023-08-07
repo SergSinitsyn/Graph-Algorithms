@@ -78,7 +78,7 @@ $(LIB2_NAME): $(LIB2_OBJS) $(INCLUDES:%=%*.h)
 	cp lib$@ $@
 
 clean:
-	$(CLEAN) $(OBJECTS) *.a *.gcno *.gcda *.gcov *.info
+	$(CLEAN) $(OBJECTS) */$(OBJECTS) *.a *.gcno *.gcda *.gcov *.info
 	$(CLEAN) $(BUILD_DIR)$(OBJECTS) $(BUILD_DIR)*.a $(BUILD_DIR)$(TEST_PROG)
 	$(CLEAN) $(BUILD_DIR)report
 	$(CLEAN) $(DEBUG_PROG)
@@ -86,10 +86,7 @@ clean:
 	$(CLEAN) .clang-format
 	$(CLEAN) $(TEST_PROG)
 	$(CLEAN) consoleapp
-	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
-	$(CLEAN) samples/temp.dot
-	$(CLEAN) ant_colony_algorithm/$(OBJECTS)
-	$(CLEAN) monte_carlo_algorithm/$(OBJECTS)
+	$(CLEAN) temp.dot
 
 tests: test
 
