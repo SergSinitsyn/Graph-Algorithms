@@ -9,20 +9,14 @@
 
 using namespace s21;
 
-Ant::Ant(const Graph& graph, const Matrix& closeness, double pheromone_value,
-         size_t starting_vetrex)
+Ant::Ant(const Graph& graph, size_t starting_vetrex)
     : graph_(graph),
-      closeness_(closeness),
-      pheromones_(graph.size()),
-      new_pheromones_(graph.size()),
       size_(graph.size()),
       starting_vertex_(starting_vetrex),
       current_vertex_(0),
       distance_(0.0),
-      pheromone_value_(pheromone_value),
       unvisited_vertices_(),
-      possible_moves_(),
-      probabilities_(),
+      variants_(),
       path_(),
       solution_(),
       random_number_generator_(std::random_device()()),
@@ -30,7 +24,9 @@ Ant::Ant(const Graph& graph, const Matrix& closeness, double pheromone_value,
   SetDefaultData();
 }
 
-void Ant::SetPheromones(const Matrix& pheromones) { pheromones_ = pheromones; }
+void Ant::SetProbabilities(const Matrix& probabilities) {
+  probabilities_ = probabilities;
+}
 
 void Ant::RunAnt() {
   SetDefaultData();
@@ -44,8 +40,6 @@ void Ant::RunAnt() {
   }
 
   distance_ += graph_.GetEdge(current_vertex_, starting_vertex_);
-
-  PlacePheromones(pheromone_value_ / distance_);
   solution_ = {distance_, path_, new_pheromones_};
 }
 
@@ -56,42 +50,31 @@ void Ant::VisitVertex(size_t vertex) {
 }
 
 size_t Ant::ChooseVertex() {
-  double random_number = GetRandom(CalculateProbabilities());
+  double random_number = GetRandom(CalculateVariants());
 
-  for (const auto& sector : probabilities_) {
-    random_number -= sector.second;
+  for (const auto& variant : variants_) {
+    random_number -= variant.second;
     if (random_number <= 0.0) {
-      return sector.first;
+      return variant.first;
     }
   }
 
-  return probabilities_.begin()->first;
+  return variants_.begin()->first;
 }
 
-double Ant::GetRandom(double value) {
-  return random_number_distribution_(random_number_generator_) * value;
-}
-
-double Ant::CalculateProbabilities() {
-  probabilities_.clear();
+double Ant::CalculateVariants() {
+  variants_.clear();
   double sum = 0.0;
   for (const auto& next_vertex : unvisited_vertices_) {
-    double probability =
-        powl(pheromones_(current_vertex_, next_vertex), kPheromonesImpact) *
-        powl(closeness_(current_vertex_, next_vertex), kClosenessImpact);
-
-    probabilities_.insert({next_vertex, probability});
-    sum += probability;
+    double value = probabilities_(current_vertex_, next_vertex);
+    variants_.insert({next_vertex, value});
+    sum += value;
   }
   return sum;
 }
 
-void Ant::PlacePheromones(double value) {
-  size_t size = path_.size();
-  for (size_t i = 0; i < size - 1; ++i) {
-    new_pheromones_(path_[i], path_[i + 1]) = value;
-  }
-  new_pheromones_(path_[size - 1], path_[0]) = value;
+double Ant::GetRandom(double value) {
+  return random_number_distribution_(random_number_generator_) * value;
 }
 
 void Ant::SetDefaultData() {
@@ -99,10 +82,8 @@ void Ant::SetDefaultData() {
   for (size_t i = 0; i < size_; ++i) {
     unvisited_vertices_.insert(i);
   }
-
+  variants_.clear();
   distance_ = 0.0;
-  possible_moves_.clear();
-  probabilities_.clear();
   path_.clear();
   solution_ = {};
 }

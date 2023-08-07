@@ -5,8 +5,8 @@
 #include <set>
 #include <vector>
 
+#include "../s21_graph.h"
 #include "ant.h"
-#include "s21_graph.h"
 
 using namespace s21;
 
@@ -20,6 +20,9 @@ class AntColonyAlgorithm {
 
  private:
   void Iteration();
+  void InitializeMatrices();
+  void UpdateProbabilitiesMatrix();
+  Matrix CreatePheromones(std::vector<size_t> path, double value);
 
   std::vector<Ant> ants_;
 
@@ -28,9 +31,13 @@ class AntColonyAlgorithm {
   size_t ants_count_;
   Matrix closeness_;
   Matrix pheromones_;
+  Matrix probabilities_;
+  Matrix elite_pheromones_;
 
   static constexpr double kInitialPheromoneValue = 0.5;
   static constexpr double kVaporization = 0.5;
+  static constexpr double kPheromonesImpact = 1;
+  static constexpr double kClosenessImpact = 5;
 
   double average_distance_;
   size_t break_count_{0};
