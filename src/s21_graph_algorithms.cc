@@ -236,7 +236,6 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
   for (int vertex : graph.GetVertices()) {
     FindOptimalPath(graph, {}, vertex, upperBound, optimalState);
   }
-  // printf("Iterations: %ld\n", optimalState.iteration);
   TsmResult optimalResult;
   optimalResult.vertices = optimalState.GetPath();
   std::transform(optimalResult.vertices.begin(), optimalResult.vertices.end(),
@@ -248,10 +247,6 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
 
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem2(
     const Graph &graph) {
-  // AntColonyAlgorithm algorithm(graph);
-  // algorithm.RunAlgorithm();
-  // AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
-
   MonteCarloAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
   MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
@@ -268,10 +263,6 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
   AntColonyAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
   AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
-
-  // MonteCarloAlgorithm algorithm(graph);
-  // algorithm.RunAlgorithm();
-  // MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
   std::transform(modified_vector.begin(), modified_vector.end(),
