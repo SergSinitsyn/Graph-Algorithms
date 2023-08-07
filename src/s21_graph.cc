@@ -7,7 +7,8 @@ namespace s21 {
 
 void Graph::ExportGraphToDot(const std::string& filename) {
   if (filename.empty()) throw std::invalid_argument("Empty filename");
-  std::ofstream file(filename);
+  std::string newfile = filename + ".dot";
+  std::ofstream file(newfile);
   bool is_oriented = !GraphOrientationCheck();
   const std::string graph_type = (is_oriented ? "digraph" : "graph");
   file << graph_type << " Graph {" << std::endl;

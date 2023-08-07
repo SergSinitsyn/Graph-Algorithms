@@ -86,8 +86,8 @@ clean:
 	$(CLEAN) .clang-format
 	$(CLEAN) $(TEST_PROG)
 	$(CLEAN) consoleapp
-	$(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
-	$(CLEAN) samples/temp.dot
+	# $(CLEAN) $(LIB1_OBJS) $(LIB1_NAME) lib$(LIB1_NAME)
+	$(CLEAN) temp.dot
 	$(CLEAN) ant_colony_algorithm/$(OBJECTS)
 	$(CLEAN) monte_carlo_algorithm/$(OBJECTS)
 
