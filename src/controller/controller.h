@@ -40,6 +40,7 @@ class Controller {
   void PerformTSPMethodsCompare(const GraphAppData *data);
   bool IsModelLoaded();
   void LoadGraphFromFile(const GraphAppData *data);
+  size_t GetModelSize() const { return model_->size(); };
 
  private:
   std::chrono::milliseconds RunMethodTimed(

@@ -191,6 +191,11 @@ void ConsoleView::TSPComare() {
     return;
   }
   data_.n_cycles = PerformNumericInput("Input number of test cycles:");
+  if (data_.n_cycles >= 10 && controller_->GetModelSize() >= 10) {
+    ErrorMessage(
+        "Time to wait the result may be more than 10 minutes, are you sure?");
+    if (PerformNumericInput("Input digit (1-yes/0-no): ") == 0) return;
+  }
 
   controller_->PerformTSPMethodsCompare(&data_);
   for (auto i = 0; i < 3; ++i)

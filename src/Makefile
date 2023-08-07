@@ -71,10 +71,12 @@ $(MAIN_APP): $(SOURCES) $(INCLUDES:%=%*.h) $(LIB1_NAME) $(LIB2_NAME)
 
 $(LIB1_NAME): $(LIB1_OBJS) $(INCLUDES:%=%*.h)
 	ar rcs lib$@ $^
+	[ -e $@ ] && rm $@ || true
 	cp lib$@ $@
 
 $(LIB2_NAME): $(LIB2_OBJS) $(INCLUDES:%=%*.h)
 	ar rcs lib$@ $^
+	[ -e $@ ] && rm $@ || true
 	cp lib$@ $@
 
 clean:
