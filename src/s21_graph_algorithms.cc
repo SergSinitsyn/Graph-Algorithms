@@ -183,18 +183,6 @@ Graph::AdjacencyMatrix GraphAlgorithms::GetLeastSpanningTree(
   return result_matrix;
 };
 
-void GraphAlgorithms::TspState::UpdatePath(size_t vertex) {
-  path_.push_back(vertex);
-}
-
-void GraphAlgorithms::TspState::UpdateCost(double cost) { this->cost_ = cost; }
-
-std::vector<size_t> GraphAlgorithms::TspState::GetPath() {
-  return std::vector(path_.begin(), path_.end());
-}
-
-double GraphAlgorithms::TspState::GetCost() { return cost_; }
-
 void GraphAlgorithms::FindOptimalPath(const s21::Graph &graph, TspState state,
                                       size_t currentVertex, double &upperBound,
                                       TspState &optimalState) {
@@ -228,6 +216,19 @@ void GraphAlgorithms::FindOptimalPath(const s21::Graph &graph, TspState state,
   }
 }
 
+GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph &graph) {
+  AntColonyAlgorithm algorithm(graph);
+  algorithm.RunAlgorithm();
+  AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
+
+  std::vector<size_t> modified_vector = result.first;
+  std::transform(modified_vector.begin(), modified_vector.end(),
+                 modified_vector.begin(),
+                 [](size_t value) { return value + kVertexStartNumber; });
+  return {modified_vector, result.second};
+}
+
 GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem1(
     const s21::Graph &graph) {
   TspState optimalState{};
@@ -250,19 +251,6 @@ GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem2(
   MonteCarloAlgorithm algorithm(graph);
   algorithm.RunAlgorithm();
   MonteCarloAlgorithm::ResultTSP result = algorithm.GetResult();
-
-  std::vector<size_t> modified_vector = result.first;
-  std::transform(modified_vector.begin(), modified_vector.end(),
-                 modified_vector.begin(),
-                 [](size_t value) { return value + kVertexStartNumber; });
-  return {modified_vector, result.second};
-}
-
-GraphAlgorithms::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
-    const Graph &graph) {
-  AntColonyAlgorithm algorithm(graph);
-  algorithm.RunAlgorithm();
-  AntColonyAlgorithm::ResultTSP result = algorithm.GetResult();
 
   std::vector<size_t> modified_vector = result.first;
   std::transform(modified_vector.begin(), modified_vector.end(),
