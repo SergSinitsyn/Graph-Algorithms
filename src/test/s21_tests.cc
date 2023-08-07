@@ -112,24 +112,31 @@ TEST(Graph, ExportGraphToDot_0) {
   Graph graph;
   std::string file_name = "samples/graph_4.adj";
   graph.LoadGraphFromFile(file_name);
-  graph.ExportGraphToDot("samples/temp.dot");
-  EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_4.dot"));
+  graph.ExportGraphToDot("temp");
+  EXPECT_TRUE(CompareFiles("temp.dot", "samples/graph_4.dot"));
 }
 
 TEST(Graph, ExportGraphToDot_1) {
   Graph graph;
   std::string file_name = "samples/graph_4_orient.adj";
   graph.LoadGraphFromFile(file_name);
-  graph.ExportGraphToDot("samples/temp.dot");
-  EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_4_orient.dot"));
+  graph.ExportGraphToDot("temp");
+  EXPECT_TRUE(CompareFiles("temp.dot", "samples/graph_4_orient.dot"));
 }
 
 TEST(Graph, ExportGraphToDot_2) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
-  graph.ExportGraphToDot("samples/temp.dot");
-  EXPECT_TRUE(CompareFiles("samples/temp.dot", "samples/graph_11.dot"));
+  graph.ExportGraphToDot("temp");
+  EXPECT_TRUE(CompareFiles("temp.dot", "samples/graph_11.dot"));
+}
+
+TEST(Graph, ExportGraphToDot_bad) {
+  Graph graph;
+  std::string file_name = "samples/graph_11.adj";
+  graph.LoadGraphFromFile(file_name);
+  EXPECT_ANY_THROW(graph.ExportGraphToDot(""));
 }
 
 TEST(GraphAlgorithms, BFS_0) {
@@ -426,18 +433,16 @@ TEST(GraphAlgorithms, carlo) {
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms algorithm;
-  GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem2(graph);
-  EXPECT_LE(result.distance, 260);
+  GraphAlgorithms::TsmResult result = algorithm.MonteCarloMethod(graph);
+  EXPECT_LE(result.distance, 265);
 }
 
-TEST(GraphAlgorithms, branch_and_bounds) {
+TEST(GraphAlgorithms, dynamic) {
   Graph graph;
   std::string file_name = "samples/graph_11.adj";
   graph.LoadGraphFromFile(file_name);
   GraphAlgorithms algorithm;
-  GraphAlgorithms::TsmResult result =
-      algorithm.SolveTravelingSalesmanProblem1(graph);
+  GraphAlgorithms::TsmResult result = algorithm.DynamicProgrammingMethod(graph);
   GraphAlgorithms::ResultArray expected_result{1, 8, 5, 4,  10, 6,
                                                3, 7, 2, 11, 9};
   EXPECT_EQ(result.vertices, expected_result);
