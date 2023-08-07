@@ -1,4 +1,5 @@
 CFLAGS=-g -std=c++17 -O3 -Wall -Werror -Wextra $(shell pkg-config --cflags gtest) 
+CFLAGS_GCOV=-g -std=c++17 -Wall -Werror -Wextra $(shell pkg-config --cflags gtest) --coverage 
 CLEAN=rm -rf
 uname_S := $(shell uname -s)
 ifeq ($(uname_S), Linux)
@@ -14,7 +15,7 @@ else
 endif
 SOURCES=consoleapp.cc consoleview/consoleview.cc controller/controller.cc
 SRC_DIR=./
-INCLUDES = consoleview/ controller/ containers/ ./ ant_colony_algorithm/ monte_carlo_algorithm/
+INCLUDES = consoleview/ controller/ containers/ ./ ant_colony_algorithm/ monte_carlo_algorithm/ matrix/ 
 HEADERS=*.h
 OBJECTS=*.o
 MAIN_APP=consoleapp
@@ -45,15 +46,15 @@ all: $(MAIN_APP)
 rebuild: clean all
 
 report/index.html: clean
-	$(CC) $(CFLAGS) --coverage $(INCLUDES:%=-I %) -c $(SRC_DIR)/$(LIB1_SOURCES)
+	$(CC) $(CFLAGS_GCOV) $(INCLUDES:%=-I %) -c $(SRC_DIR)/$(LIB1_SOURCES)
 	ar rc $(LIB1_NAME) $(LIB1_OBJS)
 	$(CLEAN) lib$(LIB1_NAME)
 	ln $(LIB1_NAME) lib$(LIB1_NAME)
-	$(CC) $(CFLAGS) --coverage $(INCLUDES:%=-I %) -c $(SRC_DIR)/$(LIB2_SOURCES)
+	$(CC) $(CFLAGS_GCOV)  $(INCLUDES:%=-I %) -c $(SRC_DIR)/$(LIB2_SOURCES)
 	ar rc $(LIB2_NAME) $(notdir $(LIB2_OBJS))
 	$(CLEAN) lib$(LIB2_NAME)
 	ln $(LIB2_NAME) lib$(LIB2_NAME)
-	$(CC) $(CFLAGS) --coverage $(INCLUDES:%=-I %) $(TEST_SOURCES) -L. -l$(LIB1) -l$(LIB2) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) 
+	$(CC) $(CFLAGS_GCOV)  $(INCLUDES:%=-I %) $(TEST_SOURCES) -L. -l$(LIB1) -l$(LIB2) $(CHECK_LIBS) -lgcov -o $(BUILD_DIR)/$(TEST_PROG) 
 	$(CLEAN) $(OBJECTS)
 	-$(BUILD_DIR)/$(TEST_PROG)
 	gcov  -o src/ *.gcda
@@ -96,7 +97,7 @@ test: clean $(TEST_PROG)
 	-$(BUILD_DIR)$(TEST_PROG)
 
 $(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
-	$(CC) $(CFLAGS) -g $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
+	$(CC) $(CFLAGS) $(INCLUDES:%=-I %) $(TEST_SOURCES) $(CHECK_LIBS) -o $(BUILD_DIR)$(TEST_PROG) -L. -l$(LIB1) -l$(LIB2)
 
 
 gcov_report: report/index.html

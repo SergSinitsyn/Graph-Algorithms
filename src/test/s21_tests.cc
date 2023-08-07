@@ -2,8 +2,8 @@
 
 #include <fstream>
 
-#include "../s21_graph.h"
-#include "../s21_graph_algorithms.h"
+#include "s21_graph.h"
+#include "s21_graph_algorithms.h"
 using namespace s21;
 
 bool CompareFiles(const std::string &file1, const std::string &file2) {

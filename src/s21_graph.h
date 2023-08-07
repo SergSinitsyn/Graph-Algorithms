@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "matrix/matrix.h"
+#include "matrix.h"
 
 namespace s21 {
 
