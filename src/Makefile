@@ -26,7 +26,7 @@ TEST_PROG=test.out
 
 DEBUG_DIR=./debug
 DEBUG_PROG=debug.out
-BUILD_DIR=./
+BUILD_DIR=../
 
 LIB1=s21_graph
 LIB1_NAME=s21_graph.a
@@ -68,7 +68,7 @@ report/index.html: clean
 	$(CC) $(CFLAGS) $(INCLUDES:%=-I %) -c $< -o $@
 
 $(MAIN_APP): $(SOURCES) $(INCLUDES:%=%*.h) $(LIB1_NAME) $(LIB2_NAME) 
-	$(CC) $(CFLAGS) $(INCLUDES:%=-I %) $(LIB1_SOURCES) $(LIB2_SOURCES) -o $@ $^
+	$(CC) $(CFLAGS) $(INCLUDES:%=-I %) $(LIB1_SOURCES) $(LIB2_SOURCES) -o $(BUILD_DIR)/$@ $^
 
 $(LIB1_NAME): $(LIB1_OBJS) $(INCLUDES:%=%*.h)
 	ar rcs lib$@ $^
@@ -88,7 +88,7 @@ clean:
 	$(CLEAN) ./leaks.log
 	$(CLEAN) .clang-format
 	$(CLEAN) $(TEST_PROG)
-	$(CLEAN) consoleapp
+	$(CLEAN) ../consoleapp*
 	$(CLEAN) temp.dot
 
 tests: test
@@ -103,7 +103,6 @@ $(TEST_PROG): $(TEST_SOURCES) $(SRC_DIR)/$(HEADERS) $(LIB1_NAME) $(LIB2_NAME)
 gcov_report: report/index.html
 	open report/index.html
 
-# проверки
 check: cpplint cppcheck leaks
 
 cpplint:
