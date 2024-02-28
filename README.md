@@ -106,8 +106,8 @@ To build and install this project, please follow the instructions below:
 ## Authors
 
 - [Sergey Sinitsyn](https://github.com/SergSinitsyn) (aka Bernarda Verla): Ant Colony Algorithm, Monte Carlo Method
-- [Sergey Gorbatenko](https://github.com/sg41) (aka Joelle Bonza):
-- [Aleksandr Didenko](https://github.com/quincshe) (aka Quinc Sherley):
+- [Sergey Gorbatenko](https://github.com/sg41) (aka Joelle Bonza): Console Application, Dynamic Programming Method
+- [Aleksandr Didenko](https://github.com/quincshe) (aka Quinc Sherley): Basic Graph Algorithms
 
 ## License
 
